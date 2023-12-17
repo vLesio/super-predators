@@ -1,4 +1,6 @@
-﻿namespace Agents.Actions.LiveableActions
+﻿using Agents.LiveableAgents;
+
+namespace Agents.Actions.LiveableActions
 {
     public enum LiveableActionType
     {
@@ -14,7 +16,7 @@
     public abstract class LiveableAction
     {
         public LiveableActionType ActionType;
-        public abstract bool CheckConditions();
-        public abstract void Invoke();
+        public abstract bool CheckConditions(Liveable agent);
+        public abstract void Invoke(Liveable agent);
     }
 }
