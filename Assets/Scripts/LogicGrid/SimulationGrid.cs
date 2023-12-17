@@ -12,7 +12,7 @@ using UnityEngine;
 namespace LogicGrid
 { 
 
-    public static class Grid
+    public static class SimulationGrid
     {
         public static Vector2Int GridSize => DevSet.I.simulation.gridSize;
 
@@ -32,7 +32,12 @@ namespace LogicGrid
                     destination.x < GridSize.x && 
                     destination.y >= 0 &&
                     destination.y < GridSize.y);
-        } 
+        }
+
+        public static float DistanceFromAgentToAgent(CellAgent agent1, CellAgent agent2)
+        {
+            return Vector2Int.Distance(agent1.CurrentPosition, agent2.CurrentPosition);
+        }
 
     }
 

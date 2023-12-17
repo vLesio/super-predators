@@ -1,4 +1,5 @@
-﻿using Agents;
+﻿using System.Collections.Generic;
+using Agents;
 using Agents.LiveableAgents;
 using Agents.ResourceAgents;
 
@@ -32,6 +33,21 @@ namespace LogicGrid
         }
         
         public static Liveable FindNearestEnemyForAgent(CellAgent agent)
+        {
+            return null;
+        }
+        
+        public static List<Liveable> FindAllMatesInCellForAgent(CellAgent agent)
+        {
+            return null;
+        }
+        
+        public static Grass FindGrassOnAgentPosition(CellAgent agent)
+        {
+            return null;
+        }
+        
+        public static Meat FindMeatOnAgentPosition(CellAgent agent)
         {
             return null;
         }
