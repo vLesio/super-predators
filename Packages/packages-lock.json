@@ -7,6 +7,13 @@
       "dependencies": {},
       "hash": "d12439e131cbf4d89b221ede9e811df9b44ad211"
     },
+    "com.github-glitchenzo.nugetforunity": {
+      "version": "https://github.com/GlitchEnzo/NuGetForUnity.git?path=/src/NuGetForUnity",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "f671396161b8d99acfc59d4713f551475c9137c3"
+    },
     "com.inf.my-hierarchy": {
       "version": "https://github.com/INFGameDev/My-Hierarchy.git",
       "depth": 0,

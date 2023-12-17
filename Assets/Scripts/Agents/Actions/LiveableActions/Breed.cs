@@ -1,14 +1,24 @@
-﻿namespace Agents.Actions.LiveableActions
+﻿using Agents.LiveableAgents;
+using LogicGrid;
+
+namespace Agents.Actions.LiveableActions
 {
     public class Breed : LiveableAction
     {
         public readonly LiveableActionType Type = LiveableActionType.Breed;
-        public override bool CheckConditions()
+        public override bool CheckConditions(Liveable agent)
         {
-            throw new System.NotImplementedException();
+            agent.attributes[LiveableAttribute.Energy] <= 0.125f * 
+            
+            var nearestMate = Finder.FindNearestMateForAgent(agent);
+            
+            
+            
+            
+            
         }
 
-        public override void Invoke()
+        public override void Invoke(Liveable agent)
         {
             throw new System.NotImplementedException();
         }
