@@ -3,6 +3,7 @@ using System.Reflection;
 using CoinPackage.Debugging;
 using UnityEditor;
 using UnityEditor.SceneManagement;
+using UnityEngine;
 
 namespace InitializeOnLoad {
     [InitializeOnLoad]

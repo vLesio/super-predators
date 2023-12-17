@@ -13,3 +13,8 @@ MonoBehaviour:
   m_Name: DeveloperSettings
   m_EditorClassIdentifier: 
   simulationSceneName: Simulation
+  paramLoaderSceneName: ParamLoader
+  runParametersResPath: RunParameters
+  cameraMovementSpeed: 0.853
+  cameraZoomRange: {x: 1, y: 30}
+  slowWhenZoomed: 1

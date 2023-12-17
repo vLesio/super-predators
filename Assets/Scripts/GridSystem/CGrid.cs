@@ -20,8 +20,7 @@ namespace GridSystem {
 
         private void InitializeCells() {
             transform.localScale = new Vector3(_settings.gridSize.x, _settings.gridSize.y, 1);
-            transform.position = new Vector3(0f, 0f, 0f);
-            
+
             var cellWidth = 1f / _settings.gridSize.x;
             var cellHeight = 1f / _settings.gridSize.y;
             var cellShift = new Vector3((float)-Math.Floor(_settings.gridSize.x/2) * cellWidth, 
