@@ -1,18 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Agents.Actions.LiveableActions;
 using Agents.LiveableAgents;
 using MathNet.Numerics.LinearAlgebra;
 using Settings;
+using Unity.VisualScripting;
 
 namespace AgentBehaviour.QuasiCognitiveMap {
     public class QuasiCognitiveMap {
         private readonly int _sensitiveConceptsCount = Enum.GetNames(typeof(LiveableAttribute)).Length;
         
-        private Liveable _liveable;
+        private readonly Liveable _liveable;
         
         private Matrix<double> _connectionMatrix;
-        private List<LiveableAction> _actions;
+        private readonly List<LiveableAction> _actions;
         
         private Vector<double> _conceptsActivation;
         
@@ -50,12 +52,32 @@ namespace AgentBehaviour.QuasiCognitiveMap {
             });
         }
 
-        private void _performFuzzification() {
-            
+        private void _performFuzzification()
+        {
+            var attributesValues = (LiveableAttribute[]) Enum.GetValues(typeof(LiveableAttribute));
+
+            foreach (var attribute in attributesValues) {
+                _conceptsActivation[(int) attribute] = _liveable.attributes[attribute];
+            }
+        }
+
+        private void _calculateNextActivationVector() {
+            this._conceptsActivation = _activationFunction(this._connectionMatrix * this._conceptsActivation);
         }
 
         public void UpdateState() {
-            
+            this._performFuzzification();
+            this._calculateNextActivationVector();
+        }
+
+        public List<LiveableAction> GetSortedActions()
+        {
+            return this._actions
+                .Select((action, index) => (index, action))
+                .ToList()
+                .OrderBy(pair => this._conceptsActivation[_sensitiveConceptsCount + pair.index])
+                .Select(pair => pair.action)
+                .ToList();
         }
         
 
