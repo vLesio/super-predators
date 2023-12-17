@@ -24,28 +24,9 @@ namespace LogicGrid
 
         public static Dictionary<Vector2Int, List<Meat>> ObstacleAgents = new Dictionary<Vector2Int, List<Meat>>();
 
-        public static bool TryToMoveTowardsDirections(Liveable agent, Vector2Int destination)
-        {
-            if (!CheckIfDestinationIsInSimulation(destination))
-            {
-                return false;
-            }
-            
-            MoveTowardsDirection(agent, destination);
-            return true;
-        }
 
-        public static void MoveTowardsDirection(Liveable agent, Vector2Int destination)
-        {
-            
-        }
 
-        private static bool CheckIfDestinationIsReachableByAgent()
-        {
-            return true;
-        }
-
-        private static bool CheckIfDestinationIsInSimulation(Vector2Int destination)
+        public static bool CheckIfDestinationIsInSimulation(Vector2Int destination)
         {
             return (destination.x >= 0 && 
                     destination.x < GridSize.x && 
