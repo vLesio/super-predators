@@ -1,0 +1,58 @@
+﻿using System.Collections.Generic;
+using System.ComponentModel;
+using Agents;
+using Agents.Actions.LiveableActions;
+using Agents.LiveableAgents;
+using Agents.ResourceAgents;
+using Settings;
+using Unity.Collections.LowLevel.Unsafe;
+using Unity.VisualScripting;
+using UnityEngine;
+
+namespace LogicGrid
+{ 
+
+    public static class Grid
+    {
+        public static Vector2Int GridSize => DevSet.I.simulation.gridSize;
+
+        public static Dictionary<Vector2Int, List<Grass>> GrassAgents = new Dictionary<Vector2Int, List<Grass>>();
+        public static Dictionary<Vector2Int, List<Prey>> PreyAgents = new Dictionary<Vector2Int, List<Prey>>();
+
+        public static Dictionary<Vector2Int, List<Predator>> PredatorAgents =
+            new Dictionary<Vector2Int, List<Predator>>();
+
+        public static Dictionary<Vector2Int, List<Meat>> ObstacleAgents = new Dictionary<Vector2Int, List<Meat>>();
+
+        public static bool TryToMoveTowardsDirections(Liveable agent, Vector2Int destination)
+        {
+            if (!CheckIfDestinationIsInSimulation(destination))
+            {
+                return false;
+            }
+            
+            MoveTowardsDirection(agent, destination);
+            return true;
+        }
+
+        public static void MoveTowardsDirection(Liveable agent, Vector2Int destination)
+        {
+            
+        }
+
+        private static bool CheckIfDestinationIsReachableByAgent()
+        {
+            return true;
+        }
+
+        private static bool CheckIfDestinationIsInSimulation(Vector2Int destination)
+        {
+            return (destination.x >= 0 && 
+                    destination.x < GridSize.x && 
+                    destination.y >= 0 &&
+                    destination.y < GridSize.y);
+        } 
+
+    }
+
+}
