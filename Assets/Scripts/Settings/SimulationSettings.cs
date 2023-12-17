@@ -8,5 +8,8 @@ namespace Settings {
 
         public double activationS1 = 0.2;
         public double activationS2 = 1.0;
+        
+        public double breedingThreshold = 0.5;
+        public double breedingAlpha = 0.5;
     }   
 }

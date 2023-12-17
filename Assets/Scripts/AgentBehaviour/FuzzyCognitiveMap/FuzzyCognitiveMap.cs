@@ -8,7 +8,7 @@ using Settings;
 using Unity.VisualScripting;
 
 namespace AgentBehaviour.QuasiCognitiveMap {
-    public class QuasiCognitiveMap {
+    public class FuzzyCognitiveMap {
         private readonly int _sensitiveConceptsCount = Enum.GetNames(typeof(LiveableAttribute)).Length;
         
         private readonly Liveable _liveable;
@@ -22,7 +22,7 @@ namespace AgentBehaviour.QuasiCognitiveMap {
             get;
         }
         
-        private QuasiCognitiveMap(Liveable liveable, int internalConceptsCount) {
+        private FuzzyCognitiveMap(Liveable liveable, int internalConceptsCount) {
             this._liveable = liveable;
 
             this._actions = this._liveable.PossibleActions;
@@ -79,14 +79,23 @@ namespace AgentBehaviour.QuasiCognitiveMap {
                 .Select(pair => pair.action)
                 .ToList();
         }
-        
 
-        public static QuasiCognitiveMap Create(Predator predator, int internalConceptsCount) {
-            return new QuasiCognitiveMap(predator, internalConceptsCount);
+        public double CalculateDistance(FuzzyCognitiveMap other) {
+            var difference = this._connectionMatrix - other._connectionMatrix;
+
+            return difference
+                .Map(Math.Abs)
+                .ColumnSums()
+                .Sum();
         }
         
-        public static QuasiCognitiveMap Create(Prey prey, int internalConceptsCount) {
-            return new QuasiCognitiveMap(prey, internalConceptsCount);
+
+        public static FuzzyCognitiveMap Create(Predator predator, int internalConceptsCount) {
+            return new FuzzyCognitiveMap(predator, internalConceptsCount);
+        }
+        
+        public static FuzzyCognitiveMap Create(Prey prey, int internalConceptsCount) {
+            return new FuzzyCognitiveMap(prey, internalConceptsCount);
         }
     }
 }
