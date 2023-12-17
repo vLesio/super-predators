@@ -13,3 +13,8 @@ MonoBehaviour:
   m_Name: Dummy
   m_EditorClassIdentifier: 
   gridSize: {x: 20, y: 20}
+  maxGrass: 10
+  groundColor: {r: 0.509434, g: 0.22937866, b: 0, a: 1}
+  grassGradient:
+    lowerGreenBound: 0
+    higherGreenBound: 255

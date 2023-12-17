@@ -1,19 +1,24 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Agents.LiveableAgents;
+using Agents.ResourceAgents;
 using CoinPackage.Debugging;
 using Settings;
 using UnityEngine;
+using Utils.Singleton;
 
 namespace GridSystem {
-    public class CGrid : MonoBehaviour {
+    public class CGrid : Singleton<CGrid> {
         [SerializeField] private GameObject cellPrefab;
         
         private SpriteRenderer _renderer;
 
         private readonly SimulationSettings _settings = DevSet.I.simulation;
-        // Start is called before the first frame update
-        void Awake() {
+        private Dictionary<(int, int), CellUI> _cells = new();
+
+        protected override void Awake() {
+            base.Awake();
             _renderer = GetComponent<SpriteRenderer>();
             InitializeCells();
         }
@@ -39,8 +44,21 @@ namespace GridSystem {
                     var cell = Instantiate(cellPrefab, transform);
                     cell.transform.localScale = new Vector3(cellWidth, cellHeight, 1f);
                     cell.transform.localPosition = cellPosition;
+                    _cells.Add((i, j), cell.GetComponent<CellUI>());
                 }
             }
         }
+        
+        public void SpawnLiveable(Liveable liveable, Vector2Int cell) {}
+        
+        public void DespawnLiveable(Liveable liveable, Vector2Int cell) {}
+
+        public void MoveLiveable(Liveable liveable, Vector2Int from, Vector2Int to) {}
+
+        public void SetGrass(Vector2Int cell, float amount) {
+            _cells[(cell.x, cell.y)].SetGrass(amount);
+        }
+        
+        public void SetMeat(Vector2Int cell, float amount) {}
     }
 }
