@@ -20,6 +20,10 @@ namespace Agents.LiveableAgents
     }
     public abstract class Liveable : SimulationAgent
     {
+        public abstract List<LiveableAction> PossibleActions {
+            get;
+        }
+        
         public Dictionary<LiveableAttribute, float> attributes = new Dictionary<LiveableAttribute, float>();
         public LiveableAction currentAction;
         
