@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
+using AgentBehaviour.QuasiCognitiveMap;
 using Agents.Actions.LiveableActions;
+using Settings;
 
 namespace Agents.LiveableAgents
 {
@@ -16,8 +18,17 @@ namespace Agents.LiveableAgents
         };
         
         public override List<LiveableAction> PossibleActions => PossibleActionsAtr;
-        
-        public override void Invoke()
+        public override void CreateMap()
+        {
+            cogMap = FuzzyCognitiveMap.Create(this, DevSet.I.simulation.cogMapComplexity);
+        }
+
+        public override void ChooseAction()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public override void Act()
         {
             throw new System.NotImplementedException();
         }

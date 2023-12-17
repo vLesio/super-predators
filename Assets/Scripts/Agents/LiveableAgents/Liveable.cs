@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using AgentBehaviour.QuasiCognitiveMap;
 using Agents.Actions.LiveableActions;
 using UnityEngine;
 
@@ -17,6 +18,7 @@ namespace Agents.LiveableAgents
         EnemyFar,
         QuantityOfLocalFood,
         QuantityOfLocalMates,
+        SexualNeeds
     }
     public abstract class Liveable : SimulationAgent
     {
@@ -26,6 +28,9 @@ namespace Agents.LiveableAgents
         
         public Dictionary<LiveableAttribute, float> attributes = new Dictionary<LiveableAttribute, float>();
         public LiveableAction currentAction;
+        public FuzzyCognitiveMap cogMap;
+        
+        public abstract void CreateMap();
         
         public void InitLiveable()
         {
@@ -41,6 +46,7 @@ namespace Agents.LiveableAgents
             attributes.Add(LiveableAttribute.EnemyFar, 0);
             attributes.Add(LiveableAttribute.QuantityOfLocalFood, 0);
             attributes.Add(LiveableAttribute.QuantityOfLocalMates, 0);
+            attributes.Add(LiveableAttribute.SexualNeeds, 0);
         }
         
         

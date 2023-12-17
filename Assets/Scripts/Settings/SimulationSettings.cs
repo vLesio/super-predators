@@ -49,6 +49,10 @@ namespace Settings {
         public float growGrass = 0.8f;
         public float decreaseMeat = 1f;
         public float TPredator = 0.7f;
+        
+        
+        //TODO: WYPIERDOLIC TO
+        public int cogMapComplexity = 30;
 
         [Header("Visualization")] 
         public Color groundColor = new Color(132f, 59f, 0f);

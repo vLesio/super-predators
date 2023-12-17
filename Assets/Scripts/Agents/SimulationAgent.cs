@@ -2,6 +2,8 @@
 {
     public abstract class SimulationAgent : CellAgent
     {
-        public abstract void Invoke();
+        public bool ActedThisTurn { get; set; }
+        public abstract void ChooseAction();
+        public abstract void Act();
     }
 }
