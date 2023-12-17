@@ -23,8 +23,8 @@ namespace GridSystem {
 
             var cellWidth = 1f / _settings.gridSize.x;
             var cellHeight = 1f / _settings.gridSize.y;
-            var cellShift = new Vector3((float)-Math.Floor(_settings.gridSize.x/2) * cellWidth, 
-                                        (float)-Math.Floor(_settings.gridSize.y/2) * cellHeight);
+            var cellShift = new Vector3((float)-_settings.gridSize.x/2 * cellWidth, 
+                                        (float)-_settings.gridSize.y/2 * cellHeight);
 
             if (_settings.gridSize.x % 2 == 0) {
                 cellShift += new Vector3(cellWidth/2f, 0f);
