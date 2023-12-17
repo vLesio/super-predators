@@ -50,7 +50,9 @@ namespace Settings {
         public float decreaseMeat = 1f;
         public float TPredator = 0.7f;
 
-        [Header("Visualization")] 
+        [Header("Visualization")]
+        [Tooltip("Can be null, default value will be used")] public GameObject predatorPrefab;
+        [Tooltip("Can be null, default value will be used")] public GameObject preyPrefab;
         public Color groundColor = new Color(132f, 59f, 0f);
         public GrassGradient grassGradient = new GrassGradient();
     }   

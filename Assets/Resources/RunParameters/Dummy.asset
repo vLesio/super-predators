@@ -12,9 +12,47 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 89cc02ee326912a408d2118ed3252c05, type: 3}
   m_Name: Dummy
   m_EditorClassIdentifier: 
-  gridSize: {x: 20, y: 20}
+  gridSize: {x: 50, y: 50}
+  activationS1: 0.2
+  activationS2: 1
+  breedingThreshold: 10
   maxGrass: 10
+  maxMeat: 8
+  probaGrass: 0.07
+  energyGrass: 250
+  energyMeat: 500
+  sizeClusterPrey: 10
+  sizeClusterPredator: 3
+  sizeCluster: 5
+  initNbPrey: 12000
+  initNbPredator: 1200
+  maxEnergyPrey: 650
+  maxEnergyPredator: 1000
+  probaMut: 0.005
+  Mut: 0.15
+  SmallProbaMut: 0.001
+  probaGrowGrass: 0.0085
+  TPrey: 0.75
+  maxAgePrey: 39
+  maxAgePredator: 34
+  ageInterbreedPrey: 6
+  ageInterbreedPredator: 8
+  maxSpeedPrey: 7
+  maxSpeedPredator: 12
+  distanceVisionPrey: 40
+  distanceVisionPredator: 50
+  birthEnergyPreyMax: 60
+  birthEnergyPredatorMax: 75
+  birthEnergyPrey: 30
+  birthEnergyPredator: 50
+  minEdge: 0.075
+  highMut: 0.2
+  growGrass: 0.8
+  decreaseMeat: 1
+  TPredator: 0.7
+  predatorPrefab: {fileID: 0}
+  preyPrefab: {fileID: 0}
   groundColor: {r: 0.509434, g: 0.22937866, b: 0, a: 1}
   grassGradient:
-    lowerGreenBound: 0
-    higherGreenBound: 255
+    lowerGreenBound: 0.3
+    higherGreenBound: 0.9
