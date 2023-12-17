@@ -9,5 +9,10 @@ namespace Settings {
 
         [Header("Resources paths")]
         public string runParametersResPath = "RunParameters";
+        
+        [Header("Navigation")]
+        [Range(0f, 1f)] public float cameraMovementSpeed = 5f;
+        public Vector2 cameraZoomRange = new Vector2(0.1f, 30f);
+        public bool slowWhenZoomed = true;
     }   
 }
