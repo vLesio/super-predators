@@ -16,11 +16,19 @@ namespace Agents.LiveableAgents
             new Rest(),
             new SearchForPreys()
         };
-        
+
         public override List<LiveableAction> PossibleActions => PossibleActionsAtr;
-        public override void CreateMap()
-        {
-            cogMap = FuzzyCognitiveMap.Create(this, DevSet.I.simulation.cogMapComplexity);
+        public override FuzzyCognitiveMap CognitiveMap { get; }
+        
+        public override double BirthEnergy => DevSet.I.simulation.birthEnergyPredator;
+        public override double MaxBirthEnergy => DevSet.I.simulation.birthEnergyPredatorMax;
+        public override double MaxAge => DevSet.I.simulation.maxAgePredator;
+        public override double MaxEnergy => DevSet.I.simulation.maxEnergyPredator;
+
+        public override Liveable IdenticalLiveable => new Predator();
+        
+        public Predator() {
+            CognitiveMap = FuzzyCognitiveMap.Create(this, DevSet.I.simulation.cogMapComplexity);
         }
 
         public override void ChooseAction()

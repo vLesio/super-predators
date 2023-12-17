@@ -88,6 +88,10 @@ namespace AgentBehaviour.QuasiCognitiveMap {
                 .ColumnSums()
                 .Sum();
         }
+
+        public FuzzyCognitiveMap InterbreedBrain(FuzzyCognitiveMap other) {
+            throw new NotImplementedException();
+        }
         
 
         public static FuzzyCognitiveMap Create(Predator predator, int internalConceptsCount) {

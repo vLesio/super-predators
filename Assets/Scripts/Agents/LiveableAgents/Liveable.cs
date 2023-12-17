@@ -25,12 +25,33 @@ namespace Agents.LiveableAgents
         public abstract List<LiveableAction> PossibleActions {
             get;
         }
+
+        public abstract FuzzyCognitiveMap CognitiveMap {
+            get;
+        }
+
+        public abstract double BirthEnergy {
+            get;
+        }
         
-        public Dictionary<LiveableAttribute, float> attributes = new Dictionary<LiveableAttribute, float>();
+        public abstract double MaxBirthEnergy {
+            get;
+        }
+        
+        public abstract double MaxAge {
+            get;
+        }
+        
+        public abstract double MaxEnergy {
+            get;
+        }
+        
+        public abstract Liveable IdenticalLiveable {
+            get;
+        }
+        
+        public Dictionary<LiveableAttribute, double> attributes = new Dictionary<LiveableAttribute, double>();
         public LiveableAction currentAction;
-        public FuzzyCognitiveMap cogMap;
-        
-        public abstract void CreateMap();
         
         public void InitLiveable()
         {
@@ -48,7 +69,5 @@ namespace Agents.LiveableAgents
             attributes.Add(LiveableAttribute.QuantityOfLocalMates, 0);
             attributes.Add(LiveableAttribute.SexualNeeds, 0);
         }
-        
-        
     }
 }
