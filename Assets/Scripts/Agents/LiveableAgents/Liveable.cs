@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using AgentBehaviour.QuasiCognitiveMap;
 using Agents.Actions.LiveableActions;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Agents.LiveableAgents
@@ -48,7 +49,10 @@ namespace Agents.LiveableAgents
             attributes.Add(LiveableAttribute.QuantityOfLocalMates, 0);
             attributes.Add(LiveableAttribute.SexualNeeds, 0);
         }
-        
-        
+
+        public static bool IsPrey(Liveable agent)
+        {
+            return agent.GetType() == typeof(Prey);
+        } 
     }
 }

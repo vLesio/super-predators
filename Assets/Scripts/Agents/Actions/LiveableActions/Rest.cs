@@ -7,12 +7,12 @@ namespace Agents.Actions.LiveableActions
         public readonly LiveableActionType Type = LiveableActionType.Rest;
         public override bool CheckConditions(Liveable agent)
         {
-            throw new System.NotImplementedException();
+            return true;
         }
 
         public override void Invoke(Liveable agent)
         {
-            throw new System.NotImplementedException();
+            return; // Nothing is happening purposefully
         }
     }
 }

@@ -7,12 +7,13 @@ namespace Agents.Actions.LiveableActions
         public readonly LiveableActionType Type = LiveableActionType.Exploration;
         public override bool CheckConditions(Liveable agent)
         {
-            throw new System.NotImplementedException();
+            return true;
         }
 
         public override void Invoke(Liveable agent)
         {
-            throw new System.NotImplementedException();
+            // TODO: Choose random direction and move by speed
+            // TODO: Divide curiosity in cognition map by 1.5
         }
     }
 }
