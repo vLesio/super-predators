@@ -15,6 +15,8 @@ MonoBehaviour:
   simulationSceneName: Simulation
   paramLoaderSceneName: ParamLoader
   runParametersResPath: RunParameters
-  cameraMovementSpeed: 0.853
+  predatorPrefab: {fileID: 5768021872992967640, guid: 10487318c84809e44935d9ebd9356f61, type: 3}
+  preyPrefab: {fileID: 2253503609683685240, guid: 5e4fbc178ad77f44a9b63fd94b78a340, type: 3}
+  cameraMovementSpeed: 1
   cameraZoomRange: {x: 1, y: 30}
   slowWhenZoomed: 1

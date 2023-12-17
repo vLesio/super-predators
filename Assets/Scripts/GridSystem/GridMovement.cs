@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace GridSystem {
     public class GridMovement : MonoBehaviour {
-        private DeveloperSettings _devSettings = DevSet.I.developer;
+        private readonly DeveloperSettings _devSettings = DevSet.I.developer;
         private Camera _camera;
         
         private void Awake() {
@@ -26,7 +26,7 @@ namespace GridSystem {
             }
 
             var movementAxis = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
-            transform.Translate(_devSettings.cameraMovementSpeed / 10f * zoomMovement * movementAxis);
+            transform.Translate(_devSettings.cameraMovementSpeed * Time.deltaTime * 70f * zoomMovement * movementAxis);
         }
     }  
 }

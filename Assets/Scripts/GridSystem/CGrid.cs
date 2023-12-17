@@ -1,21 +1,34 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Agents.LiveableAgents;
+using Agents.ResourceAgents;
 using CoinPackage.Debugging;
 using Settings;
 using UnityEngine;
+using Utils.Singleton;
 
 namespace GridSystem {
-    public class CGrid : MonoBehaviour {
-        [SerializeField] private GameObject cellPrefab;
+    public class CGrid : Singleton<CGrid> {
+        public GameObject preyPrefab;
+        public GameObject predatorPrefab;
         
-        private SpriteRenderer _renderer;
+        [SerializeField] private GameObject cellPrefab;
 
+        private SpriteRenderer _renderer;
         private readonly SimulationSettings _settings = DevSet.I.simulation;
-        // Start is called before the first frame update
-        void Awake() {
+        private Dictionary<(int, int), CellUI> _cells = new();
+
+        protected override void Awake() {
+            base.Awake();
             _renderer = GetComponent<SpriteRenderer>();
+            PreparePrefabs();
             InitializeCells();
+        }
+
+        private void PreparePrefabs() {
+            preyPrefab = DevSet.I.simulation.preyPrefab == null ? DevSet.I.developer.preyPrefab : DevSet.I.simulation.preyPrefab;
+            predatorPrefab = DevSet.I.simulation.predatorPrefab == null ? DevSet.I.developer.predatorPrefab : DevSet.I.simulation.predatorPrefab;
         }
 
         private void InitializeCells() {
@@ -39,8 +52,25 @@ namespace GridSystem {
                     var cell = Instantiate(cellPrefab, transform);
                     cell.transform.localScale = new Vector3(cellWidth, cellHeight, 1f);
                     cell.transform.localPosition = cellPosition;
+                    _cells.Add((i, j), cell.GetComponent<CellUI>());
                 }
             }
+        }
+
+        public void SpawnLiveable(Liveable liveable, Vector2Int cell) {
+            _cells[(cell.x, cell.y)].AddLiveable(liveable);
+        }
+        
+        public void DespawnLiveable(Liveable liveable, Vector2Int cell) {}
+
+        public void MoveLiveable(Liveable liveable, Vector2Int from, Vector2Int to) {}
+
+        public void SetGrass(Vector2Int cell, float amount) {
+            _cells[(cell.x, cell.y)].SetGrass(amount);
+        }
+
+        public void SetMeat(Vector2Int cell, float amount) {
+            _cells[(cell.x, cell.y)].SetMeat(amount);
         }
     }
 }

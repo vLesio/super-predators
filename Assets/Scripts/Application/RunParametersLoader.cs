@@ -48,13 +48,13 @@ namespace Application {
                 _logger.LogWarning("No settings selected.");
                 return;
             }
-            DevSet.I.simulation = _selectedParameter;
             _logger.Log($"Starting simulation with {_selectedParameter.name % Colorize.Magenta} settings.");
             SceneManager.LoadScene(DevSet.I.developer.simulationSceneName, LoadSceneMode.Single);
         }
 
         private void SetSelectedParameter(SimulationSettings simulationSettings) {
             _selectedParameter = simulationSettings;
+            DevSet.I.simulation = _selectedParameter;
             selectedParameterTitle.SetText(_selectedParameter.name);
         }
     }
