@@ -1,4 +1,6 @@
 ﻿using Agents.LiveableAgents;
+using LogicGrid;
+using Settings;
 
 namespace Agents.Actions.LiveableActions
 {
@@ -7,12 +9,23 @@ namespace Agents.Actions.LiveableActions
         public readonly LiveableActionType Type = LiveableActionType.Evasion;
         public override bool CheckConditions(Liveable agent)
         {
-            throw new System.NotImplementedException();
+            return true;
         }
 
         public override void Invoke(Liveable agent)
         {
-            throw new System.NotImplementedException();
+            var nearestPredator = Finder.FindNearestEnemyForAgent(agent);
+            var distance = SimulationGrid.DistanceFromAgentToAgent(agent, nearestPredator);
+            if (distance <= DevSet.I.simulation.distanceVisionPrey)
+            {
+                // TODO: Choose opposite direction and move by speed
+            }
+            else
+            {
+                // TODO: Choose random direction and move by speed
+            }
+            
+            // TODO: Divide cognitive map for activation fear by 2 
         }
     }
 }

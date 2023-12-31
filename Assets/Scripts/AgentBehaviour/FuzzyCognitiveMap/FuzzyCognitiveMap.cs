@@ -9,6 +9,8 @@ using Unity.VisualScripting;
 
 namespace AgentBehaviour.QuasiCognitiveMap {
     public class FuzzyCognitiveMap {
+        private static readonly Random RandomGenerator = new Random();
+        
         private readonly int _sensitiveConceptsCount = Enum.GetNames(typeof(LiveableAttribute)).Length;
         
         private readonly Liveable _liveable;
@@ -62,7 +64,9 @@ namespace AgentBehaviour.QuasiCognitiveMap {
         }
 
         private void _calculateNextActivationVector() {
-            this._conceptsActivation = _activationFunction(this._connectionMatrix * this._conceptsActivation);
+            this._conceptsActivation = _activationFunction(
+                (this._connectionMatrix * this._conceptsActivation + this._conceptsActivation) * 0.5
+                );
         }
 
         public void UpdateState() {
@@ -74,7 +78,6 @@ namespace AgentBehaviour.QuasiCognitiveMap {
         {
             return this._actions
                 .Select((action, index) => (index, action))
-                .ToList()
                 .OrderBy(pair => this._conceptsActivation[_sensitiveConceptsCount + pair.index])
                 .Select(pair => pair.action)
                 .ToList();
@@ -89,10 +92,57 @@ namespace AgentBehaviour.QuasiCognitiveMap {
                 .Sum();
         }
 
-        public FuzzyCognitiveMap InterbreedBrain(FuzzyCognitiveMap other) {
-            throw new NotImplementedException();
+        public static FuzzyCognitiveMap InterbreedBrain(Liveable firstParent, Liveable secondParent) {
+            var newBrain = new FuzzyCognitiveMap(firstParent, DevSet.I.simulation.cogMapComplexity);
+
+            var firstParentBrain = firstParent.CognitiveMap;
+            var secondParentBrain = secondParent.CognitiveMap;
+            
+            var conceptsCount = newBrain.TotalConceptsCount;
+            
+            for (var sourceConceptIndex = 0; sourceConceptIndex < conceptsCount; sourceConceptIndex++) {
+                var shouldSelectFromFirstParent = RandomGenerator.NextDouble() <= 0.5;
+                
+                var selectedParent = shouldSelectFromFirstParent ? firstParentBrain : secondParentBrain;
+                
+                for (var targetConceptIndex = 0; targetConceptIndex < conceptsCount; targetConceptIndex++) {
+                    var connectionStrength = selectedParent._connectionMatrix[sourceConceptIndex, targetConceptIndex];
+                    var randomValue = RandomGenerator.NextDouble();
+                    
+                    if (connectionStrength == 0.0) {
+                        var childConnectionStrength = connectionStrength;
+                        
+                        if (randomValue < DevSet.I.simulation.probaMut) {
+                            var r = (RandomGenerator.NextDouble() * 2.0 - 1.0) * DevSet.I.simulation.Mut;
+
+                            childConnectionStrength += r;
+
+                            if (Math.Abs(childConnectionStrength) < DevSet.I.simulation.minEdge) {
+                                childConnectionStrength = 0.0;
+                            }
+                        }
+                        
+                        newBrain._connectionMatrix[sourceConceptIndex, targetConceptIndex] = childConnectionStrength;
+                    } else {
+                        var childConnectionStrength = connectionStrength;
+
+                        if (randomValue < DevSet.I.simulation.SmallProbaMut) {
+                            var r = (RandomGenerator.NextDouble() * 2.0 - 1.0) * DevSet.I.simulation.highMut;
+                            
+                            childConnectionStrength = r;
+                            
+                            if (Math.Abs(childConnectionStrength) < DevSet.I.simulation.minEdge) {
+                                childConnectionStrength = 0.0;
+                            }
+                        }
+                        
+                        newBrain._connectionMatrix[sourceConceptIndex, targetConceptIndex] = childConnectionStrength;
+                    }
+                }
+            }
+            
+            return newBrain;
         }
-        
 
         public static FuzzyCognitiveMap Create(Predator predator, int internalConceptsCount) {
             return new FuzzyCognitiveMap(predator, internalConceptsCount);

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using AgentBehaviour.QuasiCognitiveMap;
 using Agents.Actions.LiveableActions;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Agents.LiveableAgents
@@ -18,7 +19,8 @@ namespace Agents.LiveableAgents
         EnemyFar,
         QuantityOfLocalFood,
         QuantityOfLocalMates,
-        SexualNeeds
+        SexualNeeds,
+        MaxAge
     }
     public abstract class Liveable : SimulationAgent
     {
@@ -28,6 +30,7 @@ namespace Agents.LiveableAgents
 
         public abstract FuzzyCognitiveMap CognitiveMap {
             get;
+            set;
         }
 
         public abstract double BirthEnergy {
@@ -49,8 +52,8 @@ namespace Agents.LiveableAgents
         public abstract Liveable IdenticalLiveable {
             get;
         }
-        
-        public Dictionary<LiveableAttribute, double> attributes = new Dictionary<LiveableAttribute, double>();
+
+        public Dictionary<LiveableAttribute, double> attributes { get; } = new Dictionary<LiveableAttribute, double>();
         public LiveableAction currentAction;
         
         public void InitLiveable()
@@ -68,6 +71,11 @@ namespace Agents.LiveableAgents
             attributes.Add(LiveableAttribute.QuantityOfLocalFood, 0);
             attributes.Add(LiveableAttribute.QuantityOfLocalMates, 0);
             attributes.Add(LiveableAttribute.SexualNeeds, 0);
+        }
+
+        public static bool IsPrey(Liveable agent)
+        {
+            return agent.GetType() == typeof(Prey);
         }
     }
 }

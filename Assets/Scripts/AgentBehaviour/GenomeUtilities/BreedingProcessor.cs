@@ -44,21 +44,25 @@ namespace AgentBehaviour.GenomeUtilities {
             var bornChildEnergy = birthEnergyMax * (childBirthEnergy + RandomGenerator.NextDouble()
                 * birthEnergyDifference) * 0.01;
             
-            var childFuzzyCognitiveMap = firstParent.CognitiveMap.InterbreedBrain(secondParent.CognitiveMap);
+            var childFuzzyCognitiveMap = FuzzyCognitiveMap.InterbreedBrain(firstParent, secondParent);
             
             var randomValue = RandomGenerator.NextDouble() * 50.0 - 25.0;
             var childMaxAge = energyGiver.MaxAge * (1.0 + randomValue * 0.01);
             
-            var firstParentEnergy = firstParent.attributes[LiveableAttribute.Energy];
-            var secondParentEnergy = secondParent.attributes[LiveableAttribute.Energy];
-
             var energyCoefficient = (0.05 + birthEnergy) * 0.005;
             var maxEnergy = energyGiver.MaxEnergy;
             
             firstParent.attributes[LiveableAttribute.Energy] -= maxEnergy * energyCoefficient;
             secondParent.attributes[LiveableAttribute.Energy] -= maxEnergy * energyCoefficient;
             
-            throw new NotImplementedException();
+            var child = firstParent.IdenticalLiveable;
+            
+            child.attributes[LiveableAttribute.Energy] = bornChildEnergy;
+            child.attributes[LiveableAttribute.MaxAge] = childMaxAge;
+            
+            child.CognitiveMap = childFuzzyCognitiveMap;
+            
+            return child;
         }
     }
 }

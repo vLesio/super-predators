@@ -58,7 +58,7 @@ namespace Agents.Actions.LiveableActions
                     continue;
                 }
                 
-                if (!BreedingProcessor.WasBreedingSuccessful(agent.cogMap, potentialBreeder.cogMap))
+                if (!BreedingProcessor.WasBreedingSuccessful(agent.CognitiveMap, potentialBreeder.CognitiveMap))
                 {
                     continue;
                 }

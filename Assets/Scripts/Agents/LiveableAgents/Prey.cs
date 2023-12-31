@@ -19,7 +19,7 @@ namespace Agents.LiveableAgents
         };
 
         public override List<LiveableAction> PossibleActions => PossibleActionsAtr;
-        public override FuzzyCognitiveMap CognitiveMap { get; }
+        public override FuzzyCognitiveMap CognitiveMap { get; set; }
         
         public override double BirthEnergy => DevSet.I.simulation.birthEnergyPrey;
         public override double MaxBirthEnergy => DevSet.I.simulation.birthEnergyPreyMax;

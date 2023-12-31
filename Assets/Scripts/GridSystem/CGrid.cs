@@ -10,17 +10,25 @@ using Utils.Singleton;
 
 namespace GridSystem {
     public class CGrid : Singleton<CGrid> {
-        [SerializeField] private GameObject cellPrefab;
+        public GameObject preyPrefab;
+        public GameObject predatorPrefab;
         
-        private SpriteRenderer _renderer;
+        [SerializeField] private GameObject cellPrefab;
 
+        private SpriteRenderer _renderer;
         private readonly SimulationSettings _settings = DevSet.I.simulation;
         private Dictionary<(int, int), CellUI> _cells = new();
 
         protected override void Awake() {
             base.Awake();
             _renderer = GetComponent<SpriteRenderer>();
+            PreparePrefabs();
             InitializeCells();
+        }
+
+        private void PreparePrefabs() {
+            preyPrefab = DevSet.I.simulation.preyPrefab == null ? DevSet.I.developer.preyPrefab : DevSet.I.simulation.preyPrefab;
+            predatorPrefab = DevSet.I.simulation.predatorPrefab == null ? DevSet.I.developer.predatorPrefab : DevSet.I.simulation.predatorPrefab;
         }
 
         private void InitializeCells() {
@@ -48,8 +56,10 @@ namespace GridSystem {
                 }
             }
         }
-        
-        public void SpawnLiveable(Liveable liveable, Vector2Int cell) {}
+
+        public void SpawnLiveable(Liveable liveable, Vector2Int cell) {
+            _cells[(cell.x, cell.y)].AddLiveable(liveable);
+        }
         
         public void DespawnLiveable(Liveable liveable, Vector2Int cell) {}
 
@@ -58,7 +68,9 @@ namespace GridSystem {
         public void SetGrass(Vector2Int cell, float amount) {
             _cells[(cell.x, cell.y)].SetGrass(amount);
         }
-        
-        public void SetMeat(Vector2Int cell, float amount) {}
+
+        public void SetMeat(Vector2Int cell, float amount) {
+            _cells[(cell.x, cell.y)].SetMeat(amount);
+        }
     }
 }

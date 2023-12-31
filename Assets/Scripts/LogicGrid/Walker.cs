@@ -7,7 +7,7 @@ namespace LogicGrid
     {
         public static bool TryToMoveTowardsDirections(Liveable agent, Vector2Int destination)
         {
-            if (!Grid.CheckIfDestinationIsInSimulation(destination))
+            if (!SimulationGrid.CheckIfDestinationIsInSimulation(destination))
             {
                 return false;
             }

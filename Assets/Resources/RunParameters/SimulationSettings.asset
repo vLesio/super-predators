@@ -13,3 +13,8 @@ MonoBehaviour:
   m_Name: SimulationSettings
   m_EditorClassIdentifier: 
   gridSize: {x: 100, y: 100}
+  maxGrass: 10
+  groundColor: {r: 132, g: 59, b: 0, a: 1}
+  grassGradient:
+    lowerGreenBound: 0.3
+    higherGreenBound: 0.9
