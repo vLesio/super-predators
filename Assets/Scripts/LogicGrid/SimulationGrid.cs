@@ -41,7 +41,20 @@ namespace LogicGrid
         {
             return Vector2Int.Distance(agent1.CurrentPosition, agent2.CurrentPosition);
         }
-
+        
+        public static MapAdapter GetMapAdapterForMap(Maps map) {
+            switch (map) {
+                case Maps.Grass:
+                    return SimulationGrid.GrassAgentsAdapter;
+                case Maps.Meat:
+                    return SimulationGrid.ObstacleAgentsAdapter;
+                case Maps.Prey:
+                    return SimulationGrid.PreyAgentsAdapter;
+                case Maps.Predator:
+                    return SimulationGrid.PredatorAgentsAdapter;
+                default:
+                    throw new InvalidEnumArgumentException();
+            }
+        }
     }
-
 }

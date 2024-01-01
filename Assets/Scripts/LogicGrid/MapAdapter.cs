@@ -4,6 +4,13 @@ using Agents.ResourceAgents;
 using UnityEngine;
 
 namespace LogicGrid {
+    public enum Maps {
+        Grass,
+        Meat,
+        Prey,
+        Predator
+    }
+    
     public abstract class MapAdapter {
         public abstract bool IsPositionOccupied(Vector2Int position);
     }
