@@ -120,7 +120,7 @@ namespace LogicGrid {
 
     public class SearcherEntities {
         private Vector2Int _seekerPosition;
-        private readonly List<MapAdapter> _mapAdapters;
+        private readonly List<MapAdapter> _mapAdapters = new List<MapAdapter>();
         
         public List<MapAdapter> MapAdapters {
             get => _mapAdapters;
@@ -146,7 +146,7 @@ namespace LogicGrid {
     }
     
     public class SearchResult {
-        private List<Vector2Int> _targets;
+        private readonly List<Vector2Int> _targets;
         
         public List<Vector2Int> Targets {
             get => _targets;
