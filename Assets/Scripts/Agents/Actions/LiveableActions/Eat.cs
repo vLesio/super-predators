@@ -22,7 +22,7 @@ namespace Agents.Actions.LiveableActions
             
             currentFood.Quantity -= 1;
             agent.attributes[LiveableAttribute.Energy] += ResourceAgent.IsGrass(currentFood) ? DevSet.I.simulation.energyGrass : DevSet.I.simulation.energyMeat;
-            //TODO: Divide cognitive map for hunger by 4
+            //TODO: Divide cognitive map for hunger by 4 using MultiplyNamedInternalConcept
         }
     }
 }

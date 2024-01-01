@@ -8,14 +8,34 @@ using Settings;
 using Unity.VisualScripting;
 
 namespace AgentBehaviour.QuasiCognitiveMap {
+    public enum NamedInternalConcept {
+        Hunting,
+        Fear,
+        Hunger,
+        SexualNeeds,
+        Curiosity,
+        Sedentarity,
+        Satisfaction,
+        Annoyance
+    }
+    
+    /*
+     * Concepts order:
+     * sensitive concepts
+     * actions
+     * named internal concepts
+     * unnamed internal concepts
+     */
     public class FuzzyCognitiveMap {
+        private readonly int _countOfNamedInternalConcepts = Enum.GetNames(typeof(NamedInternalConcept)).Length;
+        
         private static readonly Random RandomGenerator = new Random();
         
         private readonly int _sensitiveConceptsCount = Enum.GetNames(typeof(LiveableAttribute)).Length;
         
         private readonly Liveable _liveable;
         
-        private Matrix<double> _connectionMatrix;
+        private readonly Matrix<double> _connectionMatrix;
         private readonly List<LiveableAction> _actions;
         
         private Vector<double> _conceptsActivation;
@@ -24,11 +44,12 @@ namespace AgentBehaviour.QuasiCognitiveMap {
             get;
         }
         
-        private FuzzyCognitiveMap(Liveable liveable, int internalConceptsCount) {
+        private FuzzyCognitiveMap(Liveable liveable, int unnamedInternalConceptsCount) {
             this._liveable = liveable;
 
             this._actions = this._liveable.PossibleActions;
-            TotalConceptsCount = _sensitiveConceptsCount + this._actions.Count + internalConceptsCount;
+            TotalConceptsCount = _sensitiveConceptsCount + this._actions.Count +
+                                 _countOfNamedInternalConcepts + unnamedInternalConceptsCount;
             
             this._connectionMatrix = Matrix<double>.Build.Dense(TotalConceptsCount, TotalConceptsCount);
             this._conceptsActivation = Vector<double>.Build.Dense(TotalConceptsCount);
@@ -90,6 +111,11 @@ namespace AgentBehaviour.QuasiCognitiveMap {
                 .Map(Math.Abs)
                 .ColumnSums()
                 .Sum();
+        }
+
+        public void MultiplyNamedInternalConcept(NamedInternalConcept concept, double value) {
+            var index = _sensitiveConceptsCount + _actions.Count + (int) concept;
+            this._conceptsActivation[index] *= value;
         }
 
         public static FuzzyCognitiveMap InterbreedBrain(Liveable firstParent, Liveable secondParent) {
