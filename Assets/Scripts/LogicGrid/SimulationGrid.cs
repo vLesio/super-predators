@@ -23,8 +23,11 @@ namespace LogicGrid
             new Dictionary<Vector2Int, List<Predator>>();
 
         public static Dictionary<Vector2Int, List<Meat>> ObstacleAgents = new Dictionary<Vector2Int, List<Meat>>();
-
-
+        
+        public static GrassAgentsAdapter GrassAgentsAdapter = new GrassAgentsAdapter(GrassAgents);
+        public static PreyAgentsAdapter PreyAgentsAdapter = new PreyAgentsAdapter(PreyAgents);
+        public static PredatorAgentsAdapter PredatorAgentsAdapter = new PredatorAgentsAdapter(PredatorAgents);
+        public static MeatAgentsAdapter ObstacleAgentsAdapter = new MeatAgentsAdapter(ObstacleAgents);
 
         public static bool CheckIfDestinationIsInSimulation(Vector2Int destination)
         {

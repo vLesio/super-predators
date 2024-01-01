@@ -1,10 +1,17 @@
 using System.Collections.Generic;
 using System.Linq;
+using Settings;
 using UnityEngine;
 
 namespace LogicGrid {
     public class BfsSearcher {
         private readonly SearcherEntities _entities;
+        
+        private static bool IsInside(Vector2Int position) {
+            var gridSize = DevSet.I.simulation.gridSize;
+            
+            return position.x >= 0 && position.x < gridSize.x && position.y >= 0 && position.y < gridSize.y;
+        }
         
         private List<Vector2Int> GetNeighbours(Vector2Int position) {
             var neighbours = new List<Vector2Int>();
@@ -12,7 +19,7 @@ namespace LogicGrid {
             for (var i = -1; i <= 1; i++) {
                 for (var j = -1; j <= 1; j++) {
                     var neighbour = new Vector2Int(position.x + i, position.y + j);
-                    if (neighbour != position && _entities.GlobalMapLimits.IsInside(neighbour)) {
+                    if (neighbour != position && IsInside(neighbour)) {
                         neighbours.Add(neighbour);
                     }
                 }
@@ -24,7 +31,7 @@ namespace LogicGrid {
         private HashSet<int> GetAllMapsIndices() {
             var mapIndices = new HashSet<int>();
             
-            for (var i = 0; i < _entities.TargetsPositions.Count; i++) {
+            for (var i = 0; i < _entities.MapAdapters.Count; i++) {
                 mapIndices.Add(i);
             }
             
@@ -55,7 +62,7 @@ namespace LogicGrid {
                 
                 mapsIndices.ToList()
                     .ForEach((mapIndex) => {
-                        var mapNotEmptyAtPosition = _entities.TargetsPositions[mapIndex].Contains(currentPosition);
+                        var mapNotEmptyAtPosition = _entities.MapAdapters[mapIndex].IsPositionOccupied(currentPosition);
                         
                         if (!mapNotEmptyAtPosition) {
                             return;
@@ -111,28 +118,19 @@ namespace LogicGrid {
         }
     }
 
-    /*
-     * Make sure to create only one instance of this class per frame and change only its state.
-     */
     public class SearcherEntities {
         private Vector2Int _seekerPosition;
-        private List<HashSet<Vector2Int>> _targetsPositions = new List<HashSet<Vector2Int>>();
-        private List<MapLimits> _targetsMapLimits = new List<MapLimits>();
-        private MapLimits _globalMapLimits = new MapLimits();
+        private readonly List<MapAdapter> _mapAdapters;
         
-        public MapLimits GlobalMapLimits {
-            get => _globalMapLimits;
+        public List<MapAdapter> MapAdapters {
+            get => _mapAdapters;
         }
 
         public Vector2Int SeekerPosition {
             get => _seekerPosition;
         }
-        
-        public List<HashSet<Vector2Int>> TargetsPositions {
-            get => _targetsPositions;
-        }
 
-        public SearcherEntities(Vector2Int seekerPosition) {
+        public SearcherEntities(Vector2Int seekerPosition = default) {
             this._seekerPosition = seekerPosition;
         }
         
@@ -140,48 +138,27 @@ namespace LogicGrid {
             this._seekerPosition = newSeekerPosition;
         }
         
-        public void MoveTarget(int mapIndex, Vector2Int oldPosition, Vector2Int newPosition) {
-            this._targetsPositions[mapIndex].Remove(oldPosition);
-            this._targetsPositions[mapIndex].Add(newPosition);
-        }
-        
-        /*
-         * Most often use MoveTarget method instead of this one, because it is O(1) instead of O(n).
-         * Use this method to add new target map only once per frame.
-         * Returns index of the added map.
-         */
-        public int AddTargetMap(Dictionary<Vector2Int, Object> targetMap) {
-            var targetsPositionsList = targetMap.Keys.ToList();
+        public int AddTargetMap(MapAdapter targetMap) {
+            this._mapAdapters.Add(targetMap);
             
-            var currentLimits = new MapLimits();
-            
-            targetsPositionsList.ForEach((targetPosition) => {
-                currentLimits.Update(targetPosition);
-            });
-            
-            this._targetsMapLimits.Add(currentLimits);
-            this._globalMapLimits.Update(currentLimits);
-            
-            this._targetsPositions.Add(new HashSet<Vector2Int>(targetsPositionsList));
-            
-            return this._targetsPositions.Count - 1;
+            return this._mapAdapters.Count - 1;
         }
     }
     
     public class SearchResult {
-        private List<Vector2Int> targets;
+        private List<Vector2Int> _targets;
         
         public List<Vector2Int> Targets {
-            get => targets;
+            get => _targets;
         }
         
         public void SetTarget(int mapIndex, Vector2Int targetPosition) {
-            this.targets[mapIndex] = targetPosition;
+            this._targets[mapIndex] = targetPosition;
         }
 
         public SearchResult(SearcherEntities entities) {
-            var countOfTargets = entities.TargetsPositions.Count;
-            this.targets = new List<Vector2Int>(countOfTargets);
+            var countOfTargets = entities.MapAdapters.Count;
+            this._targets = new List<Vector2Int>(countOfTargets);
         }
     }
 }
