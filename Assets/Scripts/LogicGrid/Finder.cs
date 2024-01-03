@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using AgentBehaviour.GenomeUtilities;
 using Agents;
 using Agents.LiveableAgents;
 using Agents.ResourceAgents;
@@ -37,6 +39,8 @@ namespace LogicGrid
     }
     
     public static class Finder {
+        private const double MaxProbabilityDelta = 1.0e-7;
+        
         private static readonly Dictionary<Maps, int> MapsIndices = new Dictionary<Maps, int>();
         private static readonly SearcherEntities SearcherEntities = new SearcherEntities();
         
@@ -126,10 +130,19 @@ namespace LogicGrid
             var preyPosition = prey.CurrentPosition;
             
             if (SimulationGrid.PreyAgents[preyPosition].Count > 1) {
-                var firstPrey = SimulationGrid.PreyAgents[preyPosition][0];
-                var secondPrey = SimulationGrid.PreyAgents[preyPosition][1];
+                var filteredPreys = SimulationGrid.PreyAgents[preyPosition]
+                    .Where(otherPrey => otherPrey != prey)
+                    .ToList();
 
-                return firstPrey == prey ? secondPrey : firstPrey;
+                var maxBreedingProbability = filteredPreys.Max(otherPrey =>
+                    BreedingProcessor.CalculateBreedingProbability(
+                        prey.CognitiveMap, otherPrey.CognitiveMap));
+                
+                return filteredPreys.First(otherPrey =>
+                    Math.Abs(
+                        BreedingProcessor.CalculateBreedingProbability(
+                            prey.CognitiveMap, otherPrey.CognitiveMap) -
+                        maxBreedingProbability) <= MaxProbabilityDelta);
             }
             
             var oneTimeSearcher = new OneTimeSearcherForAgent(prey, Maps.Prey);
@@ -146,10 +159,19 @@ namespace LogicGrid
             var predatorPosition = predator.CurrentPosition;
             
             if (SimulationGrid.PredatorAgents[predatorPosition].Count > 1) {
-                var firstPredator = SimulationGrid.PredatorAgents[predatorPosition][0];
-                var secondPredator = SimulationGrid.PredatorAgents[predatorPosition][1];
+                var filteredPredators = SimulationGrid.PredatorAgents[predatorPosition]
+                    .Where(otherPredator => otherPredator != predator)
+                    .ToList();
 
-                return firstPredator == predator ? secondPredator : firstPredator;
+                var maxBreedingProbability = filteredPredators.Max(otherPredator =>
+                    BreedingProcessor.CalculateBreedingProbability(
+                        predator.CognitiveMap, otherPredator.CognitiveMap));
+                
+                return filteredPredators.First(otherPredator =>
+                    Math.Abs(
+                        BreedingProcessor.CalculateBreedingProbability(
+                            predator.CognitiveMap, otherPredator.CognitiveMap) -
+                        maxBreedingProbability) <= MaxProbabilityDelta);
             }
             
             var oneTimeSearcher = new OneTimeSearcherForAgent(predator, Maps.Predator);
@@ -221,23 +243,23 @@ namespace LogicGrid
         }
         
         private static List<Prey> FindAllMatesInCellForAgent(Prey agent) {
-            return SimulationGrid.PreyAgents.ContainsKey(agent.CurrentPosition) ?
-                SimulationGrid.PreyAgents[agent.CurrentPosition] : new List<Prey>();
+            return SimulationGrid.PreyAgents.TryGetValue(agent.CurrentPosition, out var preys)
+                ? preys : new List<Prey>();
         }
         
         private static List<Predator> FindAllMatesInCellForAgent(Predator agent) {
-            return SimulationGrid.PredatorAgents.ContainsKey(agent.CurrentPosition) ?
-                SimulationGrid.PredatorAgents[agent.CurrentPosition] : new List<Predator>();
+            return SimulationGrid.PredatorAgents.TryGetValue(agent.CurrentPosition, out var predators)
+                ? predators : new List<Predator>();
         }
         
         public static Grass FindGrassOnAgentPosition(CellAgent agent) {
-            return SimulationGrid.GrassAgents.ContainsKey(agent.CurrentPosition) ?
-                SimulationGrid.GrassAgents[agent.CurrentPosition][0] : null;
+            return SimulationGrid.GrassAgents.TryGetValue(agent.CurrentPosition, out var grasses)
+                ? grasses[0] : null;
         }
         
         public static Meat FindMeatOnAgentPosition(CellAgent agent) {
-            return SimulationGrid.ObstacleAgents.ContainsKey(agent.CurrentPosition) ?
-                SimulationGrid.ObstacleAgents[agent.CurrentPosition][0] : null;
+            return SimulationGrid.ObstacleAgents.TryGetValue(agent.CurrentPosition, out var meats)
+                ? meats[0] : null;
         }
     }
 }
