@@ -13,6 +13,7 @@ namespace LogicGrid {
     
     public abstract class MapAdapter {
         public abstract bool IsPositionOccupied(Vector2Int position);
+        public abstract int CountAgentsInPosition(Vector2Int position);
     }
 
     public class GrassAgentsAdapter: MapAdapter {
@@ -25,6 +26,10 @@ namespace LogicGrid {
         public override bool IsPositionOccupied(Vector2Int position) {
             return _grassAgents.ContainsKey(position);
         }
+        
+        public override int CountAgentsInPosition(Vector2Int position) {
+            return _grassAgents.TryGetValue(position, out var agents) ? agents.Count : 0;
+        }
     }
     
     public class MeatAgentsAdapter: MapAdapter {
@@ -33,9 +38,13 @@ namespace LogicGrid {
         public MeatAgentsAdapter(Dictionary<Vector2Int, List<Meat>> meatAgents) {
             _meatAgents = meatAgents;
         }
-        
+
         public override bool IsPositionOccupied(Vector2Int position) {
             return _meatAgents.ContainsKey(position);
+        }
+        
+        public override int CountAgentsInPosition(Vector2Int position) {
+            return _meatAgents.TryGetValue(position, out var agents) ? agents.Count : 0;
         }
     }
     
@@ -49,6 +58,10 @@ namespace LogicGrid {
         public override bool IsPositionOccupied(Vector2Int position) {
             return _preyAgents.ContainsKey(position);
         }
+        
+        public override int CountAgentsInPosition(Vector2Int position) {
+            return _preyAgents.TryGetValue(position, out var agents) ? agents.Count : 0;
+        }
     }
     
     public class PredatorAgentsAdapter: MapAdapter {
@@ -60,6 +73,10 @@ namespace LogicGrid {
         
         public override bool IsPositionOccupied(Vector2Int position) {
             return _predatorAgents.ContainsKey(position);
+        }
+        
+        public override int CountAgentsInPosition(Vector2Int position) {
+            return _predatorAgents.TryGetValue(position, out var agents) ? agents.Count : 0;
         }
     }
 }

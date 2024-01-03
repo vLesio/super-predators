@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using AgentBehaviour.QuasiCognitiveMap;
 using Agents.Actions.LiveableActions;
+using LogicGrid;
 using Settings;
 
 namespace Agents.LiveableAgents
@@ -17,9 +19,11 @@ namespace Agents.LiveableAgents
             new Evasion(),
             new SearchForPreys()
         };
+        
+        private static readonly int FarRange = DevSet.I.simulation.distanceVisionPrey;
+        private static readonly int NearRange = DevSet.I.simulation.distanceVisionPrey / 2;
 
         public override List<LiveableAction> PossibleActions => PossibleActionsAtr;
-        public override FuzzyCognitiveMap CognitiveMap { get; set; }
         
         public override double BirthEnergy => DevSet.I.simulation.birthEnergyPrey;
         public override double MaxBirthEnergy => DevSet.I.simulation.birthEnergyPreyMax;
@@ -30,6 +34,28 @@ namespace Agents.LiveableAgents
 
         public Prey() {
             CognitiveMap = FuzzyCognitiveMap.Create(this, DevSet.I.simulation.cogMapComplexity);
+        }
+        
+        public override void UpdateAttributesDependentOnGrid() {
+            var agentsInRangeCounter = new AgentsInRangeCounter(AgentsInRangeCounter.PreyAttributeToMapAdapter, 
+                FarRange, NearRange);
+            var agentsInRange = agentsInRangeCounter.CountAgentsInRange(CurrentPosition);
+            
+            agentsInRange.Keys.ToList().ForEach(attribute => {
+                Attributes[attribute] = agentsInRange[attribute];
+            });
+        }
+        
+        public override void UpdateAttributesDependentOnLocalCell() {
+            var countOfLocalGrass = SimulationGrid.GrassAgentsAdapter.CountAgentsInPosition(CurrentPosition);
+            var countOfLocalPreys = SimulationGrid.PreyAgentsAdapter.CountAgentsInPosition(CurrentPosition);
+            
+            Attributes[LiveableAttribute.QuantityOfLocalFood] = countOfLocalGrass;
+            Attributes[LiveableAttribute.QuantityOfLocalMates] = countOfLocalPreys;
+        }
+
+        public override void UpdateAttributesDependentOnTime() {
+            throw new System.NotImplementedException();
         }
         
         public override void ChooseAction()

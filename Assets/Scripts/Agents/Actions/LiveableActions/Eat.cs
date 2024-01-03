@@ -21,7 +21,7 @@ namespace Agents.Actions.LiveableActions
             ResourceAgent currentFood = Liveable.IsPrey(agent) ? Finder.FindGrassOnAgentPosition(agent) : Finder.FindMeatOnAgentPosition(agent);
             
             currentFood.Quantity -= 1;
-            agent.attributes[LiveableAttribute.Energy] += ResourceAgent.IsGrass(currentFood) ? DevSet.I.simulation.energyGrass : DevSet.I.simulation.energyMeat;
+            agent.Attributes[LiveableAttribute.Energy] += ResourceAgent.IsGrass(currentFood) ? DevSet.I.simulation.energyGrass : DevSet.I.simulation.energyMeat;
             //TODO: Divide cognitive map for hunger by 4 using MultiplyNamedInternalConcept
         }
     }

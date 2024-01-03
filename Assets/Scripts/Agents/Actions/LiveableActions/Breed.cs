@@ -18,12 +18,8 @@ namespace Agents.Actions.LiveableActions
             }
 
             var breedMate = CheckIfThereIsCapableMateInRange(agent);
-            if(breedMate == null)
-            {
-                return false;
-            }
 
-            return true;
+            return breedMate != null;
         }
 
         public override void Invoke(Liveable agent)
@@ -33,7 +29,7 @@ namespace Agents.Actions.LiveableActions
 
         private bool CheckIfLivableHasEnergy(Liveable agent)
         {
-            return (agent.attributes[LiveableAttribute.Energy] > 0.125f * (agent.GetType() == typeof(Prey)
+            return (agent.Attributes[LiveableAttribute.Energy] > 0.125f * (agent.GetType() == typeof(Prey)
                     ? DevSet.I.simulation.maxEnergyPrey
                     : DevSet.I.simulation.maxEnergyPredator));
         }
@@ -68,7 +64,7 @@ namespace Agents.Actions.LiveableActions
                     continue;
                 }
                 
-                if (potentialBreeder.currentAction.ActionType != LiveableActionType.Breed)
+                if (potentialBreeder.CurrentAction.ActionType != LiveableActionType.Breed)
                 {
                     continue;
                 }

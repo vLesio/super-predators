@@ -52,13 +52,13 @@ namespace AgentBehaviour.GenomeUtilities {
             var energyCoefficient = (0.05 + birthEnergy) * 0.005;
             var maxEnergy = energyGiver.MaxEnergy;
             
-            firstParent.attributes[LiveableAttribute.Energy] -= maxEnergy * energyCoefficient;
-            secondParent.attributes[LiveableAttribute.Energy] -= maxEnergy * energyCoefficient;
+            firstParent.Attributes[LiveableAttribute.Energy] -= maxEnergy * energyCoefficient;
+            secondParent.Attributes[LiveableAttribute.Energy] -= maxEnergy * energyCoefficient;
             
             var child = firstParent.IdenticalLiveable;
             
-            child.attributes[LiveableAttribute.Energy] = bornChildEnergy;
-            child.attributes[LiveableAttribute.MaxAge] = childMaxAge;
+            child.Attributes[LiveableAttribute.Energy] = bornChildEnergy;
+            child.Attributes[LiveableAttribute.MaxAge] = childMaxAge;
             
             child.CognitiveMap = childFuzzyCognitiveMap;
             
