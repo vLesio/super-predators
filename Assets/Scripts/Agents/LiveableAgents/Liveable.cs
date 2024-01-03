@@ -54,6 +54,10 @@ namespace Agents.LiveableAgents
             get;
         }
 
+        public double Speed {
+            get => Attributes[LiveableAttribute.Speed];
+        }
+
         public Dictionary<LiveableAttribute, double> Attributes { get; } = new Dictionary<LiveableAttribute, double>();
         public LiveableAction CurrentAction;
         

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Agents.LiveableAgents;
+using Settings;
 using UnityEngine;
 
 namespace LogicGrid {
@@ -62,11 +63,11 @@ namespace LogicGrid {
             for (var dx = -_farRange; dx <= _farRange; dx++) {
                 for (var dy = -_farRange; dy <= _farRange; dy++) {
                     var neighbourPosition = new Vector2Int(position.x + dx, position.y + dy);
-                    var maximumDistanceFromCenter = Mathf.Max(Mathf.Abs(dx), Mathf.Abs(dy));
+                    var distanceFromCenter = Mathf.Max(Mathf.Abs(dx), Mathf.Abs(dy));
                     
                     AttributeToRange.Keys.ToList().ForEach(attribute => {
                         if (AttributeToRange[attribute] != AttributeRange.Far &&
-                            maximumDistanceFromCenter > _nearRange) {
+                            distanceFromCenter > _nearRange) {
                             return;
                         }
 
