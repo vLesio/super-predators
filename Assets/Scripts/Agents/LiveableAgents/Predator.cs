@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using AgentBehaviour.QuasiCognitiveMap;
 using Agents.Actions.LiveableActions;
+using LogicGrid;
 using Settings;
 
 namespace Agents.LiveableAgents
@@ -16,9 +18,11 @@ namespace Agents.LiveableAgents
             new Rest(),
             new SearchForPreys()
         };
+        
+        private static readonly int FarRange = DevSet.I.simulation.distanceVisionPredator;
+        private static readonly int NearRange = DevSet.I.simulation.distanceVisionPredator / 2;
 
         public override List<LiveableAction> PossibleActions => PossibleActionsAtr;
-        public override FuzzyCognitiveMap CognitiveMap { get; set; }
         
         public override double BirthEnergy => DevSet.I.simulation.birthEnergyPredator;
         public override double MaxBirthEnergy => DevSet.I.simulation.birthEnergyPredatorMax;
@@ -29,6 +33,24 @@ namespace Agents.LiveableAgents
         
         public Predator() {
             CognitiveMap = FuzzyCognitiveMap.Create(this, DevSet.I.simulation.cogMapComplexity);
+        }
+        
+        public override void UpdateAttributesDependentOnGrid() {
+            var agentsInRangeCounter = new AgentsInRangeCounter(AgentsInRangeCounter.PredatorAttributeToMapAdapter, 
+                FarRange, NearRange);
+            var agentsInRange = agentsInRangeCounter.CountAgentsInRange(CurrentPosition);
+            
+            agentsInRange.Keys.ToList().ForEach(attribute => {
+                Attributes[attribute] = agentsInRange[attribute];
+            });
+        }
+        
+        public override void UpdateAttributesDependentOnLocalCell() {
+            throw new System.NotImplementedException();
+        }
+
+        public override void UpdateAttributesDependentOnTime() {
+            throw new System.NotImplementedException();
         }
 
         public override void ChooseAction()

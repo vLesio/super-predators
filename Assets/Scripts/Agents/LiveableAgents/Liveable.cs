@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using AgentBehaviour.QuasiCognitiveMap;
 using Agents.Actions.LiveableActions;
+using LogicGrid;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -28,7 +29,7 @@ namespace Agents.LiveableAgents
             get;
         }
 
-        public abstract FuzzyCognitiveMap CognitiveMap {
+        public FuzzyCognitiveMap CognitiveMap {
             get;
             set;
         }
@@ -53,28 +54,34 @@ namespace Agents.LiveableAgents
             get;
         }
 
-        public Dictionary<LiveableAttribute, double> attributes { get; } = new Dictionary<LiveableAttribute, double>();
-        public LiveableAction currentAction;
+        public Dictionary<LiveableAttribute, double> Attributes { get; } = new Dictionary<LiveableAttribute, double>();
+        public LiveableAction CurrentAction;
         
-        public void InitLiveable()
-        {
-            attributes.Add(LiveableAttribute.Age, 0);
-            attributes.Add(LiveableAttribute.Energy, 0);
-            attributes.Add(LiveableAttribute.Speed, 0);
-            attributes.Add(LiveableAttribute.FoodClose, 0);
-            attributes.Add(LiveableAttribute.FoodClose, 0);
-            attributes.Add(LiveableAttribute.FoodFar, 0);
-            attributes.Add(LiveableAttribute.MateClose, 0);
-            attributes.Add(LiveableAttribute.MateFar, 0);
-            attributes.Add(LiveableAttribute.EnemyClose, 0);
-            attributes.Add(LiveableAttribute.EnemyFar, 0);
-            attributes.Add(LiveableAttribute.QuantityOfLocalFood, 0);
-            attributes.Add(LiveableAttribute.QuantityOfLocalMates, 0);
-            attributes.Add(LiveableAttribute.SexualNeeds, 0);
+        protected Liveable() {
+            InitLiveable();
         }
-
-        public static bool IsPrey(Liveable agent)
-        {
+        
+        public abstract void UpdateAttributesDependentOnGrid();
+        public abstract void UpdateAttributesDependentOnLocalCell();
+        public abstract void UpdateAttributesDependentOnTime();
+        
+        public void InitLiveable() {
+            Attributes.Add(LiveableAttribute.Age, 0);
+            Attributes.Add(LiveableAttribute.Energy, 0);
+            Attributes.Add(LiveableAttribute.Speed, 0);
+            Attributes.Add(LiveableAttribute.FoodClose, 0);
+            Attributes.Add(LiveableAttribute.FoodClose, 0);
+            Attributes.Add(LiveableAttribute.FoodFar, 0);
+            Attributes.Add(LiveableAttribute.MateClose, 0);
+            Attributes.Add(LiveableAttribute.MateFar, 0);
+            Attributes.Add(LiveableAttribute.EnemyClose, 0);
+            Attributes.Add(LiveableAttribute.EnemyFar, 0);
+            Attributes.Add(LiveableAttribute.QuantityOfLocalFood, 0);
+            Attributes.Add(LiveableAttribute.QuantityOfLocalMates, 0);
+            Attributes.Add(LiveableAttribute.SexualNeeds, 0);
+        }
+        
+        public static bool IsPrey(Liveable agent) {
             return agent.GetType() == typeof(Prey);
         }
     }

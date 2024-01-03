@@ -38,8 +38,8 @@ namespace Settings {
         public float ageInterbreedPredator = 8f;
         public float maxSpeedPrey = 7f;
         public float maxSpeedPredator = 12f;
-        public float distanceVisionPrey = 40f;
-        public float distanceVisionPredator = 50f;
+        public int distanceVisionPrey = 40;
+        public int distanceVisionPredator = 50;
         public float birthEnergyPreyMax = 60f;
         public float birthEnergyPredatorMax = 75f;
         public float birthEnergyPrey = 30f;

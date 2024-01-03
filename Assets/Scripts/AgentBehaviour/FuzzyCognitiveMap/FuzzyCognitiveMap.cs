@@ -80,7 +80,7 @@ namespace AgentBehaviour.QuasiCognitiveMap {
             var attributesValues = (LiveableAttribute[]) Enum.GetValues(typeof(LiveableAttribute));
 
             foreach (var attribute in attributesValues) {
-                _conceptsActivation[(int) attribute] = _liveable.attributes[attribute];
+                _conceptsActivation[(int) attribute] = _liveable.Attributes[attribute];
             }
         }
 
