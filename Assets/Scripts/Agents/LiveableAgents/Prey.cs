@@ -47,7 +47,11 @@ namespace Agents.LiveableAgents
         }
         
         public override void UpdateAttributesDependentOnLocalCell() {
-            throw new System.NotImplementedException();
+            var countOfLocalGrass = SimulationGrid.GrassAgentsAdapter.CountAgentsInPosition(CurrentPosition);
+            var countOfLocalPreys = SimulationGrid.PreyAgentsAdapter.CountAgentsInPosition(CurrentPosition);
+            
+            Attributes[LiveableAttribute.QuantityOfLocalFood] = countOfLocalGrass;
+            Attributes[LiveableAttribute.QuantityOfLocalMates] = countOfLocalPreys;
         }
 
         public override void UpdateAttributesDependentOnTime() {

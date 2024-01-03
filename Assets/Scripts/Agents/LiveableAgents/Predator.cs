@@ -46,7 +46,11 @@ namespace Agents.LiveableAgents
         }
         
         public override void UpdateAttributesDependentOnLocalCell() {
-            throw new System.NotImplementedException();
+            var countOfLocalMeat = SimulationGrid.ObstacleAgentsAdapter.CountAgentsInPosition(CurrentPosition);
+            var countOfLocalPredators = SimulationGrid.PredatorAgentsAdapter.CountAgentsInPosition(CurrentPosition);
+            
+            Attributes[LiveableAttribute.QuantityOfLocalFood] = countOfLocalMeat;
+            Attributes[LiveableAttribute.QuantityOfLocalMates] = countOfLocalPredators;
         }
 
         public override void UpdateAttributesDependentOnTime() {
