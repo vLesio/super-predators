@@ -78,8 +78,8 @@ namespace LogicGrid
             if (nearestGrassPosition == OneTimeSearcherForAgent.InvalidPosition) {
                 return null;
             }
-            
-            return SimulationGrid.GrassAgents[nearestGrassPosition][0];
+
+            return SimulationGrid.GrassAgents[nearestGrassPosition].First();
         }
         
         public static Prey FindNearestPreyForAgent(CellAgent agent) {
@@ -89,8 +89,8 @@ namespace LogicGrid
             if (nearestPreyPosition == OneTimeSearcherForAgent.InvalidPosition) {
                 return null;
             }
-            
-            return SimulationGrid.PreyAgents[nearestPreyPosition][0];
+
+            return SimulationGrid.PreyAgents[nearestPreyPosition].First();
         }
         
         public static Predator FindNearestPredatorForAgent(CellAgent agent) {
@@ -100,8 +100,8 @@ namespace LogicGrid
             if (nearestPredatorPosition == OneTimeSearcherForAgent.InvalidPosition) {
                 return null;
             }
-            
-            return SimulationGrid.PredatorAgents[nearestPredatorPosition][0];
+
+            return SimulationGrid.PredatorAgents[nearestPredatorPosition].First();
         }
         
         public static Meat FindNearestMeatForAgent(CellAgent agent) {
@@ -111,8 +111,8 @@ namespace LogicGrid
             if (nearestMeatPosition == OneTimeSearcherForAgent.InvalidPosition) {
                 return null;
             }
-            
-            return SimulationGrid.ObstacleAgents[nearestMeatPosition][0];
+
+            return SimulationGrid.ObstacleAgents[nearestMeatPosition].First();
         }
         
         public static Liveable FindNearestMateForAgent(CellAgent agent) {
@@ -151,8 +151,8 @@ namespace LogicGrid
             if (nearestPreyPosition == OneTimeSearcherForAgent.InvalidPosition) {
                 return null;
             }
-            
-            return SimulationGrid.PreyAgents[nearestPreyPosition][0];
+
+            return SimulationGrid.PreyAgents[nearestPreyPosition].First();
         }
         
         private static Predator FindNearestMateForPredator(Predator predator) {
@@ -180,8 +180,8 @@ namespace LogicGrid
             if (nearestPredatorPosition == OneTimeSearcherForAgent.InvalidPosition) {
                 return null;
             }
-            
-            return SimulationGrid.PredatorAgents[nearestPredatorPosition][0];
+
+            return SimulationGrid.PredatorAgents[nearestPredatorPosition].First();
         }
         
         public static Liveable FindNearestEnemyForAgent(CellAgent agent) {
@@ -199,7 +199,7 @@ namespace LogicGrid
             var preyPosition = prey.CurrentPosition;
             
             if (SimulationGrid.PredatorAgents[preyPosition].Count > 0) {
-                return SimulationGrid.PredatorAgents[preyPosition][0];
+                return SimulationGrid.PredatorAgents[preyPosition].First();
             }
             
             var oneTimeSearcher = new OneTimeSearcherForAgent(prey, Maps.Predator);
@@ -208,15 +208,15 @@ namespace LogicGrid
             if (nearestPredatorPosition == OneTimeSearcherForAgent.InvalidPosition) {
                 return null;
             }
-            
-            return SimulationGrid.PredatorAgents[nearestPredatorPosition][0];
+
+            return SimulationGrid.PredatorAgents[nearestPredatorPosition].First();
         }
         
         private static Prey FindNearestEnemyForPredator(Predator predator) {
             var predatorPosition = predator.CurrentPosition;
             
             if (SimulationGrid.PreyAgents[predatorPosition].Count > 0) {
-                return SimulationGrid.PreyAgents[predatorPosition][0];
+                return SimulationGrid.PreyAgents[predatorPosition].First();
             }
             
             var oneTimeSearcher = new OneTimeSearcherForAgent(predator, Maps.Prey);
@@ -225,8 +225,8 @@ namespace LogicGrid
             if (nearestPreyPosition == OneTimeSearcherForAgent.InvalidPosition) {
                 return null;
             }
-            
-            return SimulationGrid.PreyAgents[nearestPreyPosition][0];
+
+            return SimulationGrid.PreyAgents[nearestPreyPosition].First();
         }
         
         public static List<Liveable> FindAllMatesInCellForAgent(CellAgent agent) {
@@ -242,24 +242,24 @@ namespace LogicGrid
             }
         }
         
-        private static List<Prey> FindAllMatesInCellForAgent(Prey agent) {
+        private static LinkedList<Prey> FindAllMatesInCellForAgent(Prey agent) {
             return SimulationGrid.PreyAgents.TryGetValue(agent.CurrentPosition, out var preys)
-                ? preys : new List<Prey>();
+                ? preys : new LinkedList<Prey>();
         }
         
-        private static List<Predator> FindAllMatesInCellForAgent(Predator agent) {
+        private static LinkedList<Predator> FindAllMatesInCellForAgent(Predator agent) {
             return SimulationGrid.PredatorAgents.TryGetValue(agent.CurrentPosition, out var predators)
-                ? predators : new List<Predator>();
+                ? predators : new LinkedList<Predator>();
         }
         
         public static Grass FindGrassOnAgentPosition(CellAgent agent) {
             return SimulationGrid.GrassAgents.TryGetValue(agent.CurrentPosition, out var grasses)
-                ? grasses[0] : null;
+                ? grasses.First() : null;
         }
         
         public static Meat FindMeatOnAgentPosition(CellAgent agent) {
             return SimulationGrid.ObstacleAgents.TryGetValue(agent.CurrentPosition, out var meats)
-                ? meats[0] : null;
+                ? meats.First() : null;
         }
     }
 }

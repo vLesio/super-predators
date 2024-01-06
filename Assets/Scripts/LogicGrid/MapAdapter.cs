@@ -17,9 +17,9 @@ namespace LogicGrid {
     }
 
     public class GrassAgentsAdapter: MapAdapter {
-        private readonly Dictionary<Vector2Int, List<Grass>> _grassAgents;
+        private readonly Dictionary<Vector2Int, LinkedList<Grass>> _grassAgents;
         
-        public GrassAgentsAdapter(Dictionary<Vector2Int, List<Grass>> grassAgents) {
+        public GrassAgentsAdapter(Dictionary<Vector2Int, LinkedList<Grass>> grassAgents) {
             _grassAgents = grassAgents;
         }
         
@@ -33,9 +33,9 @@ namespace LogicGrid {
     }
     
     public class MeatAgentsAdapter: MapAdapter {
-        private readonly Dictionary<Vector2Int, List<Meat>> _meatAgents;
+        private readonly Dictionary<Vector2Int, LinkedList<Meat>> _meatAgents;
         
-        public MeatAgentsAdapter(Dictionary<Vector2Int, List<Meat>> meatAgents) {
+        public MeatAgentsAdapter(Dictionary<Vector2Int, LinkedList<Meat>> meatAgents) {
             _meatAgents = meatAgents;
         }
 
@@ -49,9 +49,9 @@ namespace LogicGrid {
     }
     
     public class PreyAgentsAdapter: MapAdapter {
-        private readonly Dictionary<Vector2Int, List<Prey>> _preyAgents;
+        private readonly Dictionary<Vector2Int, LinkedList<Prey>> _preyAgents;
         
-        public PreyAgentsAdapter(Dictionary<Vector2Int, List<Prey>> preyAgents) {
+        public PreyAgentsAdapter(Dictionary<Vector2Int, LinkedList<Prey>> preyAgents) {
             _preyAgents = preyAgents;
         }
         
@@ -65,9 +65,9 @@ namespace LogicGrid {
     }
     
     public class PredatorAgentsAdapter: MapAdapter {
-        private readonly Dictionary<Vector2Int, List<Predator>> _predatorAgents;
+        private readonly Dictionary<Vector2Int, LinkedList<Predator>> _predatorAgents;
         
-        public PredatorAgentsAdapter(Dictionary<Vector2Int, List<Predator>> predatorAgents) {
+        public PredatorAgentsAdapter(Dictionary<Vector2Int, LinkedList<Predator>> predatorAgents) {
             _predatorAgents = predatorAgents;
         }
         

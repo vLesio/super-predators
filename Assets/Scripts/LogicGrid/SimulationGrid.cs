@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
 using Agents;
-using Agents.Actions.LiveableActions;
 using Agents.LiveableAgents;
 using Agents.ResourceAgents;
 using Settings;
@@ -12,22 +11,42 @@ using UnityEngine;
 namespace LogicGrid
 { 
 
-    public static class SimulationGrid
-    {
+    public static class SimulationGrid {
         public static Vector2Int GridSize => DevSet.I.simulation.gridSize;
 
-        public static Dictionary<Vector2Int, List<Grass>> GrassAgents = new Dictionary<Vector2Int, List<Grass>>();
-        public static Dictionary<Vector2Int, List<Prey>> PreyAgents = new Dictionary<Vector2Int, List<Prey>>();
+        public static readonly Dictionary<Vector2Int, LinkedList<Grass>> GrassAgents = new Dictionary<Vector2Int, LinkedList<Grass>>();
+        public static readonly Dictionary<Vector2Int, LinkedList<Prey>> PreyAgents = new Dictionary<Vector2Int, LinkedList<Prey>>();
 
-        public static Dictionary<Vector2Int, List<Predator>> PredatorAgents =
-            new Dictionary<Vector2Int, List<Predator>>();
+        public static readonly Dictionary<Vector2Int, LinkedList<Predator>> PredatorAgents =
+            new Dictionary<Vector2Int, LinkedList<Predator>>();
 
-        public static Dictionary<Vector2Int, List<Meat>> ObstacleAgents = new Dictionary<Vector2Int, List<Meat>>();
+        public static readonly Dictionary<Vector2Int, LinkedList<Meat>> ObstacleAgents = new Dictionary<Vector2Int, LinkedList<Meat>>();
         
-        public static GrassAgentsAdapter GrassAgentsAdapter = new GrassAgentsAdapter(GrassAgents);
-        public static PreyAgentsAdapter PreyAgentsAdapter = new PreyAgentsAdapter(PreyAgents);
-        public static PredatorAgentsAdapter PredatorAgentsAdapter = new PredatorAgentsAdapter(PredatorAgents);
-        public static MeatAgentsAdapter ObstacleAgentsAdapter = new MeatAgentsAdapter(ObstacleAgents);
+        public static readonly GrassAgentsAdapter GrassAgentsAdapter = new GrassAgentsAdapter(GrassAgents);
+        public static readonly PreyAgentsAdapter PreyAgentsAdapter = new PreyAgentsAdapter(PreyAgents);
+        public static readonly PredatorAgentsAdapter PredatorAgentsAdapter = new PredatorAgentsAdapter(PredatorAgents);
+        public static readonly MeatAgentsAdapter ObstacleAgentsAdapter = new MeatAgentsAdapter(ObstacleAgents);
+        
+        private static void MoveAgent<T>(T agent, Vector2Int destination, Dictionary<Vector2Int, LinkedList<T>> agents)
+                                            where T: Liveable {
+            var oldPosition = agent.CurrentPosition;
+            
+            if (oldPosition == destination) {
+                return;
+            }
+            
+            if (agents.TryGetValue(oldPosition, out var agentsInOldPosition)) {
+                agentsInOldPosition.Remove(agent);
+            }
+            
+            if (agents.TryGetValue(destination, out var agentsInDestination)) {
+                agentsInDestination.AddLast(agent);
+            } else {
+                agents.Add(destination, new LinkedList<T>(new[] {agent}));
+            }
+            
+            agent.CurrentPosition = destination;
+        }
         
         public static List<Vector2Int> GetNeighbours(Vector2Int position) {
             var neighbours = new List<Vector2Int>();
@@ -44,16 +63,14 @@ namespace LogicGrid
             return neighbours;
         }
 
-        public static bool CheckIfDestinationIsInSimulation(Vector2Int destination)
-        {
+        public static bool CheckIfDestinationIsInSimulation(Vector2Int destination) {
             return (destination.x >= 0 && 
                     destination.x < GridSize.x && 
                     destination.y >= 0 &&
                     destination.y < GridSize.y);
         }
 
-        public static float DistanceFromAgentToAgent(CellAgent agent1, CellAgent agent2)
-        {
+        public static float DistanceFromAgentToAgent(CellAgent agent1, CellAgent agent2) {
             return Vector2Int.Distance(agent1.CurrentPosition, agent2.CurrentPosition);
         }
         
@@ -70,6 +87,14 @@ namespace LogicGrid
                 default:
                     throw new InvalidEnumArgumentException();
             }
+        }
+        
+        public static void MoveAgent(Prey agent, Vector2Int destination) {
+            MoveAgent(agent, destination, PreyAgents);
+        }
+        
+        public static void MoveAgent(Predator agent, Vector2Int destination) {
+            MoveAgent(agent, destination, PredatorAgents);
         }
     }
 }
