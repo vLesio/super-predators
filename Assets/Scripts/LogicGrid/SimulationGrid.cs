@@ -28,6 +28,21 @@ namespace LogicGrid
         public static PreyAgentsAdapter PreyAgentsAdapter = new PreyAgentsAdapter(PreyAgents);
         public static PredatorAgentsAdapter PredatorAgentsAdapter = new PredatorAgentsAdapter(PredatorAgents);
         public static MeatAgentsAdapter ObstacleAgentsAdapter = new MeatAgentsAdapter(ObstacleAgents);
+        
+        public static List<Vector2Int> GetNeighbours(Vector2Int position) {
+            var neighbours = new List<Vector2Int>();
+
+            for (var i = -1; i <= 1; i++) {
+                for (var j = -1; j <= 1; j++) {
+                    var neighbour = new Vector2Int(position.x + i, position.y + j);
+                    if (neighbour != position && CheckIfDestinationIsInSimulation(neighbour)) {
+                        neighbours.Add(neighbour);
+                    }
+                }
+            }
+            
+            return neighbours;
+        }
 
         public static bool CheckIfDestinationIsInSimulation(Vector2Int destination)
         {

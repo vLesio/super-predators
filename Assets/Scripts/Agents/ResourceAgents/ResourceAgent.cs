@@ -8,5 +8,11 @@
         {
             return agent.GetType() == typeof(Grass);
         }
+
+        public bool IsEmpty() {
+            return Quantity <= 0;
+        }
+        
+        public abstract bool UpdateQuantity();
     }
 }

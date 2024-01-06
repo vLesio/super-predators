@@ -6,27 +6,6 @@ using UnityEngine;
 namespace LogicGrid {
     public class BfsSearcher {
         private readonly SearcherEntities _entities;
-        
-        private static bool IsInside(Vector2Int position) {
-            var gridSize = DevSet.I.simulation.gridSize;
-            
-            return position.x >= 0 && position.x < gridSize.x && position.y >= 0 && position.y < gridSize.y;
-        }
-        
-        private List<Vector2Int> GetNeighbours(Vector2Int position) {
-            var neighbours = new List<Vector2Int>();
-
-            for (var i = -1; i <= 1; i++) {
-                for (var j = -1; j <= 1; j++) {
-                    var neighbour = new Vector2Int(position.x + i, position.y + j);
-                    if (neighbour != position && IsInside(neighbour)) {
-                        neighbours.Add(neighbour);
-                    }
-                }
-            }
-            
-            return neighbours;
-        }
 
         private HashSet<int> GetAllMapsIndices() {
             var mapIndices = new HashSet<int>();
@@ -73,7 +52,7 @@ namespace LogicGrid {
                     });
                 
                 var currentDistance = distance[currentPosition];
-                var neighbours = GetNeighbours(currentPosition);
+                var neighbours = SimulationGrid.GetNeighbours(currentPosition);
                 
                 neighbours.ForEach((neighbour) => {
                     if (distance.ContainsKey(neighbour)) {
