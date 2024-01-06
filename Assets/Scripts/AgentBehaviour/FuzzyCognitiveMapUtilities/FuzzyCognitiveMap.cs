@@ -7,7 +7,7 @@ using MathNet.Numerics.LinearAlgebra;
 using Settings;
 using Unity.VisualScripting;
 
-namespace AgentBehaviour.QuasiCognitiveMap {
+namespace AgentBehaviour.FuzzyCognitiveMapUtilities {
     using ConnectionMatrix = Matrix<double>;
     
     public enum NamedInternalConcept {

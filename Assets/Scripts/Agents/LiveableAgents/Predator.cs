@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using AgentBehaviour.QuasiCognitiveMap;
+using AgentBehaviour.FuzzyCognitiveMapUtilities;
 using Agents.Actions.LiveableActions;
 using LogicGrid;
 using Settings;

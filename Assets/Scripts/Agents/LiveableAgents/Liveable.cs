@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using AgentBehaviour.QuasiCognitiveMap;
+using AgentBehaviour.FuzzyCognitiveMapUtilities;
 using Agents.Actions.LiveableActions;
 using LogicGrid;
 using Unity.VisualScripting;

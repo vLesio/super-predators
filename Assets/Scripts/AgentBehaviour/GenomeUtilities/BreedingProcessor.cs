@@ -1,5 +1,5 @@
 ﻿using System;
-using AgentBehaviour.QuasiCognitiveMap;
+using AgentBehaviour.FuzzyCognitiveMapUtilities;
 using Agents.LiveableAgents;
 using Settings;
 
