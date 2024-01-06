@@ -64,6 +64,10 @@ namespace Agents.LiveableAgents
         public double Speed {
             get => Attributes[LiveableAttribute.Speed];
         }
+        
+        public double Age {
+            get => Attributes[LiveableAttribute.Age];
+        }
 
         public Dictionary<LiveableAttribute, double> Attributes { get; } = new Dictionary<LiveableAttribute, double>();
         public LiveableAction CurrentAction;
@@ -90,6 +94,10 @@ namespace Agents.LiveableAgents
         
         public abstract void UpdateAttributesDependentOnGrid();
         public abstract void UpdateAttributesDependentOnLocalCell();
+
+        public bool IsDead() {
+            return Attributes[LiveableAttribute.Energy] <= 0 || Attributes[LiveableAttribute.Age] >= MaxAge;
+        }
         
         public void UpdateEnergyAndResetDistanceTravelled() {
             this.Attributes[LiveableAttribute.Energy] -= CognitiveMap.TotalConceptsCount

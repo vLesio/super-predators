@@ -7,6 +7,17 @@ using UnityEngine;
 
 namespace LogicGrid {
     public static class Simulation {
+        private static List<T> GetAllAgentsInIncreasingAgeOrder<T>(Dictionary<Vector2Int, LinkedList<T>> agents)
+                                                                    where T: Liveable {
+            var allAgents = new List<T>();
+            
+            foreach (var agentList in agents.Values) {
+                allAgents.AddRange(agentList);
+            }
+            
+            return allAgents.OrderBy(agent => agent.Age).ToList();
+        }
+        
         private static void UpdatePerceptionsForPreys() {
             foreach (var preyList in SimulationGrid.PreyAgents.Values) {
                 foreach (var prey in preyList) {
@@ -47,6 +58,55 @@ namespace LogicGrid {
         
         private static void UpdateActionsAndEnergyForPredators() {
             throw new NotImplementedException();
+        }
+        
+        private static void UpdateDeadLiveables<T>(Dictionary<Vector2Int, LinkedList<T>> agents)
+                                                   where T: Liveable {
+            const int meatCreatedFromDeadAgent = 2;
+            
+            var emptyPositions = new HashSet<Vector2Int>();
+            
+            foreach (var agentList in agents.Values) {
+                var agentNode = agentList.First;
+
+                while (agentNode != null) {
+                    var nextAgentNode = agentNode.Next;
+                    
+                    var agent = agentNode.Value;
+
+                    if (agent.IsDead()) {
+                        var position = agent.CurrentPosition;
+
+                        if (SimulationGrid.ObstacleAgents.TryGetValue(position, out var meatList)) {
+                            meatList.Last.Value.Quantity += meatCreatedFromDeadAgent;
+                        } else {
+                            SimulationGrid.ObstacleAgents.Add(position, new LinkedList<Meat>(new[] {
+                                new Meat() {
+                                    CurrentPosition = position,
+                                    Quantity = meatCreatedFromDeadAgent
+                                }
+                            }));
+                        }
+                        
+                        agentList.Remove(agentNode);
+                        
+                        if (agentList.Count == 0) {
+                            emptyPositions.Add(agent.CurrentPosition);
+                        }
+                    }
+                    
+                    agentNode = nextAgentNode;
+                }
+            }
+            
+            foreach (var emptyPosition in emptyPositions) {
+                agents.Remove(emptyPosition);
+            }
+        }
+        
+        private static void UpdateDeadLiveables() {
+            UpdateDeadLiveables(SimulationGrid.PreyAgents);
+            UpdateDeadLiveables(SimulationGrid.PredatorAgents);
         }
         
         private static void UpdatePreySpecies() {
