@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using Agents.ResourceAgents;
+using UnityEngine;
 
 namespace LogicGrid {
     public static class Simulation {
@@ -53,12 +56,74 @@ namespace LogicGrid {
             throw new NotImplementedException();
         }
         
+        private static void UpdateLocallyResourceAgents<T>(Dictionary<Vector2Int, LinkedList<T>> agents)
+                                                            where T: ResourceAgent {
+            var emptyPositions = new HashSet<Vector2Int>();
+            
+            foreach (var meatList in agents.Values) {
+                var meatNode = meatList.First;
+
+                while (meatNode != null) {
+                    var nextMeatNode = meatNode.Next;
+                    
+                    var meat = meatNode.Value;
+                    meat.UpdateQuantity();
+
+                    if (meat.IsEmpty()) {
+                        meatList.Remove(meatNode);
+                        
+                        if (meatList.Count == 0) {
+                            emptyPositions.Add(meat.CurrentPosition);
+                        }
+                    }
+                    
+                    meatNode = nextMeatNode;
+                }
+            }
+            
+            foreach (var emptyPosition in emptyPositions) {
+                SimulationGrid.ObstacleAgents.Remove(emptyPosition);
+            }
+        }
+        
+        private static void UpdateGrassNeighbours() {
+            var placesToPlantGrass = new HashSet<Vector2Int>();
+            
+            foreach (var grassList in SimulationGrid.GrassAgents.Values) {
+                foreach (var grass in grassList) {
+                    var position = grass.CurrentPosition;
+                    var neighbours = SimulationGrid.GetNeighbours(position);
+                    
+                    neighbours.ForEach(neighbourPosition => {
+                        if (SimulationGrid.GrassAgents.ContainsKey(neighbourPosition)) {
+                            return;
+                        }
+                        
+                        placesToPlantGrass.Add(neighbourPosition);
+                    });
+                }
+            }
+
+            foreach (var position in placesToPlantGrass) {
+                var grass = new Grass() {
+                    CurrentPosition = position
+                };
+                
+                if (SimulationGrid.GrassAgents.TryGetValue(position, out var grassList)) {
+                    grassList.AddLast(grass);
+                } else {
+                    SimulationGrid.GrassAgents.Add(position, new LinkedList<Grass>(new[] {grass}));
+                }
+            }
+        }
+        
         private static void UpdateGrass() {
-            throw new NotImplementedException();
+            UpdateLocallyResourceAgents(SimulationGrid.GrassAgents);
+            UpdateGrassNeighbours();
         }
         
         private static void UpdateMeat() {
-            throw new NotImplementedException();
+            UpdateLocallyResourceAgents(SimulationGrid.ObstacleAgents);
         }
         
         private static void UpdateAgentsAge() {
