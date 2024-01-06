@@ -54,10 +54,6 @@ namespace Agents.LiveableAgents
             Attributes[LiveableAttribute.QuantityOfLocalFood] = countOfLocalGrass;
             Attributes[LiveableAttribute.QuantityOfLocalMates] = countOfLocalPreys;
         }
-
-        public override void UpdateAttributesDependentOnTime() {
-            throw new System.NotImplementedException();
-        }
         
         public override void ChooseAction()
         {

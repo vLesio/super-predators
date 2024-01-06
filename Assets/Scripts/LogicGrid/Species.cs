@@ -7,8 +7,8 @@ using UnityEngine;
 
 namespace LogicGrid {
     public class AllSpeciesOfTypes<T> where T: Liveable {
-        private readonly LinkedList<Species<T>> _agentsSpecies = new LinkedList<Species<T>>();
-        private readonly Dictionary<T, Species<T>> _agentsSpeciesMap = new Dictionary<T, Species<T>>();
+        private LinkedList<Species<T>> _agentsSpecies = new LinkedList<Species<T>>();
+        private Dictionary<T, Species<T>> _agentsSpeciesMap = new Dictionary<T, Species<T>>();
 
         public Species<T> FindClosestSpecies(T agent) {
             return _agentsSpecies
@@ -55,6 +55,11 @@ namespace LogicGrid {
             _agentsSpeciesMap.Remove(agent);
             
             return result;
+        }
+        
+        public void Reset() {
+            _agentsSpecies = new LinkedList<Species<T>>();
+            _agentsSpeciesMap = new Dictionary<T, Species<T>>();
         }
     }
     

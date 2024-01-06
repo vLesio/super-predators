@@ -54,10 +54,6 @@ namespace Agents.LiveableAgents
             Attributes[LiveableAttribute.QuantityOfLocalMates] = countOfLocalPredators;
         }
 
-        public override void UpdateAttributesDependentOnTime() {
-            throw new System.NotImplementedException();
-        }
-
         public override void ChooseAction()
         {
             throw new System.NotImplementedException();

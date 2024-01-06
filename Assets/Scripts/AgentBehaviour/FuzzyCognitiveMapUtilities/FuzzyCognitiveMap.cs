@@ -29,6 +29,8 @@ namespace AgentBehaviour.FuzzyCognitiveMapUtilities {
      * unnamed internal concepts
      */
     public class FuzzyCognitiveMap {
+        private static readonly double Epsilon = 1.0e-6;
+        
         private readonly int _countOfNamedInternalConcepts = Enum.GetNames(typeof(NamedInternalConcept)).Length;
         
         private static readonly Random RandomGenerator = new Random();
@@ -42,8 +44,14 @@ namespace AgentBehaviour.FuzzyCognitiveMapUtilities {
         
         private Vector<double> _conceptsActivation;
         
-        private int TotalConceptsCount {
+        public int TotalConceptsCount {
             get;
+        }
+        
+        public int CountOfNonZeroConnections {
+            get {
+                return this._connectionMatrix.Enumerate().Count(x => Math.Abs(x) < Epsilon);
+            }
         }
         
         private FuzzyCognitiveMap(Liveable liveable, int unnamedInternalConceptsCount) {
@@ -98,7 +106,7 @@ namespace AgentBehaviour.FuzzyCognitiveMapUtilities {
 
         private void _calculateNextActivationVector() {
             this._conceptsActivation = _activationFunction(
-                (this._connectionMatrix * this._conceptsActivation + this._conceptsActivation) * 0.5
+                this._connectionMatrix * this._conceptsActivation + this._conceptsActivation
                 );
         }
         
@@ -124,9 +132,12 @@ namespace AgentBehaviour.FuzzyCognitiveMapUtilities {
                 firstCognitiveMap._liveable);
         }
 
-        public void UpdateState() {
+        public void UpdateState(int iterationsCount) {
             this._performFuzzification();
-            this._calculateNextActivationVector();
+            
+            for (var i = 0; i < iterationsCount; i++) {
+                this._calculateNextActivationVector();
+            }
         }
 
         public List<LiveableAction> GetSortedActions()

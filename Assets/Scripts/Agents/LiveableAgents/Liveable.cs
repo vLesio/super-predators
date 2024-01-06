@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using AgentBehaviour.FuzzyCognitiveMapUtilities;
 using Agents.Actions.LiveableActions;
 using LogicGrid;
@@ -25,6 +26,8 @@ namespace Agents.LiveableAgents
     }
     public abstract class Liveable : SimulationAgent
     {
+        private int DistanceTravelledSinceLastUpdate = 0;
+        
         public abstract List<LiveableAction> PossibleActions {
             get;
         }
@@ -65,15 +68,7 @@ namespace Agents.LiveableAgents
         public Dictionary<LiveableAttribute, double> Attributes { get; } = new Dictionary<LiveableAttribute, double>();
         public LiveableAction CurrentAction;
         
-        protected Liveable() {
-            InitLiveable();
-        }
-        
-        public abstract void UpdateAttributesDependentOnGrid();
-        public abstract void UpdateAttributesDependentOnLocalCell();
-        public abstract void UpdateAttributesDependentOnTime();
-        
-        public void InitLiveable() {
+        private void InitLiveable() {
             Attributes.Add(LiveableAttribute.Age, 0);
             Attributes.Add(LiveableAttribute.Energy, 0);
             Attributes.Add(LiveableAttribute.Speed, 0);
@@ -87,6 +82,24 @@ namespace Agents.LiveableAgents
             Attributes.Add(LiveableAttribute.QuantityOfLocalFood, 0);
             Attributes.Add(LiveableAttribute.QuantityOfLocalMates, 0);
             Attributes.Add(LiveableAttribute.SexualNeeds, 0);
+        }
+        
+        protected Liveable() {
+            InitLiveable();
+        }
+        
+        public abstract void UpdateAttributesDependentOnGrid();
+        public abstract void UpdateAttributesDependentOnLocalCell();
+        
+        public void UpdateEnergyAndResetDistanceTravelled() {
+            this.Attributes[LiveableAttribute.Energy] -= CognitiveMap.TotalConceptsCount
+                                                         + CognitiveMap.CountOfNonZeroConnections * 0.1
+                                                         + Math.Pow(DistanceTravelledSinceLastUpdate, 1.4);
+            this.DistanceTravelledSinceLastUpdate = 0;
+        }
+
+        public void UpdateAttributesDependentOnTime() {
+            Attributes[LiveableAttribute.Age] += 1;
         }
         
         public static bool IsPrey(Liveable agent) {

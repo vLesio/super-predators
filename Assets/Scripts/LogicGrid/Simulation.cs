@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Agents.LiveableAgents;
 using Agents.ResourceAgents;
 using UnityEngine;
 
@@ -18,7 +19,7 @@ namespace LogicGrid {
         private static void UpdateFuzzyCognitiveMapsForPreys() {
             foreach (var preyList in SimulationGrid.PreyAgents.Values) {
                 foreach (var prey in preyList) {
-                    prey.CognitiveMap.UpdateState();
+                    prey.CognitiveMap.UpdateState(3);
                 }
             }
         }
@@ -39,7 +40,7 @@ namespace LogicGrid {
         private static void UpdateFuzzyCognitiveMapsForPredators() {
             foreach (var predatorList in SimulationGrid.PredatorAgents.Values) {
                 foreach (var predator in predatorList) {
-                    predator.CognitiveMap.UpdateState();
+                    predator.CognitiveMap.UpdateState(3);
                 }
             }
         }
@@ -126,8 +127,18 @@ namespace LogicGrid {
             UpdateLocallyResourceAgents(SimulationGrid.ObstacleAgents);
         }
         
-        private static void UpdateAgentsAge() {
-            throw new NotImplementedException();
+        private static void UpdateAgentsAgeAndResetDistanceTravelled<T>(Dictionary<Vector2Int, LinkedList<T>> agents)
+                                               where T: Liveable {
+            foreach (var agentList in agents.Values) {
+                foreach (var agent in agentList) {
+                    agent.UpdateEnergyAndResetDistanceTravelled();
+                }
+            }
+        }
+        
+        private static void UpdateAgentsAgeAndResetDistanceTravelled() {
+            UpdateAgentsAgeAndResetDistanceTravelled(SimulationGrid.PreyAgents);
+            UpdateAgentsAgeAndResetDistanceTravelled(SimulationGrid.PredatorAgents);
         }
 
 
@@ -158,7 +169,7 @@ namespace LogicGrid {
             UpdatePredatorsStep();
             UpdateSpeciesStep();
             UpdateEnvironmentStep();
-            UpdateAgentsAge();
+            UpdateAgentsAgeAndResetDistanceTravelled();
         }
     }
 }
