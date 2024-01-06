@@ -31,6 +31,7 @@ namespace Agents.LiveableAgents
         public override double MaxEnergy => DevSet.I.simulation.maxEnergyPrey;
         
         public override Liveable IdenticalLiveable => new Prey();
+        public override double GenomeThreshold => DevSet.I.simulation.TPrey;
 
         public Prey() {
             CognitiveMap = FuzzyCognitiveMap.Create(this, DevSet.I.simulation.cogMapComplexity);

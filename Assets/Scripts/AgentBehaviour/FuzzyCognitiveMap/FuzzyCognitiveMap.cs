@@ -8,6 +8,8 @@ using Settings;
 using Unity.VisualScripting;
 
 namespace AgentBehaviour.QuasiCognitiveMap {
+    using ConnectionMatrix = Matrix<double>;
+    
     public enum NamedInternalConcept {
         Hunting,
         Fear,
@@ -35,7 +37,7 @@ namespace AgentBehaviour.QuasiCognitiveMap {
         
         private readonly Liveable _liveable;
         
-        private readonly Matrix<double> _connectionMatrix;
+        private readonly ConnectionMatrix _connectionMatrix;
         private readonly List<LiveableAction> _actions;
         
         private Vector<double> _conceptsActivation;
@@ -51,7 +53,17 @@ namespace AgentBehaviour.QuasiCognitiveMap {
             TotalConceptsCount = _sensitiveConceptsCount + this._actions.Count +
                                  _countOfNamedInternalConcepts + unnamedInternalConceptsCount;
             
-            this._connectionMatrix = Matrix<double>.Build.Dense(TotalConceptsCount, TotalConceptsCount);
+            this._connectionMatrix = ConnectionMatrix.Build.Dense(TotalConceptsCount, TotalConceptsCount);
+            this._conceptsActivation = Vector<double>.Build.Dense(TotalConceptsCount);
+        }
+
+        private FuzzyCognitiveMap(ConnectionMatrix connectionMatrix, Liveable liveable) {
+            this._liveable = liveable;
+            
+            this._actions = this._liveable.PossibleActions;
+            TotalConceptsCount = connectionMatrix.RowCount;
+            
+            this._connectionMatrix = connectionMatrix;
             this._conceptsActivation = Vector<double>.Build.Dense(TotalConceptsCount);
         }
         
@@ -88,6 +100,28 @@ namespace AgentBehaviour.QuasiCognitiveMap {
             this._conceptsActivation = _activationFunction(
                 (this._connectionMatrix * this._conceptsActivation + this._conceptsActivation) * 0.5
                 );
+        }
+        
+        public static FuzzyCognitiveMap operator*(FuzzyCognitiveMap cognitiveMap, double value) {
+            return new FuzzyCognitiveMap(cognitiveMap._connectionMatrix * value, cognitiveMap._liveable);
+        }
+        
+        public static FuzzyCognitiveMap operator/(FuzzyCognitiveMap cognitiveMap, double value) {
+            return new FuzzyCognitiveMap(cognitiveMap._connectionMatrix / value, cognitiveMap._liveable);
+        }
+        
+        public static FuzzyCognitiveMap operator+(FuzzyCognitiveMap firstCognitiveMap,
+                                                    FuzzyCognitiveMap secondCognitiveMap) {
+            return new FuzzyCognitiveMap(
+                firstCognitiveMap._connectionMatrix + secondCognitiveMap._connectionMatrix,
+                firstCognitiveMap._liveable);
+        }
+        
+        public static FuzzyCognitiveMap operator-(FuzzyCognitiveMap firstCognitiveMap,
+                                                    FuzzyCognitiveMap secondCognitiveMap) {
+            return new FuzzyCognitiveMap(
+                firstCognitiveMap._connectionMatrix - secondCognitiveMap._connectionMatrix,
+                firstCognitiveMap._liveable);
         }
 
         public void UpdateState() {
@@ -136,7 +170,7 @@ namespace AgentBehaviour.QuasiCognitiveMap {
                     var randomValue = RandomGenerator.NextDouble();
                     
                     if (connectionStrength == 0.0) {
-                        var childConnectionStrength = connectionStrength;
+                        var childConnectionStrength = (double) connectionStrength;
                         
                         if (randomValue < DevSet.I.simulation.probaMut) {
                             var r = (RandomGenerator.NextDouble() * 2.0 - 1.0) * DevSet.I.simulation.Mut;
@@ -150,7 +184,7 @@ namespace AgentBehaviour.QuasiCognitiveMap {
                         
                         newBrain._connectionMatrix[sourceConceptIndex, targetConceptIndex] = childConnectionStrength;
                     } else {
-                        var childConnectionStrength = connectionStrength;
+                        var childConnectionStrength = (double) connectionStrength;
 
                         if (randomValue < DevSet.I.simulation.SmallProbaMut) {
                             var r = (RandomGenerator.NextDouble() * 2.0 - 1.0) * DevSet.I.simulation.highMut;

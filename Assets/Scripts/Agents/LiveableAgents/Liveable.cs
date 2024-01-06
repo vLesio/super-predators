@@ -53,6 +53,10 @@ namespace Agents.LiveableAgents
         public abstract Liveable IdenticalLiveable {
             get;
         }
+        
+        public abstract double GenomeThreshold {
+            get;
+        }
 
         public double Speed {
             get => Attributes[LiveableAttribute.Speed];
