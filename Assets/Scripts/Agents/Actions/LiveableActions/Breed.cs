@@ -1,4 +1,5 @@
-﻿using AgentBehaviour.GenomeUtilities;
+﻿using AgentBehaviour.FuzzyCognitiveMapUtilities;
+using AgentBehaviour.GenomeUtilities;
 using Agents.LiveableAgents;
 using JetBrains.Annotations;
 using LogicGrid;
@@ -24,7 +25,16 @@ namespace Agents.Actions.LiveableActions
 
         public override void Invoke(Liveable agent)
         {
-            throw new System.NotImplementedException();
+            var breedMate = CheckIfThereIsCapableMateInRange(agent);
+            if (breedMate == null)
+            {
+                return;
+            }
+
+            FuzzyCognitiveMap.InterbreedBrain(agent, breedMate);
+            agent.CognitiveMap.MultiplyNamedInternalConcept(NamedInternalConcept.SexualNeeds, 0f);
+            breedMate.CognitiveMap.MultiplyNamedInternalConcept(NamedInternalConcept.SexualNeeds, 0f);
+            breedMate.ActedThisTurn = true;
         }
 
         private bool CheckIfLivableHasEnergy(Liveable agent)

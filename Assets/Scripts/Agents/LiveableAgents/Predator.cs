@@ -71,6 +71,7 @@ namespace Agents.LiveableAgents
             if (CurrentAction != null)
             {
                 CurrentAction.Invoke(this);
+                ActedThisTurn = true;
             }
         }
     }
