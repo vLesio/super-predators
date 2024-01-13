@@ -114,7 +114,16 @@ namespace LogicGrid {
                         SimulationGrid.SetMeat(position, meatCreatedFromDeadAgent);
                     }
 
-                    agentsSet.Remove(agent);
+                    switch(agent) {
+                        case Prey prey:
+                            preySpecies.RemoveAgent(prey);
+                            break;
+                        case Predator predator:
+                            predatorSpecies.RemoveAgent(predator);
+                            break;
+                        default:
+                            throw new ArgumentOutOfRangeException();
+                    }
 
                     if (agentsSet.Count == 0) {
                         emptyPositions.Add(agent.CurrentPosition);
