@@ -61,7 +61,6 @@ namespace LogicGrid
                 default:
                     throw new ArgumentOutOfRangeException(nameof(agent));
             }
-            CGrid.I.MoveLiveable(agent, oldPosition, newPosition);
         }
 
         private static bool CheckIfDestinationIsReachableByAgent(Liveable agent, Vector2Int destination) {

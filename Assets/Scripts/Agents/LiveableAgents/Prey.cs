@@ -63,7 +63,7 @@ namespace Agents.LiveableAgents
                 if(action.CheckConditions(this))
                 {
                     CurrentAction = action;
-                    CDebug.Log($"Predy has chosen action {CurrentAction.ToString() % Colorize.Magenta}");
+                    // CDebug.Log($"Predy has chosen action {CurrentAction.ToString() % Colorize.Magenta}");
                     break;
                 }
             }

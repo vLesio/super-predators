@@ -11,6 +11,10 @@ namespace LogicGrid {
         private Dictionary<T, Species<T>> _agentsSpeciesMap = new Dictionary<T, Species<T>>();
 
         public Species<T> FindClosestSpecies(T agent) {
+            if (_agentsSpecies.Count == 0) {
+                return null;
+            }
+            
             return _agentsSpecies
                 .OrderBy(species => species.Distance(agent))
                 .First();
@@ -22,9 +26,9 @@ namespace LogicGrid {
 
         public Species<T> AddAgent(T agent) {
             var closestSpecies = FindClosestSpecies(agent);
-            var closestSpeciesDistance = closestSpecies.Distance(agent);
+            var closestSpeciesDistance = closestSpecies?.Distance(agent);
 
-            if (closestSpeciesDistance < 2 * agent.GenomeThreshold) {
+            if (closestSpeciesDistance is not null && closestSpeciesDistance < 2 * agent.GenomeThreshold) {
                 closestSpecies.AddAgent(agent);
                 _agentsSpeciesMap[agent] = closestSpecies;
                 
