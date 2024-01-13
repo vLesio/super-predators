@@ -2,16 +2,19 @@
 using CoinPackage.Debugging;
 using LogicGrid;
 using UnityEngine;
+using UnityEngine.UI;
 using Utils.Singleton;
 
 namespace Application {
     public class SimulationManager : Singleton<SimulationManager> {
         [SerializeField] private bool isPaused = false;
+        [SerializeField] private Button stepOverButton;
 
         private int _steps = 0;
 
         protected override void Awake() {
             base.Awake();
+            stepOverButton.onClick.AddListener(Step);
             InitializeSimulation();
         }
 
