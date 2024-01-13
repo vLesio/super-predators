@@ -11,7 +11,7 @@ namespace LogicGrid {
         public static readonly AllSpeciesOfTypes<Prey> preySpecies = new AllSpeciesOfTypes<Prey>();
         public static readonly AllSpeciesOfTypes<Predator> predatorSpecies = new AllSpeciesOfTypes<Predator>();
         
-        private static List<T> GetAllAgentsInIncreasingAgeOrder<T>(Dictionary<Vector2Int, LinkedList<T>> agents)
+        private static List<T> GetAllAgentsInIncreasingAgeOrder<T>(Dictionary<Vector2Int, HashSet<T>> agents)
                                                                     where T: Liveable {
             var allAgents = new List<T>();
             
@@ -95,38 +95,31 @@ namespace LogicGrid {
             });
         }
         
-        private static void UpdateDeadLiveables<T>(Dictionary<Vector2Int, LinkedList<T>> agents)
+        private static void UpdateDeadLiveables<T>(Dictionary<Vector2Int, HashSet<T>> agents)
                                                    where T: Liveable {
             const int meatCreatedFromDeadAgent = 2;
             
             var emptyPositions = new HashSet<Vector2Int>();
             
-            foreach (var agentList in agents.Values) {
-                var agentNode = agentList.First;
+            foreach (var agentsSet in agents.Values) {
+                var agentsToRemove = agentsSet.Where(agent => agent.IsDead()).ToList();
+                
+                agentsToRemove.ForEach(agent => {
+                    var position = agent.CurrentPosition;
 
-                while (agentNode != null) {
-                    var nextAgentNode = agentNode.Next;
-                    
-                    var agent = agentNode.Value;
-
-                    if (agent.IsDead()) {
-                        var position = agent.CurrentPosition;
-
-                        if (SimulationGrid.ObstacleAgents.TryGetValue(position, out var meat)) {
-                            meat.Quantity += meatCreatedFromDeadAgent;
-                        } else {
-                            SimulationGrid.SetMeat(position, meatCreatedFromDeadAgent);
-                        }
-                        
-                        agentList.Remove(agentNode);
-                        
-                        if (agentList.Count == 0) {
-                            emptyPositions.Add(agent.CurrentPosition);
-                        }
+                    if (SimulationGrid.ObstacleAgents.TryGetValue(position, out var meat)) {
+                        meat.Quantity += meatCreatedFromDeadAgent;
                     }
-                    
-                    agentNode = nextAgentNode;
-                }
+                    else {
+                        SimulationGrid.SetMeat(position, meatCreatedFromDeadAgent);
+                    }
+
+                    agentsSet.Remove(agent);
+
+                    if (agentsSet.Count == 0) {
+                        emptyPositions.Add(agent.CurrentPosition);
+                    }
+                });
             }
             
             foreach (var emptyPosition in emptyPositions) {
@@ -193,10 +186,6 @@ namespace LogicGrid {
             }
 
             foreach (var position in placesToPlantGrass) {
-                var grass = new Grass() {
-                    CurrentPosition = position
-                };
-                
                 if (!SimulationGrid.GrassAgents.ContainsKey(position)) {
                     SimulationGrid.SetGrass(position, DevSet.I.simulation.growGrass);
                 }
@@ -212,7 +201,7 @@ namespace LogicGrid {
             UpdateLocallyResourceAgents(SimulationGrid.ObstacleAgents);
         }
         
-        private static void UpdateAgentsAgeAndResetDistanceTravelled<T>(Dictionary<Vector2Int, LinkedList<T>> agents)
+        private static void UpdateAgentsAgeAndResetDistanceTravelled<T>(Dictionary<Vector2Int, HashSet<T>> agents)
                                                where T: Liveable {
             foreach (var agentList in agents.Values) {
                 foreach (var agent in agentList) {

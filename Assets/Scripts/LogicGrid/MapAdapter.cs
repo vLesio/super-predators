@@ -50,9 +50,9 @@ namespace LogicGrid {
     }
     
     public class PreyAgentsAdapter: MapAdapter {
-        private readonly Dictionary<Vector2Int, LinkedList<Prey>> _preyAgents;
+        private readonly Dictionary<Vector2Int, HashSet<Prey>> _preyAgents;
         
-        public PreyAgentsAdapter(Dictionary<Vector2Int, LinkedList<Prey>> preyAgents) {
+        public PreyAgentsAdapter(Dictionary<Vector2Int, HashSet<Prey>> preyAgents) {
             _preyAgents = preyAgents;
         }
         
@@ -66,9 +66,9 @@ namespace LogicGrid {
     }
     
     public class PredatorAgentsAdapter: MapAdapter {
-        private readonly Dictionary<Vector2Int, LinkedList<Predator>> _predatorAgents;
+        private readonly Dictionary<Vector2Int, HashSet<Predator>> _predatorAgents;
         
-        public PredatorAgentsAdapter(Dictionary<Vector2Int, LinkedList<Predator>> predatorAgents) {
+        public PredatorAgentsAdapter(Dictionary<Vector2Int, HashSet<Predator>> predatorAgents) {
             _predatorAgents = predatorAgents;
         }
         

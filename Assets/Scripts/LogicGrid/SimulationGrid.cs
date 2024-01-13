@@ -6,8 +6,6 @@ using Agents.LiveableAgents;
 using Agents.ResourceAgents;
 using GridSystem;
 using Settings;
-using Unity.Collections.LowLevel.Unsafe;
-using Unity.VisualScripting;
 using UnityEngine;
 
 namespace LogicGrid
@@ -17,10 +15,10 @@ namespace LogicGrid
         public static Vector2Int GridSize => DevSet.I.simulation.gridSize;
 
         public static readonly Dictionary<Vector2Int, Grass> GrassAgents = new Dictionary<Vector2Int, Grass>();
-        public static readonly Dictionary<Vector2Int, LinkedList<Prey>> PreyAgents = new Dictionary<Vector2Int, LinkedList<Prey>>();
+        public static readonly Dictionary<Vector2Int, HashSet<Prey>> PreyAgents = new Dictionary<Vector2Int, HashSet<Prey>>();
 
-        public static readonly Dictionary<Vector2Int, LinkedList<Predator>> PredatorAgents =
-            new Dictionary<Vector2Int, LinkedList<Predator>>();
+        public static readonly Dictionary<Vector2Int, HashSet<Predator>> PredatorAgents =
+            new Dictionary<Vector2Int, HashSet<Predator>>();
 
         public static readonly Dictionary<Vector2Int, Meat> ObstacleAgents = new Dictionary<Vector2Int, Meat>();
         
@@ -29,7 +27,7 @@ namespace LogicGrid
         public static readonly PredatorAgentsAdapter PredatorAgentsAdapter = new PredatorAgentsAdapter(PredatorAgents);
         public static readonly MeatAgentsAdapter ObstacleAgentsAdapter = new MeatAgentsAdapter(ObstacleAgents);
         
-        private static void MoveAgent<T>(T agent, Vector2Int destination, Dictionary<Vector2Int, LinkedList<T>> agents)
+        private static void MoveAgent<T>(T agent, Vector2Int destination, Dictionary<Vector2Int, HashSet<T>> agents)
                                             where T: Liveable {
             var oldPosition = agent.CurrentPosition;
             
@@ -42,16 +40,16 @@ namespace LogicGrid
             }
             
             if (agents.TryGetValue(destination, out var agentsInDestination)) {
-                agentsInDestination.AddLast(agent);
+                agentsInDestination.Add(agent);
             } else {
-                agents.Add(destination, new LinkedList<T>(new[] {agent}));
+                agents.Add(destination, new HashSet<T>(new[] {agent}));
             }
             
             agent.CurrentPosition = destination;
             CGrid.I.MoveLiveable(agent, oldPosition, destination);
         }
         
-        private static List<T> GetAllAgentsInIncreasingAgeOrder<T>(Dictionary<Vector2Int, LinkedList<T>> agents)
+        private static List<T> GetAllAgentsInIncreasingAgeOrder<T>(Dictionary<Vector2Int, HashSet<T>> agents)
                                                                     where T: Liveable {
             var allAgents = new List<T>();
             
@@ -74,13 +72,13 @@ namespace LogicGrid
             }
         }
         
-        private static void SetLiveable<T>(Vector2Int position, T agent, Dictionary<Vector2Int, LinkedList<T>> agents)
+        private static void SetLiveable<T>(Vector2Int position, T agent, Dictionary<Vector2Int, HashSet<T>> agents)
                                             where T: Liveable {
             agent.CurrentPosition = position;
             if (agents.TryGetValue(position, out var agentsInPosition)) {
-                agentsInPosition.AddLast(agent);
+                agentsInPosition.Add(agent);
             } else {
-                agents.Add(position, new LinkedList<T>(new[] {agent}));
+                agents.Add(position, new HashSet<T>(new[] {agent}));
             }
         }
         

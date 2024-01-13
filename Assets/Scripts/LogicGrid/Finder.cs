@@ -241,14 +241,14 @@ namespace LogicGrid
             }
         }
         
-        private static LinkedList<Prey> FindAllMatesInCellForAgent(Prey agent) {
+        private static HashSet<Prey> FindAllMatesInCellForAgent(Prey agent) {
             return SimulationGrid.PreyAgents.TryGetValue(agent.CurrentPosition, out var preys)
-                ? preys : new LinkedList<Prey>();
+                ? preys : new HashSet<Prey>();
         }
         
-        private static LinkedList<Predator> FindAllMatesInCellForAgent(Predator agent) {
+        private static HashSet<Predator> FindAllMatesInCellForAgent(Predator agent) {
             return SimulationGrid.PredatorAgents.TryGetValue(agent.CurrentPosition, out var predators)
-                ? predators : new LinkedList<Predator>();
+                ? predators : new HashSet<Predator>();
         }
         
         public static Grass FindGrassOnAgentPosition(CellAgent agent) {
