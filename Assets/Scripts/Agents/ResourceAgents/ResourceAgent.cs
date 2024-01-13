@@ -13,6 +13,10 @@
             return Quantity <= 0;
         }
         
+        public bool IsUseful() {
+            return Quantity >= 1;
+        }
+        
         public abstract bool UpdateQuantity();
     }
 }

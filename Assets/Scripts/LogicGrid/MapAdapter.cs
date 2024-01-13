@@ -25,7 +25,7 @@ namespace LogicGrid {
         }
         
         public override bool IsPositionOccupied(Vector2Int position) {
-            return _grassAgents.ContainsKey(position);
+            return _grassAgents.ContainsKey(position) && _grassAgents[position].IsUseful();
         }
         
         public override int CountAgentsInPosition(Vector2Int position) {
@@ -41,7 +41,7 @@ namespace LogicGrid {
         }
 
         public override bool IsPositionOccupied(Vector2Int position) {
-            return _meatAgents.ContainsKey(position);
+            return _meatAgents.ContainsKey(position) && _meatAgents[position].IsUseful();
         }
         
         public override int CountAgentsInPosition(Vector2Int position) {
