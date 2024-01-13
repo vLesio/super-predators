@@ -1,6 +1,7 @@
 ﻿using System.Net.Http.Headers;
 using Agents.LiveableAgents;
 using Agents.ResourceAgents;
+using CoinPackage.Debugging;
 using LogicGrid;
 using Settings;
 
@@ -37,6 +38,7 @@ namespace Agents.Actions.LiveableActions
             }
 
             // TODO: DONE: If food is in range of speed - move to it, else move by speed
+            CDebug.Log($"Prey is trying to reach food at {nearestFood.CurrentPosition}, while being at {agent.CurrentPosition}.");
             Walker.TryToMoveTowardsDirections(agent, nearestFood.CurrentPosition);
         }
     }
