@@ -18,7 +18,7 @@ namespace Agents.Actions.LiveableActions
         {
             Liveable nearestMate = Finder.FindNearestMateForAgent(agent);
 
-            if (SimulationGrid.DistanceFromAgentToAgent(agent, nearestMate) <= (Liveable.IsPrey(agent)
+            if (nearestMate != null && SimulationGrid.DistanceFromAgentToAgent(agent, nearestMate) <= (Liveable.IsPrey(agent)
                     ? DevSet.I.simulation.distanceVisionPrey
                     : DevSet.I.simulation.distanceVisionPredator))
             {

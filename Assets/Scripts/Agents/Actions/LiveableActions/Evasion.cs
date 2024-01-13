@@ -16,8 +16,7 @@ namespace Agents.Actions.LiveableActions
         public override void Invoke(Liveable agent)
         {
             var nearestPredator = Finder.FindNearestEnemyForAgent(agent);
-            var distance = SimulationGrid.DistanceFromAgentToAgent(agent, nearestPredator);
-            if (distance <= DevSet.I.simulation.distanceVisionPrey)
+            if (nearestPredator != null && SimulationGrid.DistanceFromAgentToAgent(agent, nearestPredator) <= DevSet.I.simulation.distanceVisionPrey)
             {
                 Walker.TryToMoveTowardsDirections(agent,
                     SimulationGrid.FindOppositeDirectionToAgent(agent, nearestPredator));

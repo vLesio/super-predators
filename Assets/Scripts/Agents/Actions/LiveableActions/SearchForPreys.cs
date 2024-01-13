@@ -12,6 +12,11 @@ namespace Agents.Actions.LiveableActions
         {
             Prey nearestPrey = Finder.FindNearestPreyForAgent(agent);
             
+            if(nearestPrey == null)
+            {
+                return false;
+            }
+            
             return SimulationGrid.DistanceFromAgentToAgent(agent, nearestPrey) <= DevSet.I.simulation.distanceVisionPredator;
 
         }
@@ -19,6 +24,11 @@ namespace Agents.Actions.LiveableActions
         public override void Invoke(Liveable agent)
         {
             Prey nearestPrey = Finder.FindNearestPreyForAgent(agent);
+
+            if (nearestPrey == null)
+            {
+                return;
+            }
 
             // TODO: DONE: If prey is in range of speed - move to it, else move by speed
             Walker.TryToMoveTowardsDirections(agent, nearestPrey.CurrentPosition);

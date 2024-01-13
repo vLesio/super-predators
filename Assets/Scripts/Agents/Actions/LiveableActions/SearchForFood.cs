@@ -1,4 +1,5 @@
-﻿using Agents.LiveableAgents;
+﻿using System.Net.Http.Headers;
+using Agents.LiveableAgents;
 using Agents.ResourceAgents;
 using LogicGrid;
 using Settings;
@@ -13,6 +14,11 @@ namespace Agents.Actions.LiveableActions
             ResourceAgent nearestFood = Liveable.IsPrey(agent)
                 ? Finder.FindNearestGrassForAgent(agent)
                 : Finder.FindNearestMeatForAgent(agent);
+
+            if (nearestFood == null)
+            {
+                return false;
+            }
             
             return SimulationGrid.DistanceFromAgentToAgent(agent, nearestFood) <= (Liveable.IsPrey(agent) 
                 ? DevSet.I.simulation.distanceVisionPrey 
@@ -24,6 +30,11 @@ namespace Agents.Actions.LiveableActions
             ResourceAgent nearestFood = Liveable.IsPrey(agent)
                 ? Finder.FindNearestGrassForAgent(agent)
                 : Finder.FindNearestMeatForAgent(agent);
+            
+            if (nearestFood == null)
+            {
+                return;
+            }
 
             // TODO: DONE: If food is in range of speed - move to it, else move by speed
             Walker.TryToMoveTowardsDirections(agent, nearestFood.CurrentPosition);
