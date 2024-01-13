@@ -154,37 +154,45 @@ namespace LogicGrid
 
         public static void SetGrass(Vector2Int position, float amount) {
             SetResourceAgent(position, amount, GrassAgents);
+            CGrid.I.SetGrass(position, amount);
         }
         
         public static void SetMeat(Vector2Int position, float amount) {
             SetResourceAgent(position, amount, ObstacleAgents);
+            CGrid.I.SetMeat(position, amount);
         }
         
         public static void SpawnPrey(Prey prey, Vector2Int position) {
             SetLiveable(position, prey, PreyAgents);
+            CGrid.I.SpawnLiveable(prey, position);
         }
         
         public static void SpawnPredator(Predator predator, Vector2Int position) {
             SetLiveable(position, predator, PredatorAgents);
+            CGrid.I.SpawnLiveable(predator, position);
         }
         
         public static void RemoveGrass(Vector2Int position) {
             GrassAgents.Remove(position);
+            CGrid.I.SetGrass(position, 0f);
         }
         
         public static void RemoveMeat(Vector2Int position) {
             ObstacleAgents.Remove(position);
+            CGrid.I.SetMeat(position, 0f);
         }
         
         public static void RemovePrey(Prey prey) {
             if (PreyAgents.TryGetValue(prey.CurrentPosition, out var agentsInPosition)) {
                 agentsInPosition.Remove(prey);
+                CGrid.I.DespawnLiveable(prey, prey.CurrentPosition);
             }
         }
         
         public static void RemovePredator(Predator predator) {
             if (PredatorAgents.TryGetValue(predator.CurrentPosition, out var agentsInPosition)) {
                 agentsInPosition.Remove(predator);
+                CGrid.I.DespawnLiveable(predator, predator.CurrentPosition);
             }
         }
     }

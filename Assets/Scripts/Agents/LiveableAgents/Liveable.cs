@@ -77,7 +77,6 @@ namespace Agents.LiveableAgents
             Attributes.Add(LiveableAttribute.Energy, 0);
             Attributes.Add(LiveableAttribute.Speed, 0);
             Attributes.Add(LiveableAttribute.FoodClose, 0);
-            Attributes.Add(LiveableAttribute.FoodClose, 0);
             Attributes.Add(LiveableAttribute.FoodFar, 0);
             Attributes.Add(LiveableAttribute.MateClose, 0);
             Attributes.Add(LiveableAttribute.MateFar, 0);
