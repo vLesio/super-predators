@@ -126,18 +126,30 @@ namespace LogicGrid {
     
     public class SearchResult {
         private readonly List<Vector2Int> _targets;
+        private readonly List<bool> _wasTargetFound;
         
         public List<Vector2Int> Targets {
             get => _targets;
         }
         
+        public List<bool> WasTargetFound {
+            get => _wasTargetFound;
+        }
+        
         public void SetTarget(int mapIndex, Vector2Int targetPosition) {
             this._targets[mapIndex] = targetPosition;
+            this._wasTargetFound[mapIndex] = true;
         }
 
         public SearchResult(SearcherEntities entities) {
             var countOfTargets = entities.MapAdapters.Count;
-            this._targets = new List<Vector2Int>(countOfTargets);
+            this._targets = new List<Vector2Int>();
+            this._wasTargetFound = new List<bool>();
+
+            for (var i = 0; i < countOfTargets; i++) {
+                this._targets.Add(new Vector2Int(-1, -1));
+                this._wasTargetFound.Add(false);
+            }
         }
     }
 }
