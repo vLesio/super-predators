@@ -25,7 +25,8 @@ namespace Agents.Actions.LiveableActions
                 ? Finder.FindNearestGrassForAgent(agent)
                 : Finder.FindNearestMeatForAgent(agent);
 
-            // TODO: If food is in range of speed - move to it, else move by speed
+            // TODO: DONE: If food is in range of speed - move to it, else move by speed
+            Walker.TryToMoveTowardsDirections(agent, nearestFood.CurrentPosition);
         }
     }
 }

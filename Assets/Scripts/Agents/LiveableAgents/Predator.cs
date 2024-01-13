@@ -56,12 +56,22 @@ namespace Agents.LiveableAgents
 
         public override void ChooseAction()
         {
-            throw new System.NotImplementedException();
+            foreach (var action in CognitiveMap.GetSortedActions())
+            {
+                if(action.CheckConditions(this))
+                {
+                    CurrentAction = action;
+                    break;
+                }
+            }
         }
 
         public override void Act()
         {
-            throw new System.NotImplementedException();
+            if (CurrentAction != null)
+            {
+                CurrentAction.Invoke(this);
+            }
         }
     }
 }

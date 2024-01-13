@@ -1,4 +1,5 @@
-﻿using Agents.LiveableAgents;
+﻿using AgentBehaviour.FuzzyCognitiveMapUtilities;
+using Agents.LiveableAgents;
 using Agents.ResourceAgents;
 using LogicGrid;
 using Settings;
@@ -22,7 +23,8 @@ namespace Agents.Actions.LiveableActions
             
             currentFood.Quantity -= 1;
             agent.Attributes[LiveableAttribute.Energy] += ResourceAgent.IsGrass(currentFood) ? DevSet.I.simulation.energyGrass : DevSet.I.simulation.energyMeat;
-            //TODO: Divide cognitive map for hunger by 4 using MultiplyNamedInternalConcept
+            agent.CognitiveMap.MultiplyNamedInternalConcept(NamedInternalConcept.Hunger, 0.25f);
+            //TODO: DONE: Divide cognitive map for hunger by 4 using MultiplyNamedInternalConcept
         }
     }
 }

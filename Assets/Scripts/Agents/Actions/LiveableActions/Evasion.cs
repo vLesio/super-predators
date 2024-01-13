@@ -1,4 +1,5 @@
-﻿using Agents.LiveableAgents;
+﻿using AgentBehaviour.FuzzyCognitiveMapUtilities;
+using Agents.LiveableAgents;
 using LogicGrid;
 using Settings;
 
@@ -18,14 +19,17 @@ namespace Agents.Actions.LiveableActions
             var distance = SimulationGrid.DistanceFromAgentToAgent(agent, nearestPredator);
             if (distance <= DevSet.I.simulation.distanceVisionPrey)
             {
-                // TODO: Choose opposite direction and move by speed
+                Walker.TryToMoveTowardsDirections(agent,
+                    SimulationGrid.FindOppositeDirectionToAgent(agent, nearestPredator));
+                // TODO: DONE: Choose opposite direction and move by speed
             }
             else
             {
-                // TODO: Choose random direction and move by speed
+                Walker.TryToMoveTowardsDirections(agent, SimulationGrid.FindRandomDirection());
+                // TODO: DONE: Choose random direction and move by speed
             }
-            
-            // TODO: Divide cognitive map for activation fear by 2 
+            agent.CognitiveMap.MultiplyNamedInternalConcept(NamedInternalConcept.Fear, 0.5f);
+            // TODO: DONE: Divide cognitive map for activation fear by 2 
         }
     }
 }

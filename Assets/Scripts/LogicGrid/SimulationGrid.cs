@@ -77,11 +77,23 @@ namespace LogicGrid
             return neighbours;
         }
 
+        public static Vector2Int FindRandomDirection()
+        {
+            var random = new System.Random();
+            var randomDirection = new Vector2Int(random.Next(-1, 1), random.Next(-1, 1));
+            return randomDirection * (GridSize.x > GridSize.y ? GridSize.x : GridSize.y);
+        }
+
         public static bool CheckIfDestinationIsInSimulation(Vector2Int destination) {
             return (destination.x >= 0 && 
                     destination.x < GridSize.x && 
                     destination.y >= 0 &&
                     destination.y < GridSize.y);
+        }
+        
+        public static Vector2Int FindOppositeDirectionToAgent(CellAgent requestingAgent, CellAgent targetAgent) {
+            var direction = targetAgent.CurrentPosition - requestingAgent.CurrentPosition;
+            return new Vector2Int(-direction.x, -direction.y);
         }
 
         public static float DistanceFromAgentToAgent(CellAgent agent1, CellAgent agent2) {

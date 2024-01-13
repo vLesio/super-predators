@@ -20,8 +20,8 @@ namespace Agents.Actions.LiveableActions
         {
             Prey nearestPrey = Finder.FindNearestPreyForAgent(agent);
 
-            // TODO: If prey is in range of speed - move to it, else move by speed
-
+            // TODO: DONE: If prey is in range of speed - move to it, else move by speed
+            Walker.TryToMoveTowardsDirections(agent, nearestPrey.CurrentPosition);
         }
     }
 }
