@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Agents.LiveableAgents;
 using Agents.ResourceAgents;
+using Settings;
 using UnityEngine;
 
 namespace LogicGrid {
@@ -114,12 +115,7 @@ namespace LogicGrid {
                         if (SimulationGrid.ObstacleAgents.TryGetValue(position, out var meat)) {
                             meat.Quantity += meatCreatedFromDeadAgent;
                         } else {
-                            SimulationGrid.ObstacleAgents.Add(position, 
-                                new Meat() {
-                                    CurrentPosition = position,
-                                    Quantity = meatCreatedFromDeadAgent
-                                }
-                            );
+                            SimulationGrid.SetMeat(position, meatCreatedFromDeadAgent);
                         }
                         
                         agentList.Remove(agentNode);
@@ -176,7 +172,7 @@ namespace LogicGrid {
             }
             
             foreach (var emptyPosition in emptyPositions) {
-                SimulationGrid.ObstacleAgents.Remove(emptyPosition);
+                SimulationGrid.RemoveMeat(emptyPosition);
             }
         }
         
@@ -202,7 +198,7 @@ namespace LogicGrid {
                 };
                 
                 if (!SimulationGrid.GrassAgents.ContainsKey(position)) {
-                    SimulationGrid.GrassAgents.Add(position, grass);
+                    SimulationGrid.SetGrass(position, DevSet.I.simulation.growGrass);
                 }
             }
         }

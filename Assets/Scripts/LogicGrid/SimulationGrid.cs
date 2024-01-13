@@ -61,6 +61,27 @@ namespace LogicGrid
             
             return allAgents.OrderBy(agent => agent.Age).ToList();
         }
+
+        private static void SetResourceAgent<T>(Vector2Int position, float amount, Dictionary<Vector2Int, T> agents)
+            where T: ResourceAgent, new() {
+            if (agents.TryGetValue(position, out var agent)) {
+                agent.Quantity = amount;
+            } else {
+                agents.Add(position, new T() {
+                    CurrentPosition = position,
+                    Quantity = amount
+                });
+            }
+        }
+        
+        private static void SetLiveable<T>(Vector2Int position, T agent, Dictionary<Vector2Int, LinkedList<T>> agents)
+                                            where T: Liveable {
+            if (agents.TryGetValue(position, out var agentsInPosition)) {
+                agentsInPosition.AddLast(agent);
+            } else {
+                agents.Add(position, new LinkedList<T>(new[] {agent}));
+            }
+        }
         
         public static List<Vector2Int> GetNeighbours(Vector2Int position) {
             var neighbours = new List<Vector2Int>();
@@ -132,7 +153,39 @@ namespace LogicGrid
         }
 
         public static void SetGrass(Vector2Int position, float amount) {
-            GrassAgents[position].AddLast(new Grass());
+            SetResourceAgent(position, amount, GrassAgents);
+        }
+        
+        public static void SetMeat(Vector2Int position, float amount) {
+            SetResourceAgent(position, amount, ObstacleAgents);
+        }
+        
+        public static void SpawnPrey(Prey prey, Vector2Int position) {
+            SetLiveable(position, prey, PreyAgents);
+        }
+        
+        public static void SpawnPredator(Predator predator, Vector2Int position) {
+            SetLiveable(position, predator, PredatorAgents);
+        }
+        
+        public static void RemoveGrass(Vector2Int position) {
+            GrassAgents.Remove(position);
+        }
+        
+        public static void RemoveMeat(Vector2Int position) {
+            ObstacleAgents.Remove(position);
+        }
+        
+        public static void RemovePrey(Prey prey) {
+            if (PreyAgents.TryGetValue(prey.CurrentPosition, out var agentsInPosition)) {
+                agentsInPosition.Remove(prey);
+            }
+        }
+        
+        public static void RemovePredator(Predator predator) {
+            if (PredatorAgents.TryGetValue(predator.CurrentPosition, out var agentsInPosition)) {
+                agentsInPosition.Remove(predator);
+            }
         }
     }
 }
