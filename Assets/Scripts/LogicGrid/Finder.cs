@@ -17,10 +17,9 @@ namespace LogicGrid
 
         public Vector2Int NearestTargetPosition {
             get {
-                if (_result == null || _result.Targets.Count == 0) {
+                if (_result == null || _result.Targets.Count == 0 || !_result.WasTargetFound[0]) {
                     return new Vector2Int(-1, -1);
                 }
-                
                 return _result.Targets[0];
             }
         }
