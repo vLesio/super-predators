@@ -52,6 +52,7 @@ namespace GridSystem {
                     var cell = Instantiate(cellPrefab, transform);
                     cell.transform.localScale = new Vector3(cellWidth, cellHeight, 1f);
                     cell.transform.localPosition = cellPosition;
+                    cell.GetComponent<SpriteRenderer>().color = DevSet.I.simulation.groundColor;
                     _cells.Add((i, j), cell.GetComponent<CellUI>());
                 }
             }

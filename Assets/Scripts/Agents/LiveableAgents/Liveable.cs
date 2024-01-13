@@ -73,18 +73,18 @@ namespace Agents.LiveableAgents
         public LiveableAction CurrentAction;
         
         private void InitLiveable() {
-            Attributes.Add(LiveableAttribute.Age, 0);
-            Attributes.Add(LiveableAttribute.Energy, 0);
-            Attributes.Add(LiveableAttribute.Speed, 0);
-            Attributes.Add(LiveableAttribute.FoodClose, 0);
-            Attributes.Add(LiveableAttribute.FoodFar, 0);
-            Attributes.Add(LiveableAttribute.MateClose, 0);
-            Attributes.Add(LiveableAttribute.MateFar, 0);
-            Attributes.Add(LiveableAttribute.EnemyClose, 0);
-            Attributes.Add(LiveableAttribute.EnemyFar, 0);
+            Attributes.Add(LiveableAttribute.Age, 1);
+            Attributes.Add(LiveableAttribute.Energy, 9999);
+            Attributes.Add(LiveableAttribute.Speed, 3);
+            Attributes.Add(LiveableAttribute.FoodClose, 5);
+            Attributes.Add(LiveableAttribute.FoodFar, 15);
+            Attributes.Add(LiveableAttribute.MateClose, 3);
+            Attributes.Add(LiveableAttribute.MateFar, 8);
+            Attributes.Add(LiveableAttribute.EnemyClose, 5);
+            Attributes.Add(LiveableAttribute.EnemyFar, 18);
             Attributes.Add(LiveableAttribute.QuantityOfLocalFood, 0);
             Attributes.Add(LiveableAttribute.QuantityOfLocalMates, 0);
-            Attributes.Add(LiveableAttribute.SexualNeeds, 0);
+            Attributes.Add(LiveableAttribute.SexualNeeds, 69);
         }
         
         protected Liveable() {

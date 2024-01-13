@@ -30,6 +30,8 @@ namespace Application {
         private void Step() {
             var time = Time.time;
             Simulation.Update();
+            CDebug.Log($"Predators: {SimulationGrid.PredatorAgents.Count}");
+            CDebug.Log($"Preys: {SimulationGrid.PreyAgents.Count}");
             CDebug.Log($"Simulation step {_steps++} took: {Time.time - time}");
         }
     }

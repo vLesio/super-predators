@@ -76,6 +76,7 @@ namespace LogicGrid
         
         private static void SetLiveable<T>(Vector2Int position, T agent, Dictionary<Vector2Int, LinkedList<T>> agents)
                                             where T: Liveable {
+            agent.CurrentPosition = position;
             if (agents.TryGetValue(position, out var agentsInPosition)) {
                 agentsInPosition.AddLast(agent);
             } else {

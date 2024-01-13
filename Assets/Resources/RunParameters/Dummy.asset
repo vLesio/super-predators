@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 89cc02ee326912a408d2118ed3252c05, type: 3}
   m_Name: Dummy
   m_EditorClassIdentifier: 
-  gridSize: {x: 50, y: 50}
+  gridSize: {x: 40, y: 40}
   activationS1: 0.2
   activationS2: 1
   breedingThreshold: 10
@@ -24,8 +24,8 @@ MonoBehaviour:
   sizeClusterPrey: 10
   sizeClusterPredator: 3
   sizeCluster: 5
-  initNbPrey: 12000
-  initNbPredator: 1200
+  initNbPrey: 1000
+  initNbPredator: 400
   maxEnergyPrey: 650
   maxEnergyPredator: 1000
   probaMut: 0.005

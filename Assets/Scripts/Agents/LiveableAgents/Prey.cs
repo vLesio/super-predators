@@ -2,6 +2,7 @@
 using System.Linq;
 using AgentBehaviour.FuzzyCognitiveMapUtilities;
 using Agents.Actions.LiveableActions;
+using CoinPackage.Debugging;
 using LogicGrid;
 using Settings;
 
@@ -57,12 +58,23 @@ namespace Agents.LiveableAgents
         
         public override void ChooseAction()
         {
-            throw new System.NotImplementedException();
+            foreach (var action in CognitiveMap.GetSortedActions())
+            {
+                if(action.CheckConditions(this))
+                {
+                    CurrentAction = action;
+                    CDebug.Log($"Predy has chosen action {CurrentAction.ToString() % Colorize.Magenta}");
+                    break;
+                }
+            }
         }
 
         public override void Act()
         {
-            throw new System.NotImplementedException();
+            if (CurrentAction != null)
+            {
+                CurrentAction.Invoke(this);
+            }
         }
     }
 }
