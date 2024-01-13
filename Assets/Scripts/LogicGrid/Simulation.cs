@@ -43,7 +43,7 @@ namespace LogicGrid {
             var allPreys = GetAllAgentsInIncreasingAgeOrder(SimulationGrid.PreyAgents);
             
             allPreys.ForEach(prey => {
-                if (prey.IsDead()) {
+                if (prey.IsDead() || prey.ActedThisTurn) {
                     return;
                 }
                 
@@ -80,7 +80,7 @@ namespace LogicGrid {
             var allPredators = GetAllAgentsInIncreasingAgeOrder(SimulationGrid.PredatorAgents);
 
             allPredators.ForEach(predator => {
-                if (predator.IsDead()) {
+                if (predator.IsDead() || predator.ActedThisTurn) {
                     return;
                 }
 

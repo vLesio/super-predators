@@ -1,4 +1,5 @@
-﻿using AgentBehaviour.FuzzyCognitiveMapUtilities;
+﻿using System.IO;
+using AgentBehaviour.FuzzyCognitiveMapUtilities;
 using AgentBehaviour.GenomeUtilities;
 using Agents.LiveableAgents;
 using JetBrains.Annotations;
@@ -31,7 +32,19 @@ namespace Agents.Actions.LiveableActions
                 return;
             }
 
-            FuzzyCognitiveMap.InterbreedBrain(agent, breedMate);
+            var child = BreedingProcessor.Interbreed(agent, breedMate);
+
+            switch (child) {
+                case Prey prey:
+                    SimulationGrid.SpawnPrey(prey, prey.CurrentPosition);
+                    break;
+                case Predator predator:
+                    SimulationGrid.SpawnPredator(predator, predator.CurrentPosition);
+                    break;
+                default:
+                    throw new InvalidDataException("Child is neither prey nor predator!");
+            }
+            
             agent.CognitiveMap.MultiplyNamedInternalConcept(NamedInternalConcept.SexualNeeds, 0f);
             breedMate.CognitiveMap.MultiplyNamedInternalConcept(NamedInternalConcept.SexualNeeds, 0f);
             breedMate.ActedThisTurn = true;
