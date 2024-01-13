@@ -116,10 +116,10 @@ namespace LogicGrid {
 
                     switch(agent) {
                         case Prey prey:
-                            preySpecies.RemoveAgent(prey);
+                            SimulationGrid.RemovePrey(prey);
                             break;
                         case Predator predator:
-                            predatorSpecies.RemoveAgent(predator);
+                            SimulationGrid.RemovePredator(predator);
                             break;
                         default:
                             throw new ArgumentOutOfRangeException();
