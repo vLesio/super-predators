@@ -7,6 +7,10 @@ namespace Agents.ResourceAgents
         public Grass() {
             Quantity = DevSet.I.simulation.growGrass;
         }
+
+        public Grass(float amount) {
+            Quantity = amount;
+        }
         
         public override void ChooseAction()
         {

@@ -130,5 +130,9 @@ namespace LogicGrid
         public static List<Predator> GetAllPredatorsInIncreasingAgeOrder() {
             return GetAllAgentsInIncreasingAgeOrder(PredatorAgents);
         }
+
+        public static void SetGrass(Vector2Int position, float amount) {
+            GrassAgents[position].AddLast(new Grass());
+        }
     }
 }
