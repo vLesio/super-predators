@@ -152,11 +152,13 @@ namespace LogicGrid
         }
 
         public static void SetGrass(Vector2Int position, float amount) {
+            amount = Mathf.Clamp(amount, 0f, DevSet.I.simulation.maxGrass);
             SetResourceAgent(position, amount, GrassAgents);
             CGrid.I.SetGrass(position, amount);
         }
         
         public static void SetMeat(Vector2Int position, float amount) {
+            amount = Mathf.Clamp(amount, 0f, DevSet.I.simulation.maxMeat);
             SetResourceAgent(position, amount, ObstacleAgents);
             CGrid.I.SetMeat(position, amount);
         }
