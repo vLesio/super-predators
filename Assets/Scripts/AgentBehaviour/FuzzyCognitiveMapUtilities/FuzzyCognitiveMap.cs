@@ -97,7 +97,7 @@ namespace AgentBehaviour.FuzzyCognitiveMapUtilities {
 
         private void _performFuzzification()
         {
-            var attributesValues = (LiveableAttribute[]) Enum.GetValues(typeof(LiveableAttribute));
+            var attributesValues = _liveable.Attributes.Keys;
 
             foreach (var attribute in attributesValues) {
                 _conceptsActivation[(int) attribute] = _liveable.Attributes[attribute];
