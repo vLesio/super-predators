@@ -5,6 +5,7 @@ using LogicGrid;
 using Settings;
 using UnityEditor;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace Application {
     public class SimulationInitializer {
@@ -61,6 +62,15 @@ namespace Application {
             foreach (var valueTuple in points) {
                 for (var i = 0; i < DevSet.I.simulation.sizeClusterPredator; i++) {
                     SimulationGrid.SpawnPredator(new Predator(), new Vector2Int(valueTuple.Item1, valueTuple.Item2));
+                }
+            }
+        }
+
+        public void InitializeGrass() {
+            for (var i = 0; i < DevSet.I.simulation.gridSize.x; i++) {
+                for (var j = 0; j < DevSet.I.simulation.gridSize.y; j++) {
+                    SimulationGrid.SetGrass(new Vector2Int(i, j),
+                        Random.Range(-DevSet.I.simulation.maxGrass, DevSet.I.simulation.maxGrass));
                 }
             }
         }
