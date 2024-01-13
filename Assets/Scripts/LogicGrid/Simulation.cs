@@ -111,15 +111,15 @@ namespace LogicGrid {
                     if (agent.IsDead()) {
                         var position = agent.CurrentPosition;
 
-                        if (SimulationGrid.ObstacleAgents.TryGetValue(position, out var meatList)) {
-                            meatList.Last.Value.Quantity += meatCreatedFromDeadAgent;
+                        if (SimulationGrid.ObstacleAgents.TryGetValue(position, out var meat)) {
+                            meat.Quantity += meatCreatedFromDeadAgent;
                         } else {
-                            SimulationGrid.ObstacleAgents.Add(position, new LinkedList<Meat>(new[] {
+                            SimulationGrid.ObstacleAgents.Add(position, 
                                 new Meat() {
                                     CurrentPosition = position,
                                     Quantity = meatCreatedFromDeadAgent
                                 }
-                            }));
+                            );
                         }
                         
                         agentList.Remove(agentNode);
@@ -163,28 +163,15 @@ namespace LogicGrid {
             });
         }
         
-        private static void UpdateLocallyResourceAgents<T>(Dictionary<Vector2Int, LinkedList<T>> agents)
+        private static void UpdateLocallyResourceAgents<T>(Dictionary<Vector2Int, T> agents)
                                                             where T: ResourceAgent {
             var emptyPositions = new HashSet<Vector2Int>();
             
-            foreach (var meatList in agents.Values) {
-                var meatNode = meatList.First;
+            foreach (var meat in agents.Values) {
+                meat.UpdateQuantity();
 
-                while (meatNode != null) {
-                    var nextMeatNode = meatNode.Next;
-                    
-                    var meat = meatNode.Value;
-                    meat.UpdateQuantity();
-
-                    if (meat.IsEmpty()) {
-                        meatList.Remove(meatNode);
-                        
-                        if (meatList.Count == 0) {
-                            emptyPositions.Add(meat.CurrentPosition);
-                        }
-                    }
-                    
-                    meatNode = nextMeatNode;
+                if (meat.IsEmpty()) {
+                    emptyPositions.Add(meat.CurrentPosition);
                 }
             }
             
@@ -196,19 +183,17 @@ namespace LogicGrid {
         private static void UpdateGrassNeighbours() {
             var placesToPlantGrass = new HashSet<Vector2Int>();
             
-            foreach (var grassList in SimulationGrid.GrassAgents.Values) {
-                foreach (var grass in grassList) {
-                    var position = grass.CurrentPosition;
-                    var neighbours = SimulationGrid.GetNeighbours(position);
+            foreach (var grass in SimulationGrid.GrassAgents.Values) {
+                var position = grass.CurrentPosition;
+                var neighbours = SimulationGrid.GetNeighbours(position);
+                
+                neighbours.ForEach(neighbourPosition => {
+                    if (SimulationGrid.GrassAgents.ContainsKey(neighbourPosition)) {
+                        return;
+                    }
                     
-                    neighbours.ForEach(neighbourPosition => {
-                        if (SimulationGrid.GrassAgents.ContainsKey(neighbourPosition)) {
-                            return;
-                        }
-                        
-                        placesToPlantGrass.Add(neighbourPosition);
-                    });
-                }
+                    placesToPlantGrass.Add(neighbourPosition);
+                });
             }
 
             foreach (var position in placesToPlantGrass) {
@@ -216,10 +201,8 @@ namespace LogicGrid {
                     CurrentPosition = position
                 };
                 
-                if (SimulationGrid.GrassAgents.TryGetValue(position, out var grassList)) {
-                    grassList.AddLast(grass);
-                } else {
-                    SimulationGrid.GrassAgents.Add(position, new LinkedList<Grass>(new[] {grass}));
+                if (!SimulationGrid.GrassAgents.ContainsKey(position)) {
+                    SimulationGrid.GrassAgents.Add(position, grass);
                 }
             }
         }
@@ -272,7 +255,9 @@ namespace LogicGrid {
         
         public static void Update() {
             UpdatePreysStep();
+            UpdateDeadLiveables();
             UpdatePredatorsStep();
+            UpdateDeadLiveables();
             UpdateSpeciesStep();
             UpdateEnvironmentStep();
             UpdateAgentsAgeAndResetDistanceTravelled();

@@ -16,13 +16,13 @@ namespace LogicGrid
     public static class SimulationGrid {
         public static Vector2Int GridSize => DevSet.I.simulation.gridSize;
 
-        public static readonly Dictionary<Vector2Int, LinkedList<Grass>> GrassAgents = new Dictionary<Vector2Int, LinkedList<Grass>>();
+        public static readonly Dictionary<Vector2Int, Grass> GrassAgents = new Dictionary<Vector2Int, Grass>();
         public static readonly Dictionary<Vector2Int, LinkedList<Prey>> PreyAgents = new Dictionary<Vector2Int, LinkedList<Prey>>();
 
         public static readonly Dictionary<Vector2Int, LinkedList<Predator>> PredatorAgents =
             new Dictionary<Vector2Int, LinkedList<Predator>>();
 
-        public static readonly Dictionary<Vector2Int, LinkedList<Meat>> ObstacleAgents = new Dictionary<Vector2Int, LinkedList<Meat>>();
+        public static readonly Dictionary<Vector2Int, Meat> ObstacleAgents = new Dictionary<Vector2Int, Meat>();
         
         public static readonly GrassAgentsAdapter GrassAgentsAdapter = new GrassAgentsAdapter(GrassAgents);
         public static readonly PreyAgentsAdapter PreyAgentsAdapter = new PreyAgentsAdapter(PreyAgents);

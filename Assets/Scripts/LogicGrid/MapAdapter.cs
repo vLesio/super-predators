@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Agents.LiveableAgents;
 using Agents.ResourceAgents;
@@ -17,9 +18,9 @@ namespace LogicGrid {
     }
 
     public class GrassAgentsAdapter: MapAdapter {
-        private readonly Dictionary<Vector2Int, LinkedList<Grass>> _grassAgents;
+        private readonly Dictionary<Vector2Int, Grass> _grassAgents;
         
-        public GrassAgentsAdapter(Dictionary<Vector2Int, LinkedList<Grass>> grassAgents) {
+        public GrassAgentsAdapter(Dictionary<Vector2Int, Grass> grassAgents) {
             _grassAgents = grassAgents;
         }
         
@@ -28,14 +29,14 @@ namespace LogicGrid {
         }
         
         public override int CountAgentsInPosition(Vector2Int position) {
-            return _grassAgents.TryGetValue(position, out var agents) ? agents.Count : 0;
+            return _grassAgents.TryGetValue(position, out var grass) ? (int) Math.Ceiling(grass.Quantity) : 0;
         }
     }
     
     public class MeatAgentsAdapter: MapAdapter {
-        private readonly Dictionary<Vector2Int, LinkedList<Meat>> _meatAgents;
+        private readonly Dictionary<Vector2Int, Meat> _meatAgents;
         
-        public MeatAgentsAdapter(Dictionary<Vector2Int, LinkedList<Meat>> meatAgents) {
+        public MeatAgentsAdapter(Dictionary<Vector2Int, Meat> meatAgents) {
             _meatAgents = meatAgents;
         }
 
@@ -44,7 +45,7 @@ namespace LogicGrid {
         }
         
         public override int CountAgentsInPosition(Vector2Int position) {
-            return _meatAgents.TryGetValue(position, out var agents) ? agents.Count : 0;
+            return _meatAgents.TryGetValue(position, out var meat) ? (int) Math.Ceiling(meat.Quantity) : 0;
         }
     }
     

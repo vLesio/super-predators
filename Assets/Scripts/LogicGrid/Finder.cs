@@ -79,7 +79,7 @@ namespace LogicGrid
                 return null;
             }
 
-            return SimulationGrid.GrassAgents[nearestGrassPosition].First();
+            return SimulationGrid.GrassAgents[nearestGrassPosition];
         }
         
         public static Prey FindNearestPreyForAgent(CellAgent agent) {
@@ -112,7 +112,7 @@ namespace LogicGrid
                 return null;
             }
 
-            return SimulationGrid.ObstacleAgents[nearestMeatPosition].First();
+            return SimulationGrid.ObstacleAgents[nearestMeatPosition];
         }
         
         public static Liveable FindNearestMateForAgent(CellAgent agent) {
@@ -253,13 +253,13 @@ namespace LogicGrid
         }
         
         public static Grass FindGrassOnAgentPosition(CellAgent agent) {
-            return SimulationGrid.GrassAgents.TryGetValue(agent.CurrentPosition, out var grasses)
-                ? grasses.First() : null;
+            return SimulationGrid.GrassAgents.TryGetValue(agent.CurrentPosition, out var grass)
+                ? grass : null;
         }
         
         public static Meat FindMeatOnAgentPosition(CellAgent agent) {
-            return SimulationGrid.ObstacleAgents.TryGetValue(agent.CurrentPosition, out var meats)
-                ? meats.First() : null;
+            return SimulationGrid.ObstacleAgents.TryGetValue(agent.CurrentPosition, out var meat)
+                ? meat : null;
         }
     }
 }
