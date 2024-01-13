@@ -174,7 +174,14 @@ namespace LogicGrid {
             }
             
             foreach (var emptyPosition in emptyPositions) {
-                SimulationGrid.RemoveMeat(emptyPosition);
+                if (emptyPosition.GetType() == typeof(Grass))
+                {
+                    SimulationGrid.RemoveGrass(emptyPosition);
+                }
+                else
+                {
+                    SimulationGrid.RemoveMeat(emptyPosition);
+                }
             }
         }
         
