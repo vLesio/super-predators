@@ -44,6 +44,7 @@ namespace LogicGrid
         }
         
         private static void MoveTowardsDirection(Liveable agent, Vector2Int destination) {
+            var oldPosition = agent.CurrentPosition;
             var newPosition = CalculatePositionAfterMove(agent, destination);
             
             if (agent.CurrentPosition == newPosition) {
@@ -60,7 +61,7 @@ namespace LogicGrid
                 default:
                     throw new ArgumentOutOfRangeException(nameof(agent));
             }
-            CGrid.I.MoveLiveable(agent, agentPosition, direction);
+            CGrid.I.MoveLiveable(agent, oldPosition, newPosition);
         }
 
         private static bool CheckIfDestinationIsReachableByAgent(Liveable agent, Vector2Int destination) {
