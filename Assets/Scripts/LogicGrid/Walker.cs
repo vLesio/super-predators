@@ -7,17 +7,18 @@ namespace LogicGrid
 {
     public static class Walker {
         public static bool TryToMoveTowardsDirections(Liveable agent, Vector2Int destination) {
-            if (!SimulationGrid.CheckIfDestinationIsInSimulation(destination)) {
-                return false;
-            }
-            
             MoveTowardsDirection(agent, destination);
             return true;
         }
 
         private static Vector2Int CalculatePositionAfterMove(Liveable agent, Vector2Int destination) {
+            var clampedDestination = new Vector2Int(
+                Mathf.Clamp(destination.x, 0, SimulationGrid.GridSize.x - 1),
+                Mathf.Clamp(destination.y, 0, SimulationGrid.GridSize.y - 1)
+            );
+            
             var agentPosition = agent.CurrentPosition;
-            var difference = destination - agentPosition;
+            var difference = clampedDestination - agentPosition;
             
             var absDx = Math.Abs(difference.x);
             var absDy = Math.Abs(difference.y);
@@ -40,7 +41,7 @@ namespace LogicGrid
                 
                 return agent.CurrentPosition + direction * minPart + restDirection * restSpeed;
             }
-            return destination;
+            return clampedDestination;
         }
         
         private static void MoveTowardsDirection(Liveable agent, Vector2Int destination) {
