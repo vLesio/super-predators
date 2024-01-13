@@ -60,10 +60,15 @@ namespace GridSystem {
         public void SpawnLiveable(Liveable liveable, Vector2Int cell) {
             _cells[(cell.x, cell.y)].AddLiveable(liveable);
         }
-        
-        public void DespawnLiveable(Liveable liveable, Vector2Int cell) {}
 
-        public void MoveLiveable(Liveable liveable, Vector2Int from, Vector2Int to) {}
+        public void DespawnLiveable(Liveable liveable, Vector2Int cell) {
+            _cells[(cell.x, cell.y)].RemoveLiveable(liveable);
+        }
+
+        public void MoveLiveable(Liveable liveable, Vector2Int from, Vector2Int to) {
+            _cells[(from.x, from.y)].RemoveLiveable(liveable);
+            _cells[(to.x, to.y)].AddLiveable(liveable);
+        }
 
         public void SetGrass(Vector2Int cell, float amount) {
             _cells[(cell.x, cell.y)].SetGrass(amount);

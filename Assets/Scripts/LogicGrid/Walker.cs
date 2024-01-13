@@ -1,5 +1,6 @@
 ﻿using System;
 using Agents.LiveableAgents;
+using GridSystem;
 using UnityEngine;
 
 namespace LogicGrid
@@ -41,6 +42,7 @@ namespace LogicGrid
             } else {
                 agent.CurrentPosition = destination;
             }
+            CGrid.I.MoveLiveable(agent, agentPosition, direction);
         }
 
         private static bool CheckIfDestinationIsReachableByAgent() {

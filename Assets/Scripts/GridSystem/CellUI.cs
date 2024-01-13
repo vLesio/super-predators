@@ -29,11 +29,16 @@ namespace GridSystem {
                 grassPanel.color = _settings.groundColor;
                 return;
             }
-            var green = (amount) *
-                (_settings.grassGradient.higherGreenBound - _settings.grassGradient.lowerGreenBound) /
-                (_settings.maxGrass) + _settings.grassGradient.lowerGreenBound;
             
-            grassPanel.color = new Color(0f, green, 0f);
+            // var green = (amount) *
+            //     (_settings.grassGradient.higherGreenBound - _settings.grassGradient.lowerGreenBound) /
+            //     (_settings.maxGrass) + _settings.grassGradient.lowerGreenBound;
+
+            var green = (amount) / _settings.maxGrass;
+
+            grassPanel.color = DevSet.I.simulation.ggrassGradient.Evaluate(green);
+            
+            // grassPanel.color = new Color(0f, green, 0f);
         }
 
         public void SetMeat(float amount) {

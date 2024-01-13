@@ -58,6 +58,7 @@ namespace Settings {
         [Tooltip("Can be null, default value will be used")] public GameObject predatorPrefab;
         [Tooltip("Can be null, default value will be used")] public GameObject preyPrefab;
         public Color groundColor = new Color(132f, 59f, 0f);
+        public Gradient ggrassGradient;
         public GrassGradient grassGradient = new GrassGradient();
     }   
 }

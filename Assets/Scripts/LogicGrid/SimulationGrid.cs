@@ -3,6 +3,7 @@ using System.ComponentModel;
 using Agents;
 using Agents.LiveableAgents;
 using Agents.ResourceAgents;
+using GridSystem;
 using Settings;
 using Unity.Collections.LowLevel.Unsafe;
 using Unity.VisualScripting;
@@ -46,6 +47,7 @@ namespace LogicGrid
             }
             
             agent.CurrentPosition = destination;
+            CGrid.I.MoveLiveable(agent, oldPosition, destination);
         }
         
         public static List<Vector2Int> GetNeighbours(Vector2Int position) {
