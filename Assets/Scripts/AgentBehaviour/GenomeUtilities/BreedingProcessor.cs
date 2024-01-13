@@ -62,6 +62,8 @@ namespace AgentBehaviour.GenomeUtilities {
             
             child.CognitiveMap = childFuzzyCognitiveMap;
             
+            child.CurrentPosition = firstParent.CurrentPosition;
+            
             return child;
         }
     }

@@ -7,6 +7,9 @@ using UnityEngine;
 
 namespace LogicGrid {
     public static class Simulation {
+        public static readonly AllSpeciesOfTypes<Prey> preySpecies = new AllSpeciesOfTypes<Prey>();
+        public static readonly AllSpeciesOfTypes<Predator> predatorSpecies = new AllSpeciesOfTypes<Predator>();
+        
         private static List<T> GetAllAgentsInIncreasingAgeOrder<T>(Dictionary<Vector2Int, LinkedList<T>> agents)
                                                                     where T: Liveable {
             var allAgents = new List<T>();
@@ -36,7 +39,23 @@ namespace LogicGrid {
         }
 
         private static void UpdateActionsAndEnergyForPreys() {
-            throw new NotImplementedException();
+            var allPreys = GetAllAgentsInIncreasingAgeOrder(SimulationGrid.PreyAgents);
+            
+            allPreys.ForEach(prey => {
+                if (prey.IsDead()) {
+                    return;
+                }
+                
+                prey.ChooseAction();
+                prey.Act();
+                
+                if (prey.IsDead()) {
+                    return;
+                }
+                
+                // TODO: check if this is correct
+                prey.UpdateEnergyAndResetDistanceTravelled();
+            });
         }
         
         private static void UpdatePerceptionsForPredators() {
@@ -57,7 +76,22 @@ namespace LogicGrid {
         }
         
         private static void UpdateActionsAndEnergyForPredators() {
-            throw new NotImplementedException();
+            var allPredators = GetAllAgentsInIncreasingAgeOrder(SimulationGrid.PredatorAgents);
+
+            allPredators.ForEach(predator => {
+                if (predator.IsDead()) {
+                    return;
+                }
+
+                predator.ChooseAction();
+                predator.Act();
+
+                if (predator.IsDead()) {
+                    return;
+                }
+
+                predator.UpdateEnergyAndResetDistanceTravelled();
+            });
         }
         
         private static void UpdateDeadLiveables<T>(Dictionary<Vector2Int, LinkedList<T>> agents)
@@ -110,11 +144,23 @@ namespace LogicGrid {
         }
         
         private static void UpdatePreySpecies() {
-            throw new NotImplementedException();
+            preySpecies.Reset();
+            
+            var allPreys = GetAllAgentsInIncreasingAgeOrder(SimulationGrid.PreyAgents);
+
+            allPreys.ForEach(prey => {
+                preySpecies.AddAgent(prey);
+            });
         }
         
         private static void UpdatePredatorSpecies() {
-            throw new NotImplementedException();
+            predatorSpecies.Reset();
+            
+            var allPredators = GetAllAgentsInIncreasingAgeOrder(SimulationGrid.PredatorAgents);
+
+            allPredators.ForEach(predator => {
+                predatorSpecies.AddAgent(predator);
+            });
         }
         
         private static void UpdateLocallyResourceAgents<T>(Dictionary<Vector2Int, LinkedList<T>> agents)
