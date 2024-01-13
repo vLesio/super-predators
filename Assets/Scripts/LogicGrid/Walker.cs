@@ -15,7 +15,7 @@ namespace LogicGrid
             return true;
         }
 
-        private static void MoveTowardsDirection(Liveable agent, Vector2Int destination) {
+        private static Vector2Int CalculatePositionAfterMove(Liveable agent, Vector2Int destination) {
             var agentPosition = agent.CurrentPosition;
             var difference = destination - agentPosition;
             
@@ -30,7 +30,7 @@ namespace LogicGrid
             var direction = new Vector2Int(Math.Sign(difference.x), Math.Sign(difference.y));
             
             if (speed < minPart) {
-                agent.CurrentPosition += direction * speed;
+                return agent.CurrentPosition + direction * speed;
             } else if (speed < distance) {
                 var restSpeed = speed - minPart;
                 
@@ -38,15 +38,33 @@ namespace LogicGrid
                     new Vector2Int(direction.x, 0) :
                     new Vector2Int(0, direction.y);
                 
-                agent.CurrentPosition += direction * minPart + restDirection * restSpeed;
-            } else {
-                agent.CurrentPosition = destination;
+                return agent.CurrentPosition + direction * minPart + restDirection * restSpeed;
+            }
+            return destination;
+        }
+        
+        private static void MoveTowardsDirection(Liveable agent, Vector2Int destination) {
+            var newPosition = CalculatePositionAfterMove(agent, destination);
+            
+            if (agent.CurrentPosition == newPosition) {
+                return;
+            }
+
+            switch (agent) {
+                case Prey prey:
+                    SimulationGrid.MoveAgent(prey, newPosition);
+                    break;
+                case Predator predator:
+                    SimulationGrid.MoveAgent(predator, newPosition);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(agent));
             }
             CGrid.I.MoveLiveable(agent, agentPosition, direction);
         }
 
-        private static bool CheckIfDestinationIsReachableByAgent() {
-            return true;
+        private static bool CheckIfDestinationIsReachableByAgent(Liveable agent, Vector2Int destination) {
+            return agent.CurrentPosition == CalculatePositionAfterMove(agent, destination);
         }
     }
 }

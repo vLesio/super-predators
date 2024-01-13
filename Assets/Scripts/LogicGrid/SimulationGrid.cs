@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using Agents;
 using Agents.LiveableAgents;
 using Agents.ResourceAgents;
@@ -50,6 +51,17 @@ namespace LogicGrid
             CGrid.I.MoveLiveable(agent, oldPosition, destination);
         }
         
+        private static List<T> GetAllAgentsInIncreasingAgeOrder<T>(Dictionary<Vector2Int, LinkedList<T>> agents)
+                                                                    where T: Liveable {
+            var allAgents = new List<T>();
+            
+            foreach (var agentList in agents.Values) {
+                allAgents.AddRange(agentList);
+            }
+            
+            return allAgents.OrderBy(agent => agent.Age).ToList();
+        }
+        
         public static List<Vector2Int> GetNeighbours(Vector2Int position) {
             var neighbours = new List<Vector2Int>();
 
@@ -97,6 +109,14 @@ namespace LogicGrid
         
         public static void MoveAgent(Predator agent, Vector2Int destination) {
             MoveAgent(agent, destination, PredatorAgents);
+        }
+        
+        public static List<Prey> GetAllPreysInIncreasingAgeOrder() {
+            return GetAllAgentsInIncreasingAgeOrder(PreyAgents);
+        }
+        
+        public static List<Predator> GetAllPredatorsInIncreasingAgeOrder() {
+            return GetAllAgentsInIncreasingAgeOrder(PredatorAgents);
         }
     }
 }
