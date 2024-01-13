@@ -25,6 +25,7 @@ namespace Application {
             var initializer = new SimulationInitializer();
             initializer.SpawnInitialPreyGroups(initializer.GetPreyClusterPoints(), 10f);
             initializer.SpawnInitialPredatorGroups(initializer.GetPredatorClusterPoints(), 10f);
+            initializer.InitializeGrass();
         }
 
         private void Step() {
