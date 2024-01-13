@@ -249,7 +249,23 @@ namespace LogicGrid {
             UpdateMeat();
         }
         
-        public static void Update() {
+        private static void ResetActedThisTurnInAllAgents() {
+            foreach (var preyList in SimulationGrid.PreyAgents.Values) {
+                foreach (var prey in preyList) {
+                    prey.ActedThisTurn = false;
+                }
+            }
+            
+            foreach (var predatorList in SimulationGrid.PredatorAgents.Values) {
+                foreach (var predator in predatorList) {
+                    predator.ActedThisTurn = false;
+                }
+            }
+        }
+        
+        public static void Update()
+        {
+            ResetActedThisTurnInAllAgents();
             UpdatePreysStep();
             UpdateDeadLiveables();
             UpdatePredatorsStep();
