@@ -20,12 +20,12 @@ namespace LogicGrid
         public static readonly Dictionary<Vector2Int, HashSet<Predator>> PredatorAgents =
             new Dictionary<Vector2Int, HashSet<Predator>>();
 
-        public static readonly Dictionary<Vector2Int, Meat> ObstacleAgents = new Dictionary<Vector2Int, Meat>();
+        public static readonly Dictionary<Vector2Int, Meat> MeatAgents = new Dictionary<Vector2Int, Meat>();
         
         public static readonly GrassAgentsAdapter GrassAgentsAdapter = new GrassAgentsAdapter(GrassAgents);
         public static readonly PreyAgentsAdapter PreyAgentsAdapter = new PreyAgentsAdapter(PreyAgents);
         public static readonly PredatorAgentsAdapter PredatorAgentsAdapter = new PredatorAgentsAdapter(PredatorAgents);
-        public static readonly MeatAgentsAdapter ObstacleAgentsAdapter = new MeatAgentsAdapter(ObstacleAgents);
+        public static readonly MeatAgentsAdapter ObstacleAgentsAdapter = new MeatAgentsAdapter(MeatAgents);
         
         private static void MoveAgent<T>(T agent, Vector2Int destination, Dictionary<Vector2Int, HashSet<T>> agents)
                                             where T: Liveable {
@@ -37,6 +37,10 @@ namespace LogicGrid
             
             if (agents.TryGetValue(oldPosition, out var agentsInOldPosition)) {
                 agentsInOldPosition.Remove(agent);
+                
+                if (agentsInOldPosition.Count == 0) {
+                    agents.Remove(oldPosition);
+                }
             }
             
             if (agents.TryGetValue(destination, out var agentsInDestination)) {
@@ -100,7 +104,7 @@ namespace LogicGrid
         public static Vector2Int FindRandomDirection()
         {
             var random = new System.Random();
-            var randomDirection = new Vector2Int(random.Next(-1, 1), random.Next(-1, 1));
+            var randomDirection = new Vector2Int(random.Next(-1, 2), random.Next(-1, 2));
             return randomDirection * (GridSize.x > GridSize.y ? GridSize.x : GridSize.y);
         }
 
@@ -159,7 +163,7 @@ namespace LogicGrid
         
         public static void SetMeat(Vector2Int position, float amount) {
             amount = Mathf.Clamp(amount, 0f, DevSet.I.simulation.maxMeat);
-            SetResourceAgent(position, amount, ObstacleAgents);
+            SetResourceAgent(position, amount, MeatAgents);
             CGrid.I.SetMeat(position, amount);
         }
         
@@ -179,13 +183,18 @@ namespace LogicGrid
         }
         
         public static void RemoveMeat(Vector2Int position) {
-            ObstacleAgents.Remove(position);
+            MeatAgents.Remove(position);
             CGrid.I.SetMeat(position, 0f);
         }
         
         public static void RemovePrey(Prey prey) {
             if (PreyAgents.TryGetValue(prey.CurrentPosition, out var agentsInPosition)) {
                 agentsInPosition.Remove(prey);
+                
+                if (agentsInPosition.Count == 0) {
+                    PreyAgents.Remove(prey.CurrentPosition);
+                }
+                
                 CGrid.I.DespawnLiveable(prey, prey.CurrentPosition);
             }
         }
@@ -193,6 +202,11 @@ namespace LogicGrid
         public static void RemovePredator(Predator predator) {
             if (PredatorAgents.TryGetValue(predator.CurrentPosition, out var agentsInPosition)) {
                 agentsInPosition.Remove(predator);
+                
+                if (agentsInPosition.Count == 0) {
+                    PredatorAgents.Remove(predator.CurrentPosition);
+                }
+                
                 CGrid.I.DespawnLiveable(predator, predator.CurrentPosition);
             }
         }

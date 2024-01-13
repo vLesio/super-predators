@@ -36,9 +36,12 @@ namespace Application {
                 Math.Ceiling(DevSet.I.simulation.initNbPredator / DevSet.I.simulation.sizeClusterPredator);
             var predatorPoints = new List<(int, int)>();
             
-            double step = Math.Sqrt((DevSet.I.simulation.gridSize.x  * DevSet.I.simulation.gridSize.y) / predatorClustersCount);
-            for (double x = 0; x < DevSet.I.simulation.gridSize.x; x += step) {
-                for (double y = 0; y < DevSet.I.simulation.gridSize.y; y += step) {
+            var step = Math.Sqrt((DevSet.I.simulation.gridSize.x  * DevSet.I.simulation.gridSize.y) / predatorClustersCount);
+            var deltaX = (DevSet.I.simulation.gridSize.x % step) * 0.5;
+            var deltaY = (DevSet.I.simulation.gridSize.y % step) * 0.5;
+            
+            for (double x = deltaX; x < DevSet.I.simulation.gridSize.x; x += step) {
+                for (double y = deltaY; y < DevSet.I.simulation.gridSize.y; y += step) {
                     if (predatorPoints.Count < predatorClustersCount) {
                         predatorPoints.Add(((int)x, (int)y));
                     }
@@ -67,12 +70,12 @@ namespace Application {
             var maxPoint = new Vector2Int(point.Item1 + (int)radius, point.Item2 + (int)radius);
             
             var minPointClamped = new Vector2Int(
-                Mathf.Clamp(minPoint.x, 0, DevSet.I.simulation.gridSize.x - 1),
-                Mathf.Clamp(minPoint.y, 0, DevSet.I.simulation.gridSize.y - 1)
+                Mathf.Clamp(minPoint.x, 0, DevSet.I.simulation.gridSize.x),
+                Mathf.Clamp(minPoint.y, 0, DevSet.I.simulation.gridSize.y)
             );
             var maxPointClamped = new Vector2Int(
-                Mathf.Clamp(maxPoint.x, 0, DevSet.I.simulation.gridSize.x - 1),
-                Mathf.Clamp(maxPoint.y, 0, DevSet.I.simulation.gridSize.y - 1)
+                Mathf.Clamp(maxPoint.x, 0, DevSet.I.simulation.gridSize.x),
+                Mathf.Clamp(maxPoint.y, 0, DevSet.I.simulation.gridSize.y)
             );
 
             return (minPointClamped, maxPointClamped);

@@ -100,14 +100,16 @@ namespace LogicGrid {
             const int meatCreatedFromDeadAgent = 2;
             
             var emptyPositions = new HashSet<Vector2Int>();
+
+            var agentsList = agents.Values.ToList();
             
-            foreach (var agentsSet in agents.Values) {
+            foreach (var agentsSet in agentsList) {
                 var agentsToRemove = agentsSet.Where(agent => agent.IsDead()).ToList();
                 
                 agentsToRemove.ForEach(agent => {
                     var position = agent.CurrentPosition;
 
-                    if (SimulationGrid.ObstacleAgents.TryGetValue(position, out var meat)) {
+                    if (SimulationGrid.MeatAgents.TryGetValue(position, out var meat)) {
                         meat.Quantity += meatCreatedFromDeadAgent;
                     }
                     else {
@@ -214,7 +216,7 @@ namespace LogicGrid {
         }
         
         private static void UpdateMeat() {
-            UpdateLocallyResourceAgents(SimulationGrid.ObstacleAgents);
+            UpdateLocallyResourceAgents(SimulationGrid.MeatAgents);
         }
         
         private static void UpdateAgentsAgeAndResetDistanceTravelled<T>(Dictionary<Vector2Int, HashSet<T>> agents)

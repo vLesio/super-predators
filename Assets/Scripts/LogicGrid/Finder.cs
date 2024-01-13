@@ -111,7 +111,7 @@ namespace LogicGrid
                 return null;
             }
 
-            return SimulationGrid.ObstacleAgents[nearestMeatPosition];
+            return SimulationGrid.MeatAgents[nearestMeatPosition];
         }
         
         public static Liveable FindNearestMateForAgent(CellAgent agent) {
@@ -257,7 +257,7 @@ namespace LogicGrid
         }
         
         public static Meat FindMeatOnAgentPosition(CellAgent agent) {
-            return SimulationGrid.ObstacleAgents.TryGetValue(agent.CurrentPosition, out var meat)
+            return SimulationGrid.MeatAgents.TryGetValue(agent.CurrentPosition, out var meat)
                 ? meat : null;
         }
     }
