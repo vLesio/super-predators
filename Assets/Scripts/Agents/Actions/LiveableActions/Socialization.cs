@@ -33,7 +33,7 @@ namespace Agents.Actions.LiveableActions
             else
             {
                 // TODO: DONE: Choose random direction and move by speed like a moron
-                Walker.TryToMoveTowardsDirections(agent, SimulationGrid.FindRandomDirection());
+                Walker.TryToMoveTowardsDirections(agent, SimulationGrid.FindRandomTargetCell(agent));
             }
         }
 
