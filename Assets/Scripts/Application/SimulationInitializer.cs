@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Agents.LiveableAgents;
 using LogicGrid;
 using Settings;
@@ -9,47 +10,56 @@ using Random = UnityEngine.Random;
 
 namespace Application {
     public class SimulationInitializer {
+        private List<int> Sample(int min, int max, int count) {
+            var numbers = new List<int>();
+            
+            for (var i = min; i < max; i++) {
+                numbers.Add(i);
+            }
+            
+            var result = new List<int>();
 
+            for (var i = 0; i < count && i < numbers.Count; i++) {
+                var index = Random.Range(i, numbers.Count);
+                (numbers[i], numbers[index]) = (numbers[index], numbers[i]);
+                
+                var number = numbers[i];
+                result.Add(number);
+            }
+            
+            return result;
+        }
+
+        private List<(int, int)> SamplePoints(Vector2Int minPoint, Vector2Int maxPoint, int count) {
+            var deltaX = maxPoint.x - minPoint.x;
+            var deltaY = maxPoint.y - minPoint.y;
+            
+            var area = deltaX * deltaY;
+            var indices = Sample(0, area, count);
+
+            var points = indices
+                .Select((index) =>
+                    (minPoint.x + index % deltaX, minPoint.y + index / deltaX)
+                ).ToList();
+            
+            return points;
+        }
 
         public List<(int, int)> GetPreyClusterPoints() {
             var preyClustersCount =
                 Math.Ceiling(DevSet.I.simulation.initNbPrey / DevSet.I.simulation.sizeClusterPrey);
-            var preyPoints = new List<(int, int)>();
+            var preyPoints = SamplePoints(Vector2Int.zero,
+                DevSet.I.simulation.gridSize, (int)preyClustersCount);
 
-            var step = Math.Sqrt((DevSet.I.simulation.gridSize.x * DevSet.I.simulation.gridSize.y) /
-                                    preyClustersCount);
-            for (double x = 0; x < DevSet.I.simulation.gridSize.x; x += step) {
-                for (double y = 0; y < DevSet.I.simulation.gridSize.y; y += step) {
-                    if (preyPoints.Count < preyClustersCount) {
-                        preyPoints.Add(((int)x, (int)y));
-                    }
-                    else {
-                        break;
-                    }
-                }
-            }
             return preyPoints;
         }
 
         public List<(int, int)> GetPredatorClusterPoints() {
             var predatorClustersCount =
                 Math.Ceiling(DevSet.I.simulation.initNbPredator / DevSet.I.simulation.sizeClusterPredator);
-            var predatorPoints = new List<(int, int)>();
+            var predatorPoints = SamplePoints(Vector2Int.zero,
+                DevSet.I.simulation.gridSize, (int)predatorClustersCount);
             
-            var step = Math.Sqrt((DevSet.I.simulation.gridSize.x  * DevSet.I.simulation.gridSize.y) / predatorClustersCount);
-            var deltaX = (DevSet.I.simulation.gridSize.x % step) * 0.5;
-            var deltaY = (DevSet.I.simulation.gridSize.y % step) * 0.5;
-            
-            for (double x = deltaX; x < DevSet.I.simulation.gridSize.x; x += step) {
-                for (double y = deltaY; y < DevSet.I.simulation.gridSize.y; y += step) {
-                    if (predatorPoints.Count < predatorClustersCount) {
-                        predatorPoints.Add(((int)x, (int)y));
-                    }
-                    else {
-                        break;
-                    }
-                }
-            }
             return predatorPoints;
         }
 
