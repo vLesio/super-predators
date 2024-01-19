@@ -24,7 +24,7 @@ namespace Agents.Actions.LiveableActions
             }
             else
             {
-                Walker.TryToMoveTowardsDirections(agent, SimulationGrid.FindRandomDirection());
+                Walker.TryToMoveTowardsDirections(agent, SimulationGrid.FindRandomTargetCell(agent));
                 // TODO: DONE: Choose random direction and move by speed
             }
             agent.CognitiveMap.MultiplyNamedInternalConcept(NamedInternalConcept.Fear, 0.5f);

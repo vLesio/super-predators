@@ -101,11 +101,22 @@ namespace LogicGrid
             return neighbours;
         }
 
-        public static Vector2Int FindRandomDirection()
-        {
-            var random = new System.Random();
-            var randomDirection = new Vector2Int(random.Next(-1, 2), random.Next(-1, 2));
-            return randomDirection * (GridSize.x > GridSize.y ? GridSize.x : GridSize.y);
+        public static Vector2 FindRandomDirection() {
+            var randomAngle = Random.Range(0f, 2 * Mathf.PI);
+            return new Vector2(Mathf.Cos(randomAngle), Mathf.Sin(randomAngle));
+        }
+
+        public static Vector2Int FindRandomTargetCell(Liveable agent) {
+            var randomDirection = FindRandomDirection();
+            var randomTargetFloat = agent.CurrentPosition + randomDirection * ((float) agent.Speed) * 1.5f;
+            var randomTargetInteger = new Vector2Int((int) randomTargetFloat.x, (int) randomTargetFloat.y);
+            
+            var randomTargetClamped = new Vector2Int(
+                Mathf.Clamp(randomTargetInteger.x, 0, GridSize.x - 1),
+                Mathf.Clamp(randomTargetInteger.y, 0, GridSize.y - 1)
+            );
+            
+            return randomTargetClamped;
         }
 
         public static bool CheckIfDestinationIsInSimulation(Vector2Int destination) {

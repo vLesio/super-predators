@@ -45,7 +45,6 @@ namespace LogicGrid
         }
         
         private static void MoveTowardsDirection(Liveable agent, Vector2Int destination) {
-            var oldPosition = agent.CurrentPosition;
             var newPosition = CalculatePositionAfterMove(agent, destination);
             
             if (agent.CurrentPosition == newPosition) {
