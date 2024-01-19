@@ -38,19 +38,24 @@ namespace Agents.LiveableAgents
             CognitiveMap = FuzzyCognitiveMap.Create(this, DevSet.I.simulation.cogMapComplexity);
         }
         
-        public override void UpdateAttributesDependentOnGrid() {
-            var agentsInRangeCounter = new AgentsInRangeCounter(AgentsInRangeCounter.PreyAttributeToMapAdapter, 
+        public override void UpdateSensitivesDependentOnGrid() {
+            var agentsInRangeCounter = new AgentsInRangeCounter(AgentsInRangeCounter.PreySensitiveConceptToMapAdapter, 
                 FarRange, NearRange);
             var agentsInRange = agentsInRangeCounter.CountAgentsInRange(CurrentPosition);
             
-            agentsInRange.Keys.ToList().ForEach(attribute => {
-                Attributes[attribute] = agentsInRange[attribute];
+            agentsInRange.Keys.ToList().ForEach(concept => {
+                SensitiveConceptsValues[concept] = agentsInRange[concept];
             });
         }
         
-        public override void UpdateAttributesDependentOnLocalCell() {
+        public override void UpdateSensitivesDependentOnLocalCell() {
             var countOfLocalGrass = SimulationGrid.GrassAgentsAdapter.CountAgentsInPosition(CurrentPosition);
             var countOfLocalPreys = SimulationGrid.PreyAgentsAdapter.CountAgentsInPosition(CurrentPosition);
+            
+            SensitiveConceptsValues[SensitiveConcepts.QuantityOfLocalFoodLow] = countOfLocalGrass < 1 ? 1 : 0;
+            SensitiveConceptsValues[SensitiveConcepts.QuantityOfLocalFoodHigh] = countOfLocalGrass > 1 ? 1 : 0;
+            SensitiveConceptsValues[SensitiveConcepts.QuantityOfLocalMateHigh] = countOfLocalPreys > 1 ? 1 : 0;
+            SensitiveConceptsValues[SensitiveConcepts.QuantityOfLocalMateLow] = countOfLocalPreys < 1 ? 1 : 0;
             
             Attributes[LiveableAttribute.QuantityOfLocalFood] = countOfLocalGrass;
             Attributes[LiveableAttribute.QuantityOfLocalMates] = countOfLocalPreys;

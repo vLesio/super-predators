@@ -111,8 +111,8 @@ namespace Agents.LiveableAgents
             InitLiveable();
         }
         
-        public abstract void UpdateAttributesDependentOnGrid();
-        public abstract void UpdateAttributesDependentOnLocalCell();
+        public abstract void UpdateSensitivesDependentOnGrid();
+        public abstract void UpdateSensitivesDependentOnLocalCell();
 
         public bool IsDead() {
             return Attributes[LiveableAttribute.Energy] <= 0 || Attributes[LiveableAttribute.Age] >= MaxAge;

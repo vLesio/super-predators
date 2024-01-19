@@ -1,12 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using AgentBehaviour.FuzzyCognitiveMapUtilities;
 using Agents.LiveableAgents;
 using Settings;
 using UnityEngine;
 
 namespace LogicGrid {
-    using AttributeToMapAdapter = Dictionary<LiveableAttribute, MapAdapter>;
-    using AttributeToRange = Dictionary<LiveableAttribute, AttributeRange>;
+    using SensitiveConceptToMapAdapter = Dictionary<SensitiveConcepts, MapAdapter>;
+    using SensitiveConceptToRange = Dictionary<SensitiveConcepts, AttributeRange>;
     
     public enum AttributeRange {
         Close,
@@ -14,49 +15,55 @@ namespace LogicGrid {
     }
     
     public class AgentsInRangeCounter {
-        public static readonly AttributeToMapAdapter PreyAttributeToMapAdapter =
-            new AttributeToMapAdapter {
-                {LiveableAttribute.FoodClose, SimulationGrid.GrassAgentsAdapter},
-                {LiveableAttribute.FoodFar, SimulationGrid.GrassAgentsAdapter},
-                {LiveableAttribute.MateClose, SimulationGrid.PreyAgentsAdapter},
-                {LiveableAttribute.MateFar, SimulationGrid.PreyAgentsAdapter},
-                {LiveableAttribute.EnemyClose, SimulationGrid.PredatorAgentsAdapter},
-                {LiveableAttribute.EnemyFar, SimulationGrid.PredatorAgentsAdapter}
+        public static readonly SensitiveConceptToMapAdapter PreySensitiveConceptToMapAdapter =
+            new SensitiveConceptToMapAdapter {
+                {SensitiveConcepts.FoeClose, SimulationGrid.PredatorAgentsAdapter},
+                {SensitiveConcepts.FoeFar, SimulationGrid.PredatorAgentsAdapter},
+                {SensitiveConcepts.PreyClose, SimulationGrid.PreyAgentsAdapter},
+                {SensitiveConcepts.PreyFar, SimulationGrid.PreyAgentsAdapter},
+                {SensitiveConcepts.FoodClose, SimulationGrid.GrassAgentsAdapter},
+                {SensitiveConcepts.FoodFar, SimulationGrid.GrassAgentsAdapter},
+                {SensitiveConcepts.MateClose, SimulationGrid.PreyAgentsAdapter},
+                {SensitiveConcepts.MateFar, SimulationGrid.PreyAgentsAdapter}
             };
-        public static readonly AttributeToMapAdapter PredatorAttributeToMapAdapter =
-            new AttributeToMapAdapter {
-                {LiveableAttribute.FoodClose, SimulationGrid.ObstacleAgentsAdapter},
-                {LiveableAttribute.FoodFar, SimulationGrid.ObstacleAgentsAdapter},
-                {LiveableAttribute.MateClose, SimulationGrid.PredatorAgentsAdapter},
-                {LiveableAttribute.MateFar, SimulationGrid.PredatorAgentsAdapter},
-                {LiveableAttribute.EnemyClose, SimulationGrid.PreyAgentsAdapter},
-                {LiveableAttribute.EnemyFar, SimulationGrid.PreyAgentsAdapter}
+        public static readonly SensitiveConceptToMapAdapter PredatorSensitiveConceptToMapAdapter =
+            new SensitiveConceptToMapAdapter {
+                {SensitiveConcepts.FoeClose, SimulationGrid.PreyAgentsAdapter},
+                {SensitiveConcepts.FoeFar, SimulationGrid.PreyAgentsAdapter},
+                {SensitiveConcepts.PreyClose, SimulationGrid.PreyAgentsAdapter},
+                {SensitiveConcepts.PreyFar, SimulationGrid.PreyAgentsAdapter},
+                {SensitiveConcepts.FoodClose, SimulationGrid.ObstacleAgentsAdapter},
+                {SensitiveConcepts.FoodFar, SimulationGrid.ObstacleAgentsAdapter},
+                {SensitiveConcepts.MateClose, SimulationGrid.PredatorAgentsAdapter},
+                {SensitiveConcepts.MateFar, SimulationGrid.PredatorAgentsAdapter}
             };
         
-        private static readonly AttributeToRange AttributeToRange =
-            new AttributeToRange {
-                {LiveableAttribute.FoodClose, AttributeRange.Close},
-                {LiveableAttribute.FoodFar, AttributeRange.Far},
-                {LiveableAttribute.MateClose, AttributeRange.Close},
-                {LiveableAttribute.MateFar, AttributeRange.Far},
-                {LiveableAttribute.EnemyClose, AttributeRange.Close},
-                {LiveableAttribute.EnemyFar, AttributeRange.Far}
+        private static readonly SensitiveConceptToRange SensitiveConceptToRange =
+            new SensitiveConceptToRange {
+                {SensitiveConcepts.FoeClose, AttributeRange.Close},
+                {SensitiveConcepts.FoeFar, AttributeRange.Far},
+                {SensitiveConcepts.PreyClose, AttributeRange.Close},
+                {SensitiveConcepts.PreyFar, AttributeRange.Far},
+                {SensitiveConcepts.FoodClose, AttributeRange.Close},
+                {SensitiveConcepts.FoodFar, AttributeRange.Far},
+                {SensitiveConcepts.MateClose, AttributeRange.Close},
+                {SensitiveConcepts.MateFar, AttributeRange.Far}
             };
 
         private readonly int _farRange;
         private readonly int _nearRange;
-        private readonly AttributeToMapAdapter _attributeToMapAdapter;
+        private readonly SensitiveConceptToMapAdapter _attributeToMapAdapter;
         
-        public AgentsInRangeCounter(AttributeToMapAdapter attributeToMapAdapter, int farRange, int nearRange) {
+        public AgentsInRangeCounter(SensitiveConceptToMapAdapter attributeToMapAdapter, int farRange, int nearRange) {
             this._attributeToMapAdapter = attributeToMapAdapter;
             this._farRange = farRange;
             this._nearRange = nearRange;
         }
 
-        public Dictionary<LiveableAttribute, int> CountAgentsInRange(Vector2Int position) {
-            var counts = new Dictionary<LiveableAttribute, int>();
+        public Dictionary<SensitiveConcepts, int> CountAgentsInRange(Vector2Int position) {
+            var counts = new Dictionary<SensitiveConcepts, int>();
             
-            AttributeToRange.Keys.ToList().ForEach(attribute => {
+            SensitiveConceptToRange.Keys.ToList().ForEach(attribute => {
                 counts.Add(attribute, 0);
             });
 
@@ -65,14 +72,14 @@ namespace LogicGrid {
                     var neighbourPosition = new Vector2Int(position.x + dx, position.y + dy);
                     var distanceFromCenter = Mathf.Max(Mathf.Abs(dx), Mathf.Abs(dy));
                     
-                    AttributeToRange.Keys.ToList().ForEach(attribute => {
-                        if (AttributeToRange[attribute] != AttributeRange.Far &&
+                    SensitiveConceptToRange.Keys.ToList().ForEach(concept => {
+                        if (SensitiveConceptToRange[concept] != AttributeRange.Far &&
                             distanceFromCenter > _nearRange) {
                             return;
                         }
 
-                        var mapAdapter = _attributeToMapAdapter[attribute];
-                        counts[attribute] += mapAdapter.CountAgentsInPosition(neighbourPosition);
+                        var mapAdapter = _attributeToMapAdapter[concept];
+                        counts[concept] += mapAdapter.CountAgentsInPosition(neighbourPosition);
                     });
                 }
             }

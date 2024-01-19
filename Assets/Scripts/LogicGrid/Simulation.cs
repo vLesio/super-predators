@@ -25,8 +25,8 @@ namespace LogicGrid {
         private static void UpdatePerceptionsForPreys() {
             foreach (var preyList in SimulationGrid.PreyAgents.Values) {
                 foreach (var prey in preyList) {
-                    prey.UpdateAttributesDependentOnGrid();
-                    prey.UpdateAttributesDependentOnLocalCell();
+                    prey.UpdateSensitivesDependentOnGrid();
+                    prey.UpdateSensitivesDependentOnLocalCell();
                 }
             }
         }
@@ -62,8 +62,8 @@ namespace LogicGrid {
         private static void UpdatePerceptionsForPredators() {
             foreach (var predatorList in SimulationGrid.PredatorAgents.Values) {
                 foreach (var predator in predatorList) {
-                    predator.UpdateAttributesDependentOnGrid();
-                    predator.UpdateAttributesDependentOnLocalCell();
+                    predator.UpdateSensitivesDependentOnGrid();
+                    predator.UpdateSensitivesDependentOnLocalCell();
                 }
             }
         }
