@@ -26,9 +26,30 @@ namespace Agents.LiveableAgents
     }
     public abstract class Liveable : SimulationAgent
     {
+        private static readonly Dictionary<SensitiveConcepts, double> SensitiveConceptsValuesAtr = new Dictionary<SensitiveConcepts, double> {
+            {SensitiveConcepts.FoeClose, 0},
+            {SensitiveConcepts.FoeFar, 0},
+            {SensitiveConcepts.PreyClose, 0},
+            {SensitiveConcepts.PreyFar, 0},
+            {SensitiveConcepts.FoodClose, 0},
+            {SensitiveConcepts.FoodFar, 0},
+            {SensitiveConcepts.MateClose, 0},
+            {SensitiveConcepts.MateFar, 0},
+            {SensitiveConcepts.EnergyLow, 0},
+            {SensitiveConcepts.EnergyHigh, 0},
+            {SensitiveConcepts.QuantityOfLocalFoodLow, 0},
+            {SensitiveConcepts.QuantityOfLocalFoodHigh, 0},
+            {SensitiveConcepts.QuantityOfLocalMateHigh, 0},
+            {SensitiveConcepts.QuantityOfLocalMateLow, 0}
+        };
+
         private int DistanceTravelledSinceLastUpdate = 0;
         
-        public abstract List<LiveableAction> PossibleActions {
+        public Dictionary<SensitiveConcepts, double> SensitiveConceptsValues {
+            get => SensitiveConceptsValuesAtr;
+        }
+        
+        public abstract Dictionary<MotorConcepts, LiveableAction> PossibleActions {
             get;
         }
 
@@ -84,7 +105,6 @@ namespace Agents.LiveableAgents
             Attributes.Add(LiveableAttribute.EnemyFar, 18);
             Attributes.Add(LiveableAttribute.QuantityOfLocalFood, 0);
             Attributes.Add(LiveableAttribute.QuantityOfLocalMates, 0);
-            Attributes.Add(LiveableAttribute.SexualNeeds, 69);
         }
         
         protected Liveable() {

@@ -9,20 +9,20 @@ namespace Agents.LiveableAgents
 {
     public class Predator : Liveable
     {
-        private static readonly List<LiveableAction> PossibleActionsAtr = new List<LiveableAction>() {
-            new SearchForFood(),
-            new Eat(),
-            new Exploration(),
-            new Breed(),
-            new Socialization(),
-            new Rest(),
-            new SearchForPreys()
+        private static readonly Dictionary<MotorConcepts, LiveableAction> PossibleActionsAtr = new Dictionary<MotorConcepts, LiveableAction> {
+            {MotorConcepts.SearchForFood, new SearchForFood()},
+            {MotorConcepts.Eating, new Eat()},
+            {MotorConcepts.Exploration, new Exploration()},
+            {MotorConcepts.Breeding, new Breed()},
+            {MotorConcepts.Socialization, new Socialization()},
+            {MotorConcepts.Resting, new Rest()},
+            {MotorConcepts.SearchForPreys, new SearchForPreys()}
         };
         
         private static readonly int FarRange = DevSet.I.simulation.distanceVisionPredator;
         private static readonly int NearRange = DevSet.I.simulation.distanceVisionPredator / 2;
 
-        public override List<LiveableAction> PossibleActions => PossibleActionsAtr;
+        public override Dictionary<MotorConcepts, LiveableAction> PossibleActions => PossibleActionsAtr;
         
         public override double BirthEnergy => DevSet.I.simulation.birthEnergyPredator;
         public override double MaxBirthEnergy => DevSet.I.simulation.birthEnergyPredatorMax;

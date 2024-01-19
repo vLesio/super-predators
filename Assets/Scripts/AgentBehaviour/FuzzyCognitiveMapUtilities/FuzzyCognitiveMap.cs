@@ -9,38 +9,67 @@ using Unity.VisualScripting;
 
 namespace AgentBehaviour.FuzzyCognitiveMapUtilities {
     using ConnectionMatrix = Matrix<double>;
+
+    public enum SensitiveConcepts {
+        FoeClose = 0,
+        FoeFar = 1,
+        PreyClose = 2,
+        PreyFar = 3,
+        FoodClose = 4,
+        FoodFar = 5,
+        MateClose = 6,
+        MateFar = 7,
+        EnergyLow = 8,
+        EnergyHigh = 9,
+        QuantityOfLocalFoodLow = 10,
+        QuantityOfLocalFoodHigh = 11,
+        QuantityOfLocalMateHigh = 12,
+        QuantityOfLocalMateLow = 13
+    }
     
     public enum NamedInternalConcept {
-        Hunting,
-        Fear,
-        Hunger,
-        SexualNeeds,
-        Curiosity,
-        Sedentarity,
-        Satisfaction,
-        Annoyance
+        Hunting = 14,
+        Fear = 15,
+        Hunger = 16,
+        SexualNeeds = 17,
+        Curiosity = 18,
+        Sedentarity = 19,
+        Satisfaction = 20,
+        Annoyance = 21,
+    }
+
+    public enum MotorConcepts {
+        Evasion = 22,
+        SearchForPreys = 23,
+        SearchForFood = 24,
+        Socialization = 25,
+        Exploration = 26,
+        Resting = 27,
+        Eating = 28,
+        Breeding = 29,
     }
     
     /*
      * Concepts order:
      * sensitive concepts
-     * actions
      * named internal concepts
+     * actions
      * unnamed internal concepts
      */
     public class FuzzyCognitiveMap {
         private static readonly double Epsilon = 1.0e-6;
         
+        private readonly int _sensitiveConceptsCount = Enum.GetNames(typeof(SensitiveConcepts)).Length;
         private readonly int _countOfNamedInternalConcepts = Enum.GetNames(typeof(NamedInternalConcept)).Length;
+        private readonly int _countOfMotorConcepts = Enum.GetNames(typeof(MotorConcepts)).Length;
         
         private static readonly Random RandomGenerator = new Random();
         
-        private readonly int _sensitiveConceptsCount = Enum.GetNames(typeof(LiveableAttribute)).Length;
         
         private readonly Liveable _liveable;
         
         private readonly ConnectionMatrix _connectionMatrix;
-        private readonly List<LiveableAction> _actions;
+        private readonly Dictionary<MotorConcepts, LiveableAction> _actions;
         
         private Vector<double> _conceptsActivation;
         
@@ -58,8 +87,8 @@ namespace AgentBehaviour.FuzzyCognitiveMapUtilities {
             this._liveable = liveable;
 
             this._actions = this._liveable.PossibleActions;
-            TotalConceptsCount = _sensitiveConceptsCount + this._actions.Count +
-                                 _countOfNamedInternalConcepts + unnamedInternalConceptsCount;
+            TotalConceptsCount = _sensitiveConceptsCount + _countOfNamedInternalConcepts +
+                                 _countOfMotorConcepts + unnamedInternalConceptsCount;
             
             this._connectionMatrix = ConnectionMatrix.Build.Dense(TotalConceptsCount, TotalConceptsCount);
             this._conceptsActivation = Vector<double>.Build.Dense(TotalConceptsCount);
@@ -97,10 +126,10 @@ namespace AgentBehaviour.FuzzyCognitiveMapUtilities {
 
         private void _performFuzzification()
         {
-            var attributesValues = _liveable.Attributes.Keys;
+            var sensitiveConcepts = _liveable.SensitiveConceptsValues.Keys;
 
-            foreach (var attribute in attributesValues) {
-                _conceptsActivation[(int) attribute] = _liveable.Attributes[attribute];
+            foreach (var concept in sensitiveConcepts) {
+                _conceptsActivation[(int) concept] = _liveable.SensitiveConceptsValues[concept];
             }
         }
 
@@ -143,9 +172,8 @@ namespace AgentBehaviour.FuzzyCognitiveMapUtilities {
         public List<LiveableAction> GetSortedActions()
         {
             return this._actions
-                .Select((action, index) => (index, action))
-                .OrderBy(pair => this._conceptsActivation[_sensitiveConceptsCount + pair.index])
-                .Select(pair => pair.action)
+                .OrderByDescending(x => this._conceptsActivation[(int) x.Key])
+                .Select(x => x.Value)
                 .ToList();
         }
 
