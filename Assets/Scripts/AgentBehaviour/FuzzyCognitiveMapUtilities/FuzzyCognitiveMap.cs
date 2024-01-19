@@ -5,6 +5,7 @@ using Agents.Actions.LiveableActions;
 using Agents.LiveableAgents;
 using MathNet.Numerics.LinearAlgebra;
 using Settings;
+using Settings.brains;
 using Unity.VisualScripting;
 
 namespace AgentBehaviour.FuzzyCognitiveMapUtilities {
@@ -244,11 +245,14 @@ namespace AgentBehaviour.FuzzyCognitiveMapUtilities {
         }
 
         public static FuzzyCognitiveMap Create(Predator predator, int internalConceptsCount) {
-            return new FuzzyCognitiveMap(predator, internalConceptsCount);
+            // return new FuzzyCognitiveMap(predator, internalConceptsCount);
+            return new FuzzyCognitiveMap(BrainBase.PredatorMatrix, predator);
         }
         
         public static FuzzyCognitiveMap Create(Prey prey, int internalConceptsCount) {
-            return new FuzzyCognitiveMap(prey, internalConceptsCount);
+            // return new FuzzyCognitiveMap(prey, internalConceptsCount);
+            return new FuzzyCognitiveMap(BrainBase.PreyMatrix, prey);
         }
+        
     }
 }
