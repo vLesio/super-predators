@@ -4,6 +4,7 @@ using AgentBehaviour.GenomeUtilities;
 using Agents.LiveableAgents;
 using JetBrains.Annotations;
 using LogicGrid;
+using MathNet.Numerics;
 using Settings;
 
 namespace Agents.Actions.LiveableActions
@@ -75,6 +76,10 @@ namespace Agents.Actions.LiveableActions
 
             foreach (var potentialBreeder in Finder.FindAllMatesInCellForAgent(agent))
             {
+                if (potentialBreeder == null)
+                {
+                    continue;
+                }
                 if (!CheckIfLivableHasEnergy(potentialBreeder))
                 {
                     continue;
