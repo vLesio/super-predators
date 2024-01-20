@@ -180,9 +180,37 @@ namespace AgentBehaviour.FuzzyCognitiveMapUtilities {
         }
 
         private void _calculateNextActivationVector() {
-            this._conceptsActivation = _activationFunction(
-                this._connectionMatrix * this._conceptsActivation + this._conceptsActivation
-                );
+            string lol = "[";
+            foreach (var d in this._conceptsActivation) {
+                lol += d + ", ";
+            }
+
+            lol += "]";
+            CDebug.LogWarning($"Before all {this._liveable}: {lol}");
+            var multiplication = this._connectionMatrix * this._conceptsActivation;
+            lol = "[";
+            foreach (var d in multiplication) {
+                lol += d + ", ";
+            }
+
+            lol += "]";
+            CDebug.LogWarning($"after multiplication {this._liveable}: {lol}");
+            var afterAdd = multiplication + this._conceptsActivation;
+            lol = "[";
+            foreach (var d in afterAdd) {
+                lol += d + ", ";
+            }
+
+            lol += "]";
+            CDebug.LogWarning($"after adding {this._liveable}: {lol}");
+            this._conceptsActivation = _activationFunction(afterAdd);
+            lol = "[";
+            foreach (var d in this._conceptsActivation) {
+                lol += d + ", ";
+            }
+
+            lol += "]";
+            CDebug.LogWarning($"after activasion {this._liveable}: {lol}");
         }
         
         public static FuzzyCognitiveMap operator*(FuzzyCognitiveMap cognitiveMap, double value) {
@@ -211,6 +239,7 @@ namespace AgentBehaviour.FuzzyCognitiveMapUtilities {
             this._performFuzzification();
             
             for (var i = 0; i < iterationsCount; i++) {
+                this._performFuzzification();
                 this._calculateNextActivationVector();
             }
         }
