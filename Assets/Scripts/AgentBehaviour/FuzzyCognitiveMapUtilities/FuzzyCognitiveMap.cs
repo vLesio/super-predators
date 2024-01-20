@@ -247,7 +247,7 @@ namespace AgentBehaviour.FuzzyCognitiveMapUtilities {
             this._performFuzzification();
             
             for (var i = 0; i < iterationsCount; i++) {
-                // this._performFuzzification();
+                this._performFuzzification();
                 this._calculateNextActivationVector();
             }
         }
