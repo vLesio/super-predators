@@ -49,11 +49,11 @@ namespace Agents.LiveableAgents
         public override void UpdateSensitivesDependentOnLocalCell() {
             var countOfLocalMeat = SimulationGrid.ObstacleAgentsAdapter.CountAgentsInPosition(CurrentPosition);
             var countOfLocalPredators = SimulationGrid.PredatorAgentsAdapter.CountAgentsInPosition(CurrentPosition);
-            
-            SensitiveConceptsValues[SensitiveConcepts.QuantityOfLocalFoodLow] = countOfLocalMeat < 1 ? 1 : 0;
-            SensitiveConceptsValues[SensitiveConcepts.QuantityOfLocalFoodHigh] = countOfLocalMeat > 1 ? 1 : 0;
-            SensitiveConceptsValues[SensitiveConcepts.QuantityOfLocalMateHigh] = countOfLocalPredators > 1 ? 1 : 0;
-            SensitiveConceptsValues[SensitiveConcepts.QuantityOfLocalMateLow] = countOfLocalPredators < 1 ? 1 : 0;
+
+            SensitiveConceptsValues[SensitiveConcepts.QuantityOfLocalFoodLow] = countOfLocalMeat;
+            SensitiveConceptsValues[SensitiveConcepts.QuantityOfLocalFoodHigh] = countOfLocalMeat;
+            SensitiveConceptsValues[SensitiveConcepts.QuantityOfLocalMateHigh] = countOfLocalPredators;
+            SensitiveConceptsValues[SensitiveConcepts.QuantityOfLocalMateLow] = countOfLocalPredators;
             
             Attributes[LiveableAttribute.QuantityOfLocalFood] = countOfLocalMeat;
             Attributes[LiveableAttribute.QuantityOfLocalMates] = countOfLocalPredators;

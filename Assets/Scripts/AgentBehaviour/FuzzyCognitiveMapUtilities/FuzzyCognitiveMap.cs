@@ -59,6 +59,24 @@ namespace AgentBehaviour.FuzzyCognitiveMapUtilities {
      */
     public class FuzzyCognitiveMap {
         private static readonly double Epsilon = 1.0e-6;
+
+        private readonly Dictionary<SensitiveConcepts, Func<double, double>> SensitiveConceptToFuzzificationActivation =
+            new Dictionary<SensitiveConcepts, Func<double, double>> {
+                { SensitiveConcepts.FoeClose, _fuzzificationFunctionNonLocalClose },
+                { SensitiveConcepts.FoeFar, _fuzzificationFunctionNonLocalFar },
+                { SensitiveConcepts.PreyClose, _fuzzificationFunctionNonLocalClose },
+                { SensitiveConcepts.PreyFar, _fuzzificationFunctionNonLocalFar },
+                { SensitiveConcepts.FoodClose, _fuzzificationFunctionNonLocalClose },
+                { SensitiveConcepts.FoodFar, _fuzzificationFunctionNonLocalFar },
+                { SensitiveConcepts.MateClose, _fuzzificationFunctionNonLocalClose },
+                { SensitiveConcepts.MateFar, _fuzzificationFunctionNonLocalFar },
+                { SensitiveConcepts.EnergyLow, _fuzzificationFunctionLocalLow },
+                { SensitiveConcepts.EnergyHigh, _fuzzificationFunctionLocalHigh },
+                { SensitiveConcepts.QuantityOfLocalFoodLow, _fuzzificationFunctionLocalLow },
+                { SensitiveConcepts.QuantityOfLocalFoodHigh, _fuzzificationFunctionLocalHigh },
+                { SensitiveConcepts.QuantityOfLocalMateHigh, _fuzzificationFunctionLocalHigh },
+                { SensitiveConcepts.QuantityOfLocalMateLow, _fuzzificationFunctionLocalLow }
+            };
         
         private readonly int _sensitiveConceptsCount = Enum.GetNames(typeof(SensitiveConcepts)).Length;
         private readonly int _countOfNamedInternalConcepts = Enum.GetNames(typeof(NamedInternalConcept)).Length;
@@ -104,33 +122,52 @@ namespace AgentBehaviour.FuzzyCognitiveMapUtilities {
             this._connectionMatrix = connectionMatrix;
             this._conceptsActivation = Vector<double>.Build.Dense(TotalConceptsCount);
         }
+
+        private static double _generalActivationFunctionBType(double x, double s1, double s2) {
+            if (x <= s1) {
+                return 0.0;
+            }
+            
+            if (x >= s2) {
+                return 1.0;
+            }
+            
+            return (x - s1) / (s2 - s1);
+        }
         
-        private static Vector<double> _activationFunction(Vector<double> vector)
-        {
+        private static Vector<double> _activationFunction(Vector<double> vector) {
             var settings = DevSet.I.simulation;
 
             return vector.Map(x =>
-            {
-                if (x <= settings.activationS1)
-                {
-                    return 0.0;
-                }
-
-                if (x >= settings.activationS2)
-                {
-                    return 1.0;
-                }
-
-                return (x - settings.activationS1) / (settings.activationS2 - settings.activationS1);
-            });
+                _generalActivationFunctionBType(x, settings.activationS1, settings.activationS2)
+            );
         }
 
+        private static double _fuzzificationFunctionNonLocalClose(double x) {
+            return _generalActivationFunctionBType(80.0 - x, 0.0, 60.0);
+        }
+        
+        private static double _fuzzificationFunctionNonLocalFar(double x) {
+            return _generalActivationFunctionBType(x, 20.0, 80.0);
+        }
+        
+        private static double _fuzzificationFunctionLocalLow(double x) {
+            return _generalActivationFunctionBType(2.0 - x, 0.0, 2.0);
+        }
+        
+        private static double _fuzzificationFunctionLocalHigh(double x) {
+            return _generalActivationFunctionBType(x, 0.0, 2.0);
+        }
+        
         private void _performFuzzification()
         {
             var sensitiveConcepts = _liveable.SensitiveConceptsValues.Keys;
 
             foreach (var concept in sensitiveConcepts) {
-                _conceptsActivation[(int) concept] = _liveable.SensitiveConceptsValues[concept];
+                var fuzzificationFunction = SensitiveConceptToFuzzificationActivation[concept];
+                var fuzzifiedValue = fuzzificationFunction(_liveable.SensitiveConceptsValues[concept]);
+                
+                _conceptsActivation[(int) concept] = fuzzifiedValue;
             }
         }
 
