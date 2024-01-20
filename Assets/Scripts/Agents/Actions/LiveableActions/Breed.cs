@@ -95,9 +95,9 @@ namespace Agents.Actions.LiveableActions
                     continue;
                 }
                 
-                if (!(agent.SomeoneWantToBreedWithMe 
-                      || potentialBreeder.CurrentAction.ActionType == LiveableActionType.Breed 
-                      || CheckIfAgentsWantToBreedWithMe(agent, potentialBreeder
+                if (!(agent.SomeoneWantToBreedWithMe
+                      && potentialBreeder.CurrentAction?.ActionType == LiveableActionType.Breed 
+                      && CheckIfAgentsWantToBreedWithMe(agent, potentialBreeder
                       )))
                 {
                     continue;
