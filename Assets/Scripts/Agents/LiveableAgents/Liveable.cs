@@ -124,9 +124,14 @@ namespace Agents.LiveableAgents
         }
         
         public void UpdateEnergyAndResetDistanceTravelled() {
-            this.Attributes[LiveableAttribute.Energy] -= CognitiveMap.TotalConceptsCount
-                                                         + CognitiveMap.CountOfNonZeroConnections * 0.1
-                                                         + Math.Pow(DistanceTravelledSinceLastUpdate, 1.4);
+            var newEnergy = Attributes[LiveableAttribute.Energy] - CognitiveMap.TotalConceptsCount
+                                                         - CognitiveMap.CountOfNonZeroConnections * 0.1
+                                                         - Math.Pow(DistanceTravelledSinceLastUpdate, 1.4);
+
+            this.Attributes[LiveableAttribute.Energy] = newEnergy;
+            this.SensitiveConceptsValues[SensitiveConcepts.EnergyLow] = newEnergy;
+            this.SensitiveConceptsValues[SensitiveConcepts.EnergyHigh] = newEnergy;
+            
             this.DistanceTravelledSinceLastUpdate = 0;
         }
 
