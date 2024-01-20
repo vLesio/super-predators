@@ -57,6 +57,9 @@ namespace AgentBehaviour.GenomeUtilities {
             var childFuzzyCognitiveMap = FuzzyCognitiveMap.InterbreedBrain(firstParent, secondParent, child);
             
             child.Attributes[LiveableAttribute.Energy] = bornChildEnergy;
+            child.SensitiveConceptsValues[SensitiveConcepts.EnergyHigh] = bornChildEnergy;
+            child.SensitiveConceptsValues[SensitiveConcepts.EnergyLow] = bornChildEnergy;
+            
             child.Attributes[LiveableAttribute.MaxAge] = childMaxAge;
             
             child.CognitiveMap = childFuzzyCognitiveMap;
