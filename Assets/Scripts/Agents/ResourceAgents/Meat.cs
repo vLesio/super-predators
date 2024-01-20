@@ -17,6 +17,7 @@ namespace Agents.ResourceAgents
         
         public override bool UpdateQuantity() {
             if (Quantity <= 0) {
+                Quantity = 0;
                 return false;
             }
 

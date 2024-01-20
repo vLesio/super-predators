@@ -24,9 +24,9 @@ namespace LogicGrid
             }
         }
         
-        public OneTimeSearcherForAgent(CellAgent agent, Maps map) {
+        public OneTimeSearcherForAgent(CellAgent agent, Maps map, Liveable agentToIgnore = null) {
             var position = agent.CurrentPosition;
-            var searcherEntities = new SearcherEntities(null, position);
+            var searcherEntities = new SearcherEntities(agentToIgnore, position);
             searcherEntities.SetSeekerPosition(position);
 
             var mapAdapter = SimulationGrid.GetMapAdapterForMap(map);
@@ -144,7 +144,7 @@ namespace LogicGrid
                         maxBreedingProbability) <= MaxProbabilityDelta);
             }
             
-            var oneTimeSearcher = new OneTimeSearcherForAgent(prey, Maps.Prey);
+            var oneTimeSearcher = new OneTimeSearcherForAgent(prey, Maps.Prey, prey);
             var nearestPreyPosition = oneTimeSearcher.NearestTargetPosition;
             
             if (nearestPreyPosition == OneTimeSearcherForAgent.InvalidPosition) {
@@ -173,7 +173,7 @@ namespace LogicGrid
                         maxBreedingProbability) <= MaxProbabilityDelta);
             }
             
-            var oneTimeSearcher = new OneTimeSearcherForAgent(predator, Maps.Predator);
+            var oneTimeSearcher = new OneTimeSearcherForAgent(predator, Maps.Predator, predator);
             var nearestPredatorPosition = oneTimeSearcher.NearestTargetPosition;
             
             if (nearestPredatorPosition == OneTimeSearcherForAgent.InvalidPosition) {

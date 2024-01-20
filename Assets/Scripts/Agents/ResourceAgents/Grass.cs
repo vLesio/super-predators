@@ -24,10 +24,12 @@ namespace Agents.ResourceAgents
 
         public override bool UpdateQuantity() {
             if (Quantity <= 0) {
+                Quantity = 0;
                 return false;
             }
 
             Quantity += DevSet.I.simulation.growGrass;
+            Quantity = System.Math.Min(DevSet.I.simulation.maxGrass, Quantity);
             return true;
         }
     }
