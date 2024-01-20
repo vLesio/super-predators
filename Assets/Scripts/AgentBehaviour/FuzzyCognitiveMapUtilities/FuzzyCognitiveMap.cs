@@ -188,8 +188,7 @@ namespace AgentBehaviour.FuzzyCognitiveMapUtilities {
         }
 
         public void MultiplyNamedInternalConcept(NamedInternalConcept concept, double value) {
-            var index = _sensitiveConceptsCount + _actions.Count + (int) concept;
-            this._conceptsActivation[index] *= value;
+            this._conceptsActivation[(int) concept] *= value;
         }
 
         public static FuzzyCognitiveMap InterbreedBrain(Liveable firstParent, Liveable secondParent) {
