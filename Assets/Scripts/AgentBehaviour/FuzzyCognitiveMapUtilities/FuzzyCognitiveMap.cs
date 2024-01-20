@@ -144,7 +144,7 @@ namespace AgentBehaviour.FuzzyCognitiveMapUtilities {
             var settings = DevSet.I.simulation;
             
             return vector.Map(x =>
-                _generalActivationFunctionAType(x, 0.15, 0.0)
+                _generalActivationFunctionAType(x, 3.0, 0.5)
             );
         }
 
@@ -247,7 +247,7 @@ namespace AgentBehaviour.FuzzyCognitiveMapUtilities {
             this._performFuzzification();
             
             for (var i = 0; i < iterationsCount; i++) {
-                this._performFuzzification();
+                // this._performFuzzification();
                 this._calculateNextActivationVector();
             }
         }
