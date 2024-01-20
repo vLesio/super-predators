@@ -4,7 +4,11 @@ namespace Agents.Actions.LiveableActions
 {
     public class Rest : LiveableAction
     {
-        public readonly LiveableActionType Type = LiveableActionType.Rest;
+        public Rest()
+        {
+            ActionType = LiveableActionType.Rest;
+        }
+
         public override bool CheckConditions(Liveable agent)
         {
             return true;

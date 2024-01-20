@@ -142,7 +142,7 @@ namespace AgentBehaviour.FuzzyCognitiveMapUtilities {
         
         private static Vector<double> _activationFunction(Vector<double> vector) {
             var settings = DevSet.I.simulation;
-
+            
             return vector.Map(x =>
                 _generalActivationFunctionAType(x, 0.5, 0.5)
             );

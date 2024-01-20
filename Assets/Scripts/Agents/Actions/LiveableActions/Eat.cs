@@ -8,7 +8,10 @@ namespace Agents.Actions.LiveableActions
 {
     public class Eat : LiveableAction
     {
-        public readonly LiveableActionType Type = LiveableActionType.Eat;
+        public Eat()
+        {
+            ActionType = LiveableActionType.Eat;
+        }
         public override bool CheckConditions(Liveable agent)
         {
             ResourceAgent currentGrass = Liveable.IsPrey(agent) ? Finder.FindGrassOnAgentPosition(agent) : Finder.FindMeatOnAgentPosition(agent);

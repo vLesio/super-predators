@@ -7,7 +7,10 @@ namespace Agents.Actions.LiveableActions
 {
     public class Socialization : LiveableAction
     {
-        public readonly LiveableActionType Type = LiveableActionType.Socialization;
+        public Socialization()
+        {
+            ActionType = LiveableActionType.Socialization;
+        }
 
         public override bool CheckConditions(Liveable agent)
         {

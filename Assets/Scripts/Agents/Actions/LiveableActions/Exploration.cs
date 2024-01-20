@@ -6,7 +6,10 @@ namespace Agents.Actions.LiveableActions
 {
     public class Exploration : LiveableAction
     {
-        public readonly LiveableActionType Type = LiveableActionType.Exploration;
+        public Exploration()
+        {
+            ActionType = LiveableActionType.Exploration;
+        }
         public override bool CheckConditions(Liveable agent)
         {
             return true;

@@ -9,7 +9,10 @@ namespace Agents.Actions.LiveableActions
 {
     public class SearchForFood : LiveableAction
     {
-        public readonly LiveableActionType Type = LiveableActionType.SearchForFood;
+        public SearchForFood()
+        {
+            ActionType = LiveableActionType.SearchForFood;
+        }
         public override bool CheckConditions(Liveable agent)
         {
             ResourceAgent nearestFood = Liveable.IsPrey(agent)

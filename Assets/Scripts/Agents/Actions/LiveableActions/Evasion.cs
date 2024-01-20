@@ -7,7 +7,10 @@ namespace Agents.Actions.LiveableActions
 {
     public class Evasion : LiveableAction
     {
-        public readonly LiveableActionType Type = LiveableActionType.Evasion;
+        public Evasion()
+        {
+            ActionType = LiveableActionType.Evasion;
+        }
         public override bool CheckConditions(Liveable agent)
         {
             return true;

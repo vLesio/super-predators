@@ -7,7 +7,10 @@ namespace Agents.Actions.LiveableActions
 {
     public class SearchForPreys : LiveableAction
     {
-        public readonly LiveableActionType Type = LiveableActionType.SearchForPreys;
+        public SearchForPreys()
+        {
+            ActionType = LiveableActionType.SearchForPreys;
+        }
         public override bool CheckConditions(Liveable agent)
         {
             Prey nearestPrey = Finder.FindNearestPreyForAgent(agent);

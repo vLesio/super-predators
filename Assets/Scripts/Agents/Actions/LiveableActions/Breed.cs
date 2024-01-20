@@ -10,7 +10,10 @@ namespace Agents.Actions.LiveableActions
 {
     public class Breed : LiveableAction
     {
-        public readonly LiveableActionType Type = LiveableActionType.Breed;
+        public Breed()
+        {
+            ActionType = LiveableActionType.Breed;
+        }
         public override bool CheckConditions(Liveable agent)
         {
 
