@@ -286,8 +286,8 @@ namespace AgentBehaviour.FuzzyCognitiveMapUtilities {
             this._conceptsActivation[(int) concept] *= value;
         }
 
-        public static FuzzyCognitiveMap InterbreedBrain(Liveable firstParent, Liveable secondParent) {
-            var newBrain = new FuzzyCognitiveMap(firstParent, DevSet.I.simulation.cogMapComplexity);
+        public static FuzzyCognitiveMap InterbreedBrain(Liveable firstParent, Liveable secondParent, Liveable child) {
+            var newBrain = new FuzzyCognitiveMap(child, firstParent.CognitiveMap._countOfNamedInternalConcepts);
 
             var firstParentBrain = firstParent.CognitiveMap;
             var secondParentBrain = secondParent.CognitiveMap;
