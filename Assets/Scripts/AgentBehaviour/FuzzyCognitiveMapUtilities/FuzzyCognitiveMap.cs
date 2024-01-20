@@ -168,12 +168,15 @@ namespace AgentBehaviour.FuzzyCognitiveMapUtilities {
         {
             var sensitiveConcepts = _liveable.SensitiveConceptsValues.Keys;
 
+            string sensConceptsStr = $"";
             foreach (var concept in sensitiveConcepts) {
                 var fuzzificationFunction = SensitiveConceptToFuzzificationActivation[concept];
                 var fuzzifiedValue = fuzzificationFunction(_liveable.SensitiveConceptsValues[concept]);
-                CDebug.Log($"{_liveable}, Concept: {concept} Sens:{_liveable.SensitiveConceptsValues[concept]} Fuzz:{fuzzifiedValue}");
+                sensConceptsStr +=
+                    $"{concept} -> {_liveable.SensitiveConceptsValues[concept]}. Fuzzified: {fuzzifiedValue}\n";
                 _conceptsActivation[(int) concept] = fuzzifiedValue;
             }
+            CDebug.Log($"Concepts for {_liveable}\n{sensConceptsStr}");
         }
 
         private void _calculateNextActivationVector() {
@@ -213,13 +216,19 @@ namespace AgentBehaviour.FuzzyCognitiveMapUtilities {
         }
 
         public List<LiveableAction> GetSortedActions() {
-            string lol = "[";
-            foreach (var d in this._conceptsActivation) {
-                lol += d + ", ";
+            string lol = "";
+            for (var i = 0; i < _conceptsActivation.Count; i++) {
+                if (i <= 13) {
+                    lol += $"{(SensitiveConcepts)i}: {_conceptsActivation[i]}\n";
+                }else if (i <= 21) {
+                    lol += $"{(NamedInternalConcept)i}: {_conceptsActivation[i]}\n";
+                }
+                else {
+                    lol += $"{(MotorConcepts)i}: {_conceptsActivation[i]}\n";
+                }
+                
             }
-
-            lol += "]";
-            CDebug.Log($"CA for {this._liveable}: {lol}");
+            CDebug.Log($"Activations for {this._liveable}:\n{lol}");
 
             return this._actions
                 .OrderByDescending(x => this._conceptsActivation[(int) x.Key])
