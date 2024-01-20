@@ -30,6 +30,7 @@ namespace Agents.LiveableAgents
     public abstract class Liveable : SimulationAgent
     {
         public static CLogger AgentsLogger = Loggers.LoggersList[Loggers.LoggerType.AGENTS];
+        
         private static readonly Dictionary<SensitiveConcepts, double> SensitiveConceptsValuesAtr = new Dictionary<SensitiveConcepts, double> {
             {SensitiveConcepts.FoeClose, 0},
             {SensitiveConcepts.FoeFar, 0},

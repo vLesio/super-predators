@@ -3,6 +3,7 @@ using CoinPackage.Debugging;
 using LogicGrid;
 using UnityEngine;
 using UnityEngine.UI;
+using Utils;
 using Utils.Singleton;
 
 namespace Application {
@@ -11,6 +12,8 @@ namespace Application {
         [SerializeField] private Button stepOverButton;
 
         private int _steps = 0;
+
+        private readonly CLogger _simlogger = Loggers.LoggersList[Loggers.LoggerType.SIMULATION];
 
         protected override void Awake() {
             base.Awake();
@@ -35,11 +38,8 @@ namespace Application {
             Simulation.predatorActionsTaken.Clear();
             Simulation.preyActionsTaken.Clear();
             Simulation.Update();
-            CDebug.Log($"Step {_steps++ % Colorize.Cyan}, took: {Time.deltaTime % Colorize.Cyan}. Predators: {SimulationGrid.PredatorAgents.Count}, preys: {SimulationGrid.PreyAgents.Count}");
-        }
-
-        private void LogTakenActions() {
-            
+            Simulation.LogTakenActions();
+            _simlogger.Log($"Step {_steps++ % Colorize.Cyan}, took: {Time.deltaTime % Colorize.Cyan}. Predators: {SimulationGrid.PredatorAgents.Count}, preys: {SimulationGrid.PreyAgents.Count}");
         }
     }
 }

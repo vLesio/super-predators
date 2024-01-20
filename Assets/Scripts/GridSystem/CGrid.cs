@@ -12,7 +12,7 @@ namespace GridSystem {
     public class CGrid : Singleton<CGrid> {
         public GameObject preyPrefab;
         public GameObject predatorPrefab;
-        
+
         [SerializeField] private GameObject cellPrefab;
 
         private SpriteRenderer _renderer;

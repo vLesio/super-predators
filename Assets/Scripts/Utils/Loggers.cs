@@ -9,7 +9,8 @@ namespace Utils {
             UTILS,
             APPLICATION,
             PARAM_SELECTOR,
-            AGENTS
+            AGENTS,
+            SIMULATION
         }
         
         static Loggers() {
@@ -35,6 +36,12 @@ namespace Utils {
                 {
                     LoggerType.AGENTS,
                     new CLogger(LoggerType.AGENTS) {
+                        LogEnabled = true
+                    }
+                },
+                {
+                    LoggerType.SIMULATION,
+                    new CLogger(LoggerType.SIMULATION) {
                         LogEnabled = true
                     }
                 },

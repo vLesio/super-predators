@@ -78,12 +78,15 @@ namespace Agents.LiveableAgents
             if (CurrentAction != null)
             {
                 CurrentAction.Invoke(this);
+                AgentsLogger.Log($"{this} has performed {CurrentAction} action.");
                 ActedThisTurn = true;
+            }
+            else {
+                AgentsLogger.Log($"{this} has {"not performed any action" % Colorize.Yellow}.");
             }
         }
         
         public void LogAction(LiveableAction action) {
-            CDebug.Log($"{this} has chosen action {CurrentAction}");
             if (Simulation.predatorActionsTaken.TryGetValue(action, out var value)) {
                 Simulation.predatorActionsTaken[action] += 1;
             }

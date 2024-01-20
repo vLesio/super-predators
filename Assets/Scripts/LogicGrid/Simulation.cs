@@ -4,8 +4,10 @@ using System.Linq;
 using Agents.Actions.LiveableActions;
 using Agents.LiveableAgents;
 using Agents.ResourceAgents;
+using CoinPackage.Debugging;
 using Settings;
 using UnityEngine;
+using Utils;
 
 namespace LogicGrid {
     public static class Simulation {
@@ -14,6 +16,8 @@ namespace LogicGrid {
         
         public static Dictionary<LiveableAction, int> preyActionsTaken = new ();
         public static Dictionary<LiveableAction, int> predatorActionsTaken = new ();
+
+        public static readonly CLogger _simLogger = Loggers.LoggersList[Loggers.LoggerType.SIMULATION];
 
         private static List<T> GetAllAgentsInIncreasingAgeOrder<T>(Dictionary<Vector2Int, HashSet<T>> agents)
                                                                     where T: Liveable {
@@ -284,6 +288,19 @@ namespace LogicGrid {
             UpdateSpeciesStep();
             UpdateEnvironmentStep();
             UpdateAgentsAgeAndResetDistanceTravelled();
+        }
+
+        public static void LogTakenActions() {
+            string pred = "";
+            foreach (var (key, value) in predatorActionsTaken) {
+                pred += $" {key}:{value % Colorize.Cyan}";
+            }
+            string prey = "";
+            foreach (var (key, value) in preyActionsTaken) {
+                prey += $" {key}:{value % Colorize.Cyan}";
+            }
+            _simLogger.Log($"Predator actions:{pred}");
+            _simLogger.Log($"Prey actions: {prey}");
         }
     }
 }
