@@ -97,6 +97,11 @@ namespace AgentBehaviour.FuzzyCognitiveMapUtilities {
             get;
         }
         
+        public int CountOfUnnamedInternalConcepts {
+            get => this.TotalConceptsCount - this._sensitiveConceptsCount - this._countOfNamedInternalConcepts -
+                       this._countOfMotorConcepts;
+        }
+        
         public int CountOfNonZeroConnections {
             get {
                 return this._connectionMatrix.Enumerate().Count(x => Math.Abs(x) < Epsilon);
@@ -287,7 +292,7 @@ namespace AgentBehaviour.FuzzyCognitiveMapUtilities {
         }
 
         public static FuzzyCognitiveMap InterbreedBrain(Liveable firstParent, Liveable secondParent, Liveable child) {
-            var newBrain = new FuzzyCognitiveMap(child, firstParent.CognitiveMap._countOfNamedInternalConcepts);
+            var newBrain = new FuzzyCognitiveMap(child, firstParent.CognitiveMap.CountOfUnnamedInternalConcepts);
 
             var firstParentBrain = firstParent.CognitiveMap;
             var secondParentBrain = secondParent.CognitiveMap;
