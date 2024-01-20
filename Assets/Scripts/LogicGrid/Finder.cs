@@ -26,7 +26,7 @@ namespace LogicGrid
         
         public OneTimeSearcherForAgent(CellAgent agent, Maps map) {
             var position = agent.CurrentPosition;
-            var searcherEntities = new SearcherEntities();
+            var searcherEntities = new SearcherEntities(null, position);
             searcherEntities.SetSeekerPosition(position);
 
             var mapAdapter = SimulationGrid.GetMapAdapterForMap(map);
@@ -41,7 +41,7 @@ namespace LogicGrid
         private const double MaxProbabilityDelta = 1.0e-7;
         
         private static readonly Dictionary<Maps, int> MapsIndices = new Dictionary<Maps, int>();
-        private static readonly SearcherEntities SearcherEntities = new SearcherEntities();
+        private static readonly SearcherEntities SearcherEntities = new SearcherEntities(null, Vector2Int.zero);
         
         public static Vector2Int GetPositionOfNearestTarget(Maps map, SearchResult result) {
             var mapIndex = MapsIndices[map];

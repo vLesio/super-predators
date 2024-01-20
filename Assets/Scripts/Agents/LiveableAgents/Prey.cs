@@ -39,9 +39,11 @@ namespace Agents.LiveableAgents
         }
         
         public override void UpdateSensitivesDependentOnGrid() {
-            var agentsInRangeCounter = new AgentsInRangeCounterAndFinder(AgentsInRangeCounterAndFinder.PreySensitiveConceptToMapAdapter, 
+            var agentsInRangeCounter = new AgentsInRangeCounterAndFinder(
+                AgentsInRangeCounterAndFinder.PreySensitiveConceptToMapAdapter, 
                 FarRange, NearRange);
-            var minDistanceToAgent = agentsInRangeCounter.FindDistancesToClosestAgents(CurrentPosition);
+            var minDistanceToAgent =
+                agentsInRangeCounter.FindDistancesToClosestAgents(this, CurrentPosition);
             
             minDistanceToAgent.Keys.ToList().ForEach(concept => {
                 SensitiveConceptsValues[concept] = minDistanceToAgent[concept];

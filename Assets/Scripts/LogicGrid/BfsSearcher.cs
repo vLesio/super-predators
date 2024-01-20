@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using Agents.LiveableAgents;
 using Settings;
 using UnityEngine;
 
@@ -41,7 +42,7 @@ namespace LogicGrid {
                 
                 mapsIndices.ToList()
                     .ForEach((mapIndex) => {
-                        var mapNotEmptyAtPosition = _entities.MapAdapters[mapIndex].IsPositionOccupied(currentPosition);
+                        var mapNotEmptyAtPosition = _entities.MapAdapters[mapIndex].IsPositionOccupiedByOther(currentPosition, _entities.AgentToIgnore);
                         
                         if (!mapNotEmptyAtPosition) {
                             return;
@@ -98,8 +99,13 @@ namespace LogicGrid {
     }
 
     public class SearcherEntities {
+        private readonly Liveable _agentToIgnore;
         private Vector2Int _seekerPosition;
         private readonly List<MapAdapter> _mapAdapters = new List<MapAdapter>();
+        
+        public Liveable AgentToIgnore {
+            get => _agentToIgnore;
+        }
         
         public List<MapAdapter> MapAdapters {
             get => _mapAdapters;
@@ -109,7 +115,8 @@ namespace LogicGrid {
             get => _seekerPosition;
         }
 
-        public SearcherEntities(Vector2Int seekerPosition = default) {
+        public SearcherEntities(Liveable agentToIgnore, Vector2Int seekerPosition) {
+            this._agentToIgnore = agentToIgnore;
             this._seekerPosition = seekerPosition;
         }
         

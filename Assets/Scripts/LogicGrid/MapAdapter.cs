@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Agents;
 using Agents.LiveableAgents;
 using Agents.ResourceAgents;
 using UnityEngine;
@@ -14,6 +15,7 @@ namespace LogicGrid {
     
     public abstract class MapAdapter {
         public abstract bool IsPositionOccupied(Vector2Int position);
+        public abstract bool IsPositionOccupiedByOther(Vector2Int position, Liveable agent);
         public abstract int CountAgentsInPosition(Vector2Int position);
     }
 
@@ -26,6 +28,10 @@ namespace LogicGrid {
         
         public override bool IsPositionOccupied(Vector2Int position) {
             return _grassAgents.ContainsKey(position) && _grassAgents[position].IsUseful();
+        }
+        
+        public override bool IsPositionOccupiedByOther(Vector2Int position, Liveable agent) {
+            return IsPositionOccupied(position);
         }
         
         public override int CountAgentsInPosition(Vector2Int position) {
@@ -44,6 +50,10 @@ namespace LogicGrid {
             return _meatAgents.ContainsKey(position) && _meatAgents[position].IsUseful();
         }
         
+        public override bool IsPositionOccupiedByOther(Vector2Int position, Liveable agent) {
+            return IsPositionOccupied(position);
+        }
+        
         public override int CountAgentsInPosition(Vector2Int position) {
             return _meatAgents.TryGetValue(position, out var meat) ? (int) Math.Ceiling(meat.Quantity) : 0;
         }
@@ -60,6 +70,19 @@ namespace LogicGrid {
             return _preyAgents.ContainsKey(position);
         }
         
+        public override bool IsPositionOccupiedByOther(Vector2Int position, Liveable agent) {
+            if (!_preyAgents.ContainsKey(position)) {
+                return false;
+            }
+
+            switch (agent) {
+                case Prey prey:
+                    return _preyAgents[position].Count > 1 || !_preyAgents[position].Contains(prey);
+                default:
+                    return true;
+            }
+        }
+        
         public override int CountAgentsInPosition(Vector2Int position) {
             return _preyAgents.TryGetValue(position, out var agents) ? agents.Count : 0;
         }
@@ -74,6 +97,19 @@ namespace LogicGrid {
         
         public override bool IsPositionOccupied(Vector2Int position) {
             return _predatorAgents.ContainsKey(position);
+        }
+        
+        public override bool IsPositionOccupiedByOther(Vector2Int position, Liveable agent) {
+            if (!_predatorAgents.ContainsKey(position)) {
+                return false;
+            }
+
+            switch (agent) {
+                case Predator predator:
+                    return _predatorAgents[position].Count > 1 || !_predatorAgents[position].Contains(predator);
+                default:
+                    return true;
+            }
         }
         
         public override int CountAgentsInPosition(Vector2Int position) {

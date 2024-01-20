@@ -88,10 +88,10 @@ namespace LogicGrid {
             return counts;
         }
 
-        public Dictionary<SensitiveConcepts, int> FindDistancesToClosestAgents(Vector2Int position) {
+        public Dictionary<SensitiveConcepts, int> FindDistancesToClosestAgents(Liveable agentToIgnore, Vector2Int position) {
             var conceptToDistance = new Dictionary<SensitiveConcepts, int>();
             
-            var searcherEntities = new SearcherEntities(position);
+            var searcherEntities = new SearcherEntities(agentToIgnore, position);
             SensitiveConceptToRange.Keys.ToList().ForEach(concept => {
                 var mapAdapter = _attributeToMapAdapter[concept];
                 searcherEntities.MapAdapters.Add(mapAdapter);
