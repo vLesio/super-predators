@@ -174,7 +174,7 @@ namespace AgentBehaviour.FuzzyCognitiveMapUtilities {
 
         private void _calculateNextActivationVector() {
             this._conceptsActivation = _activationFunction(
-                this._connectionMatrix * this._conceptsActivation + this._conceptsActivation
+                this._connectionMatrix.Transpose() * this._conceptsActivation + this._conceptsActivation
                 );
         }
         
