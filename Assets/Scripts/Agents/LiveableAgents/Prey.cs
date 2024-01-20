@@ -82,11 +82,11 @@ namespace Agents.LiveableAgents
             if (CurrentAction != null)
             {
                 CurrentAction.Invoke(this);
-                AgentsLogger.Log($"{this} has performed {CurrentAction} action.");
+                agentsLogger.Log($"{this} has performed {CurrentAction} action.");
                 ActedThisTurn = true;
             }
             else {
-                AgentsLogger.Log($"{this} has {"not performed any action" % Colorize.Yellow}.");
+                agentsLogger.Log($"{this} has {"not performed any action" % Colorize.Yellow}.");
             }
         }
         

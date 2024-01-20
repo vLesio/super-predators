@@ -29,10 +29,10 @@ namespace Agents.LiveableAgents
 
     public abstract class Liveable : SimulationAgent
     {
-        public static CLogger AgentsLogger = Loggers.LoggersList[Loggers.LoggerType.AGENTS];
-        private bool ShouldBeDead = false;
+        public static CLogger agentsLogger = Loggers.LoggersList[Loggers.LoggerType.AGENTS];
+        private bool _shouldBeDead = false;
         
-        private static readonly Dictionary<SensitiveConcepts, double> SensitiveConceptsValuesAtr = new Dictionary<SensitiveConcepts, double> {
+        private readonly Dictionary<SensitiveConcepts, double> _sensitiveConceptsValuesAtr = new Dictionary<SensitiveConcepts, double> {
             {SensitiveConcepts.FoeClose, 0},
             {SensitiveConcepts.FoeFar, 0},
             {SensitiveConcepts.PreyClose, 0},
@@ -49,14 +49,14 @@ namespace Agents.LiveableAgents
             {SensitiveConcepts.QuantityOfLocalMateLow, 0}
         };
 
-        private int DistanceTravelledSinceLastUpdate = 0;
+        private int _distanceTravelledSinceLastUpdate = 0;
         
         public void Murder() {
-            ShouldBeDead = true;
+            _shouldBeDead = true;
         }
         
         public Dictionary<SensitiveConcepts, double> SensitiveConceptsValues {
-            get => SensitiveConceptsValuesAtr;
+            get => _sensitiveConceptsValuesAtr;
         }
         
         public abstract Dictionary<MotorConcepts, LiveableAction> PossibleActions {
@@ -104,8 +104,10 @@ namespace Agents.LiveableAgents
         public LiveableAction CurrentAction;
         
         private void InitLiveable() {
+            var initialEnergy = 9999.0;
+            
             Attributes.Add(LiveableAttribute.Age, 1);
-            Attributes.Add(LiveableAttribute.Energy, 9999);
+            Attributes.Add(LiveableAttribute.Energy, initialEnergy);
             Attributes.Add(LiveableAttribute.Speed, 3);
             Attributes.Add(LiveableAttribute.FoodClose, 5);
             Attributes.Add(LiveableAttribute.FoodFar, 15);
@@ -115,6 +117,9 @@ namespace Agents.LiveableAgents
             Attributes.Add(LiveableAttribute.EnemyFar, 18);
             Attributes.Add(LiveableAttribute.QuantityOfLocalFood, 0);
             Attributes.Add(LiveableAttribute.QuantityOfLocalMates, 0);
+            
+            SensitiveConceptsValues[SensitiveConcepts.EnergyHigh] = initialEnergy;
+            SensitiveConceptsValues[SensitiveConcepts.EnergyLow] = initialEnergy;
         }
         
         protected Liveable() {
@@ -125,19 +130,19 @@ namespace Agents.LiveableAgents
         public abstract void UpdateSensitivesDependentOnLocalCell();
 
         public bool IsDead() {
-            return Attributes[LiveableAttribute.Energy] <= 0 || Attributes[LiveableAttribute.Age] >= MaxAge || ShouldBeDead;
+            return Attributes[LiveableAttribute.Energy] <= 0 || Attributes[LiveableAttribute.Age] >= MaxAge || _shouldBeDead;
         }
         
         public void UpdateEnergyAndResetDistanceTravelled() {
             var newEnergy = Attributes[LiveableAttribute.Energy] - CognitiveMap.TotalConceptsCount
                                                          - CognitiveMap.CountOfNonZeroConnections * 0.1
-                                                         - Math.Pow(DistanceTravelledSinceLastUpdate, 1.4);
+                                                         - Math.Pow(_distanceTravelledSinceLastUpdate, 1.4);
 
             this.Attributes[LiveableAttribute.Energy] = newEnergy;
             this.SensitiveConceptsValues[SensitiveConcepts.EnergyLow] = newEnergy;
             this.SensitiveConceptsValues[SensitiveConcepts.EnergyHigh] = newEnergy;
             
-            this.DistanceTravelledSinceLastUpdate = 0;
+            this._distanceTravelledSinceLastUpdate = 0;
         }
 
         public void UpdateAttributesDependentOnTime() {
