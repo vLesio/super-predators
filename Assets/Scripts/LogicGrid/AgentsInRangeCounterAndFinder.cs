@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using AgentBehaviour.FuzzyCognitiveMapUtilities;
 using Agents.LiveableAgents;
@@ -14,7 +15,7 @@ namespace LogicGrid {
         Far
     }
     
-    public class AgentsInRangeCounter {
+    public class AgentsInRangeCounterAndFinder {
         public static readonly SensitiveConceptToMapAdapter PreySensitiveConceptToMapAdapter =
             new SensitiveConceptToMapAdapter {
                 {SensitiveConcepts.FoeClose, SimulationGrid.PredatorAgentsAdapter},
@@ -54,7 +55,7 @@ namespace LogicGrid {
         private readonly int _nearRange;
         private readonly SensitiveConceptToMapAdapter _attributeToMapAdapter;
         
-        public AgentsInRangeCounter(SensitiveConceptToMapAdapter attributeToMapAdapter, int farRange, int nearRange) {
+        public AgentsInRangeCounterAndFinder(SensitiveConceptToMapAdapter attributeToMapAdapter, int farRange, int nearRange) {
             this._attributeToMapAdapter = attributeToMapAdapter;
             this._farRange = farRange;
             this._nearRange = nearRange;
@@ -85,6 +86,31 @@ namespace LogicGrid {
             }
 
             return counts;
+        }
+
+        public Dictionary<SensitiveConcepts, int> FindDistancesToClosestAgents(Vector2Int position) {
+            var conceptToDistance = new Dictionary<SensitiveConcepts, int>();
+            
+            var searcherEntities = new SearcherEntities(position);
+            SensitiveConceptToRange.Keys.ToList().ForEach(concept => {
+                var mapAdapter = _attributeToMapAdapter[concept];
+                searcherEntities.MapAdapters.Add(mapAdapter);
+            });
+            
+            var bfsSearcher = new BfsSearcher(searcherEntities);
+            var results = bfsSearcher.FindClosestTargets();
+            
+            SensitiveConceptToRange.Keys.ToList().ForEach(concept => {
+                var resultPosition = results.Targets[(int)concept];
+                var dxAbs = Math.Abs(resultPosition.x - position.x);
+                var dyAbs = Math.Abs(resultPosition.y - position.y);
+                
+                var distance = Math.Min(dxAbs, dyAbs) + Math.Abs(dxAbs - dyAbs);
+                
+                conceptToDistance.Add(concept, distance);
+            });
+            
+            return conceptToDistance;
         }
     }
 }
