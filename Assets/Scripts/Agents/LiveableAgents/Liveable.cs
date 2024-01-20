@@ -102,6 +102,7 @@ namespace Agents.LiveableAgents
 
         public Dictionary<LiveableAttribute, double> Attributes { get; } = new Dictionary<LiveableAttribute, double>();
         public LiveableAction CurrentAction;
+        public bool SomeoneWantToBreedWithMe = false;
         
         private void InitLiveable() {
             var initialEnergy = 9999.0;
