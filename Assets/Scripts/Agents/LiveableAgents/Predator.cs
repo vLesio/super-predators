@@ -34,7 +34,7 @@ namespace Agents.LiveableAgents
         public override double GenomeThreshold => DevSet.I.simulation.TPredator;
         
         public Predator() {
-            CognitiveMap = FuzzyCognitiveMap.Create(this, DevSet.I.simulation.cogMapComplexity);
+            CognitiveMap = FuzzyCognitiveMap.Create(this);
         }
         
         public override void UpdateSensitivesDependentOnGrid() {

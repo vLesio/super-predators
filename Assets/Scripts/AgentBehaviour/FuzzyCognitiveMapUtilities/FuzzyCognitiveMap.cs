@@ -330,12 +330,12 @@ namespace AgentBehaviour.FuzzyCognitiveMapUtilities {
             return newBrain;
         }
 
-        public static FuzzyCognitiveMap Create(Predator predator, int internalConceptsCount) {
+        public static FuzzyCognitiveMap Create(Predator predator) {
             // return new FuzzyCognitiveMap(predator, internalConceptsCount);
             return new FuzzyCognitiveMap(BrainBase.PredatorMatrix, predator);
         }
         
-        public static FuzzyCognitiveMap Create(Prey prey, int internalConceptsCount) {
+        public static FuzzyCognitiveMap Create(Prey prey) {
             // return new FuzzyCognitiveMap(prey, internalConceptsCount);
             return new FuzzyCognitiveMap(BrainBase.PreyMatrix, prey);
         }
