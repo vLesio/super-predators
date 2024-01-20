@@ -229,8 +229,6 @@ namespace LogicGrid
         }
         
         public static List<Liveable> FindAllMatesInCellForAgent(CellAgent agent) {
-            // TODO: This should be done in a better way
-            
             switch (agent) {
                 case Prey prey:
                     return FindAllMatesInCellForAgent(prey).ConvertTo<List<Liveable>>();
@@ -242,13 +240,25 @@ namespace LogicGrid
         }
         
         private static HashSet<Prey> FindAllMatesInCellForAgent(Prey agent) {
-            return SimulationGrid.PreyAgents.TryGetValue(agent.CurrentPosition, out var preys)
-                ? preys : new HashSet<Prey>();
+            if (SimulationGrid.PreyAgents.TryGetValue(agent.CurrentPosition, out var preys)) {
+                var preysCopy = new HashSet<Prey>(preys);
+                preysCopy.Remove(agent);
+                
+                return preysCopy;
+            }
+            
+            return new HashSet<Prey>();
         }
         
         private static HashSet<Predator> FindAllMatesInCellForAgent(Predator agent) {
-            return SimulationGrid.PredatorAgents.TryGetValue(agent.CurrentPosition, out var predators)
-                ? predators : new HashSet<Predator>();
+            if (SimulationGrid.PredatorAgents.TryGetValue(agent.CurrentPosition, out var predators)) {
+                var predatorsCopy = new HashSet<Predator>(predators);
+                predatorsCopy.Remove(agent);
+                
+                return predatorsCopy;
+            }
+            
+            return new HashSet<Predator>();
         }
         
         public static Grass FindGrassOnAgentPosition(CellAgent agent) {
