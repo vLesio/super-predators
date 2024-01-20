@@ -15,6 +15,8 @@ namespace Application {
         [SerializeField] private Button startSimulationButton;
         [SerializeField] private Button[] selectParametersButtons;
         [SerializeField] private TextMeshProUGUI selectedParameterTitle;
+        [SerializeField] private GameObject loadingScreen;
+        [SerializeField] private TextMeshProUGUI loadingText;
 
         private List<SimulationSettings> _runParameters;
         private SimulationSettings _selectedParameter;
@@ -49,7 +51,9 @@ namespace Application {
                 return;
             }
             _logger.Log($"Starting simulation with {_selectedParameter.name % Colorize.Magenta} settings.");
-            SceneManager.LoadScene(DevSet.I.developer.simulationSceneName, LoadSceneMode.Single);
+            loadingText.SetText($"Loading with {_selectedParameter.name} settings.");
+            loadingScreen.SetActive(true);
+            SceneManager.LoadSceneAsync(DevSet.I.developer.simulationSceneName, LoadSceneMode.Single);
         }
 
         private void SetSelectedParameter(SimulationSettings simulationSettings) {
