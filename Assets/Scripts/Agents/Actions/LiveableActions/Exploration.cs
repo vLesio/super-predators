@@ -20,7 +20,7 @@ namespace Agents.Actions.LiveableActions
             // TODO: Choose random direction and move by speed
             Walker.TryToMoveTowardsDirections(agent, SimulationGrid.FindRandomTargetCell(agent));
             // TODO: Divide curiosity in cognition map by 1.5
-            agent.CognitiveMap.MultiplyNamedInternalConcept(NamedInternalConcept.Curiosity, 1f/1.5f);
+            agent.CognitiveMap.MultiplyNamedInternalConcept(NamedInternalConcept.Curiosity, 2.0f / 3.0f);
         }
     }
 }

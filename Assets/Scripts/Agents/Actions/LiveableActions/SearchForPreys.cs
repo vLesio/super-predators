@@ -38,7 +38,7 @@ namespace Agents.Actions.LiveableActions
             // Murder pray if you are on the same gird as prey
             if (SimulationGrid.DistanceFromAgentToAgent(nearestPrey, agent) <= 0)
             {
-                agent.Murder();
+                nearestPrey.Murder();
                 return;
             }
         }

@@ -71,8 +71,8 @@ namespace AgentBehaviour.FuzzyCognitiveMapUtilities {
                 { SensitiveConcepts.FoodFar, _fuzzificationFunctionNonLocalFar },
                 { SensitiveConcepts.MateClose, _fuzzificationFunctionNonLocalClose },
                 { SensitiveConcepts.MateFar, _fuzzificationFunctionNonLocalFar },
-                { SensitiveConcepts.EnergyLow, _fuzzificationFunctionLocalLow },
-                { SensitiveConcepts.EnergyHigh, _fuzzificationFunctionLocalHigh },
+                { SensitiveConcepts.EnergyLow, _fuzzificationFunctionEnergyLow },
+                { SensitiveConcepts.EnergyHigh, _fuzzificationFunctionEnergyHigh },
                 { SensitiveConcepts.QuantityOfLocalFoodLow, _fuzzificationFunctionLocalLow },
                 { SensitiveConcepts.QuantityOfLocalFoodHigh, _fuzzificationFunctionLocalHigh },
                 { SensitiveConcepts.QuantityOfLocalMateHigh, _fuzzificationFunctionLocalHigh },
@@ -144,16 +144,24 @@ namespace AgentBehaviour.FuzzyCognitiveMapUtilities {
             var settings = DevSet.I.simulation;
             
             return vector.Map(x =>
-                _generalActivationFunctionAType(x, 0.5, 0.5)
+                _generalActivationFunctionAType(x, 0.15, 0.0)
             );
         }
 
         private static double _fuzzificationFunctionNonLocalClose(double x) {
-            return _generalActivationFunctionBType(20.0 - x, 0.0, 5.0);
+            return _generalActivationFunctionBType(5.0 - x, 0.0, 20.0);
         }
         
         private static double _fuzzificationFunctionNonLocalFar(double x) {
             return _generalActivationFunctionBType(x, 5.0, 20.0);
+        }
+        
+        private static double _fuzzificationFunctionEnergyLow(double x) {
+            return _generalActivationFunctionBType(500.0 - x, 0.0, 2500.0);
+        }
+        
+        private static double _fuzzificationFunctionEnergyHigh(double x) {
+            return _generalActivationFunctionBType(x, 500.0, 2500.0);
         }
         
         private static double _fuzzificationFunctionLocalLow(double x) {
