@@ -65,12 +65,17 @@ namespace Agents.LiveableAgents
         
         public override void ChooseAction()
         {
+            if(AlreadyChosenAction)
+            {
+                return;
+            }
             foreach (var action in CognitiveMap.GetSortedActions())
             {
                 if(action.CheckConditions(this))
                 {
                     CurrentAction = action;
                     LogAction(CurrentAction);
+                    AlreadyChosenAction = true;
                     break;
                 }
                 

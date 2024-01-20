@@ -95,12 +95,15 @@ namespace Agents.Actions.LiveableActions
                     continue;
                 }
                 
-                if (!(agent.SomeoneWantToBreedWithMe
-                      && potentialBreeder.CurrentAction?.ActionType == LiveableActionType.Breed 
-                      && CheckIfAgentsWantToBreedWithMe(agent, potentialBreeder
-                      )))
+                if (!agent.SomeoneWantToBreedWithMe)
                 {
-                    continue;
+                    if(potentialBreeder.CurrentAction.ActionType != LiveableActionType.Breed)
+                    {
+                        if (!CheckIfAgentsWantToBreedWithMe(agent, potentialBreeder))
+                        {
+                            continue;
+                        }
+                    }
                 }
 
                 return potentialBreeder;

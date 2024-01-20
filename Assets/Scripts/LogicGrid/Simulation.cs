@@ -7,6 +7,7 @@ using Agents.ResourceAgents;
 using CoinPackage.Debugging;
 using Settings;
 using UnityEngine;
+using UnityEngine.PlayerLoop;
 using Utils;
 
 namespace LogicGrid {
@@ -51,11 +52,20 @@ namespace LogicGrid {
             var allPreys = GetAllAgentsInIncreasingAgeOrder(SimulationGrid.PreyAgents);
             
             allPreys.ForEach(prey => {
-                if (prey.IsDead() || prey.ActedThisTurn) {
+                if (prey.IsDead()) {
+                    return;
+                }
+
+                if (!prey.AlreadyChosenAction)
+                {
+                    prey.ChooseAction();
+                }
+
+                if (prey.ActedThisTurn)
+                {
                     return;
                 }
                 
-                prey.ChooseAction();
                 prey.Act();
                 
                 if (prey.IsDead()) {
@@ -278,9 +288,24 @@ namespace LogicGrid {
             }
         }
         
+        private static void ResetAlreadyChosenActionInAllAgents() {
+            foreach (var preyList in SimulationGrid.PreyAgents.Values) {
+                foreach (var prey in preyList) {
+                    prey.AlreadyChosenAction = false;
+                }
+            }
+            
+            foreach (var predatorList in SimulationGrid.PredatorAgents.Values) {
+                foreach (var predator in predatorList) {
+                    predator.AlreadyChosenAction = false;
+                }
+            }
+        }
+        
         public static void Update()
         {
             ResetActedThisTurnInAllAgents();
+            ResetAlreadyChosenActionInAllAgents();
             UpdatePreysStep();
             UpdateDeadLiveables();
             UpdatePredatorsStep();

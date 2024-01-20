@@ -4,6 +4,7 @@ using AgentBehaviour.FuzzyCognitiveMapUtilities;
 using Agents.Actions.LiveableActions;
 using CoinPackage.Debugging;
 using LogicGrid;
+using Settings;
 using Unity.VisualScripting;
 using UnityEngine;
 using Utils;
@@ -105,7 +106,7 @@ namespace Agents.LiveableAgents
         public bool SomeoneWantToBreedWithMe = false;
         
         private void InitLiveable() {
-            var initialEnergy = 9999.0;
+            var initialEnergy = IsPrey(this) ? DevSet.I.simulation.maxEnergyPrey : DevSet.I.simulation.maxEnergyPredator;
             
             Attributes.Add(LiveableAttribute.Age, 1);
             Attributes.Add(LiveableAttribute.Energy, initialEnergy);
@@ -135,9 +136,10 @@ namespace Agents.LiveableAgents
         }
         
         public void UpdateEnergyAndResetDistanceTravelled() {
-            var newEnergy = Attributes[LiveableAttribute.Energy] - CognitiveMap.TotalConceptsCount
+            var newEnergy = Math.Min(Attributes[LiveableAttribute.Energy] - CognitiveMap.TotalConceptsCount
                                                          - CognitiveMap.CountOfNonZeroConnections * 0.1
-                                                         - Math.Pow(_distanceTravelledSinceLastUpdate, 1.4);
+                                                         - Math.Pow(_distanceTravelledSinceLastUpdate, 1.4),
+                IsPrey(this) ? DevSet.I.simulation.maxEnergyPrey : DevSet.I.simulation.maxEnergyPredator);
 
             this.Attributes[LiveableAttribute.Energy] = newEnergy;
             this.SensitiveConceptsValues[SensitiveConcepts.EnergyLow] = newEnergy;
