@@ -32,10 +32,14 @@ namespace Application {
         }
 
         private void Step() {
+            Simulation.predatorActionsTaken.Clear();
+            Simulation.preyActionsTaken.Clear();
             Simulation.Update();
-            CDebug.Log($"Predators: {SimulationGrid.PredatorAgents.Count}");
-            CDebug.Log($"Preys: {SimulationGrid.PreyAgents.Count}");
-            CDebug.Log($"Simulation step {_steps++} took: {Time.deltaTime}");
+            CDebug.Log($"Step {_steps++ % Colorize.Cyan}, took: {Time.deltaTime % Colorize.Cyan}. Predators: {SimulationGrid.PredatorAgents.Count}, preys: {SimulationGrid.PreyAgents.Count}");
+        }
+
+        private void LogTakenActions() {
+            
         }
     }
 }

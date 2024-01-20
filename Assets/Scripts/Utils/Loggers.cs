@@ -8,7 +8,8 @@ namespace Utils {
         public enum LoggerType {
             UTILS,
             APPLICATION,
-            PARAM_SELECTOR
+            PARAM_SELECTOR,
+            AGENTS
         }
         
         static Loggers() {
@@ -30,7 +31,13 @@ namespace Utils {
                     new CLogger(LoggerType.PARAM_SELECTOR) {
                         LogEnabled = true
                     }
-                }
+                },
+                {
+                    LoggerType.AGENTS,
+                    new CLogger(LoggerType.AGENTS) {
+                        LogEnabled = true
+                    }
+                },
             };
         }
     }

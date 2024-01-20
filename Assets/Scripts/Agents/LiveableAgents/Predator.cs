@@ -2,6 +2,7 @@
 using System.Linq;
 using AgentBehaviour.FuzzyCognitiveMapUtilities;
 using Agents.Actions.LiveableActions;
+using CoinPackage.Debugging;
 using LogicGrid;
 using Settings;
 
@@ -52,8 +53,8 @@ namespace Agents.LiveableAgents
 
             SensitiveConceptsValues[SensitiveConcepts.QuantityOfLocalFoodLow] = countOfLocalMeat;
             SensitiveConceptsValues[SensitiveConcepts.QuantityOfLocalFoodHigh] = countOfLocalMeat;
-            SensitiveConceptsValues[SensitiveConcepts.QuantityOfLocalMateHigh] = countOfLocalPredators;
-            SensitiveConceptsValues[SensitiveConcepts.QuantityOfLocalMateLow] = countOfLocalPredators;
+            SensitiveConceptsValues[SensitiveConcepts.QuantityOfLocalMateHigh] = countOfLocalPredators - 1;
+            SensitiveConceptsValues[SensitiveConcepts.QuantityOfLocalMateLow] = countOfLocalPredators - 1;
             
             Attributes[LiveableAttribute.QuantityOfLocalFood] = countOfLocalMeat;
             Attributes[LiveableAttribute.QuantityOfLocalMates] = countOfLocalPredators;
@@ -66,6 +67,7 @@ namespace Agents.LiveableAgents
                 if(action.CheckConditions(this))
                 {
                     CurrentAction = action;
+                    LogAction(CurrentAction);
                     break;
                 }
             }
@@ -77,6 +79,16 @@ namespace Agents.LiveableAgents
             {
                 CurrentAction.Invoke(this);
                 ActedThisTurn = true;
+            }
+        }
+        
+        public void LogAction(LiveableAction action) {
+            CDebug.Log($"{this} has chosen action {CurrentAction}");
+            if (Simulation.predatorActionsTaken.TryGetValue(action, out var value)) {
+                Simulation.predatorActionsTaken[action] += 1;
+            }
+            else {
+                Simulation.predatorActionsTaken.Add(action, 1);
             }
         }
     }

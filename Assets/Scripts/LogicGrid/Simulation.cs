@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Agents.Actions.LiveableActions;
 using Agents.LiveableAgents;
 using Agents.ResourceAgents;
 using Settings;
@@ -11,6 +12,9 @@ namespace LogicGrid {
         public static readonly AllSpeciesOfTypes<Prey> preySpecies = new AllSpeciesOfTypes<Prey>();
         public static readonly AllSpeciesOfTypes<Predator> predatorSpecies = new AllSpeciesOfTypes<Predator>();
         
+        public static Dictionary<LiveableAction, int> preyActionsTaken = new ();
+        public static Dictionary<LiveableAction, int> predatorActionsTaken = new ();
+
         private static List<T> GetAllAgentsInIncreasingAgeOrder<T>(Dictionary<Vector2Int, HashSet<T>> agents)
                                                                     where T: Liveable {
             var allAgents = new List<T>();

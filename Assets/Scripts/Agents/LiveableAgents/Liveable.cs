@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using AgentBehaviour.FuzzyCognitiveMapUtilities;
 using Agents.Actions.LiveableActions;
+using CoinPackage.Debugging;
 using LogicGrid;
 using Unity.VisualScripting;
 using UnityEngine;
+using Utils;
 
 namespace Agents.LiveableAgents
 {
@@ -24,8 +26,10 @@ namespace Agents.LiveableAgents
         SexualNeeds,
         MaxAge
     }
+
     public abstract class Liveable : SimulationAgent
     {
+        public static CLogger AgentsLogger = Loggers.LoggersList[Loggers.LoggerType.AGENTS];
         private static readonly Dictionary<SensitiveConcepts, double> SensitiveConceptsValuesAtr = new Dictionary<SensitiveConcepts, double> {
             {SensitiveConcepts.FoeClose, 0},
             {SensitiveConcepts.FoeFar, 0},
@@ -131,6 +135,11 @@ namespace Agents.LiveableAgents
         
         public static bool IsPrey(Liveable agent) {
             return agent.GetType() == typeof(Prey);
+        }
+
+        public override string ToString() {
+            string type = GetType() == typeof(Prey) ? "Prey" : "Predator";
+            return $"[{type}:{CurrentPosition}]" % Colorize.Green;
         }
     }
 }

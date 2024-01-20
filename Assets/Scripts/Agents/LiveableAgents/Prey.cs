@@ -54,8 +54,8 @@ namespace Agents.LiveableAgents
 
             SensitiveConceptsValues[SensitiveConcepts.QuantityOfLocalFoodLow] = countOfLocalGrass;
             SensitiveConceptsValues[SensitiveConcepts.QuantityOfLocalFoodHigh] = countOfLocalGrass;
-            SensitiveConceptsValues[SensitiveConcepts.QuantityOfLocalMateHigh] = countOfLocalPreys;
-            SensitiveConceptsValues[SensitiveConcepts.QuantityOfLocalMateLow] = countOfLocalPreys;
+            SensitiveConceptsValues[SensitiveConcepts.QuantityOfLocalMateHigh] = countOfLocalPreys - 1;
+            SensitiveConceptsValues[SensitiveConcepts.QuantityOfLocalMateLow] = countOfLocalPreys - 1;
             
             Attributes[LiveableAttribute.QuantityOfLocalFood] = countOfLocalGrass;
             Attributes[LiveableAttribute.QuantityOfLocalMates] = countOfLocalPreys;
@@ -68,7 +68,7 @@ namespace Agents.LiveableAgents
                 if(action.CheckConditions(this))
                 {
                     CurrentAction = action;
-                    CDebug.Log($"Prey has chosen action {CurrentAction.ToString() % Colorize.Magenta}");
+                    LogAction(CurrentAction);
                     break;
                 }
             }
@@ -80,6 +80,16 @@ namespace Agents.LiveableAgents
             {
                 CurrentAction.Invoke(this);
                 ActedThisTurn = true;
+            }
+        }
+        
+        public void LogAction(LiveableAction action) {
+            CDebug.Log($"{this} has chosen action {CurrentAction}");
+            if (Simulation.preyActionsTaken.TryGetValue(action, out var value)) {
+                Simulation.preyActionsTaken[action] += 1;
+            }
+            else {
+                Simulation.preyActionsTaken.Add(action, 1);
             }
         }
     }

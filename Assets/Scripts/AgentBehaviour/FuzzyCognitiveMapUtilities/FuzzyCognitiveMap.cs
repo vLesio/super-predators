@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Agents.Actions.LiveableActions;
 using Agents.LiveableAgents;
+using CoinPackage.Debugging;
 using MathNet.Numerics.LinearAlgebra;
 using Settings;
 using Settings.brains;
@@ -166,7 +167,7 @@ namespace AgentBehaviour.FuzzyCognitiveMapUtilities {
             foreach (var concept in sensitiveConcepts) {
                 var fuzzificationFunction = SensitiveConceptToFuzzificationActivation[concept];
                 var fuzzifiedValue = fuzzificationFunction(_liveable.SensitiveConceptsValues[concept]);
-                
+                CDebug.Log($"{_liveable}, Concept: {concept} Sens:{_liveable.SensitiveConceptsValues[concept]} Fuzz:{fuzzifiedValue}");
                 _conceptsActivation[(int) concept] = fuzzifiedValue;
             }
         }
@@ -207,8 +208,15 @@ namespace AgentBehaviour.FuzzyCognitiveMapUtilities {
             }
         }
 
-        public List<LiveableAction> GetSortedActions()
-        {
+        public List<LiveableAction> GetSortedActions() {
+            string lol = "[";
+            foreach (var d in this._conceptsActivation) {
+                lol += d + ", ";
+            }
+
+            lol += "]";
+            CDebug.Log($"CA for {this._liveable}: {lol}");
+
             return this._actions
                 .OrderByDescending(x => this._conceptsActivation[(int) x.Key])
                 .Select(x => x.Value)
