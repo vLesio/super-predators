@@ -5,6 +5,7 @@ using System.Linq;
 using CoinPackage.Debugging;
 using JetBrains.Annotations;
 using MathNet.Numerics.LinearAlgebra;
+using MathNet.Numerics.LinearAlgebra.Complex32;
 
 namespace Settings.brains
 {
