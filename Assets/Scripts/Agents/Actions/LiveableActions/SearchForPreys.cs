@@ -32,9 +32,15 @@ namespace Agents.Actions.LiveableActions
             {
                 return;
             }
-
-            // TODO: DONE: If prey is in range of speed - move to it, else move by speed
+            
             Walker.TryToMoveTowardsDirections(agent, nearestPrey.CurrentPosition);
+            
+            // Murder pray if you are on the same gird as prey
+            if (SimulationGrid.DistanceFromAgentToAgent(nearestPrey, agent) <= 0)
+            {
+                agent.Murder();
+                return;
+            }
         }
     }
 }

@@ -30,6 +30,7 @@ namespace Agents.LiveableAgents
     public abstract class Liveable : SimulationAgent
     {
         public static CLogger AgentsLogger = Loggers.LoggersList[Loggers.LoggerType.AGENTS];
+        private bool ShouldBeDead = false;
         
         private static readonly Dictionary<SensitiveConcepts, double> SensitiveConceptsValuesAtr = new Dictionary<SensitiveConcepts, double> {
             {SensitiveConcepts.FoeClose, 0},
@@ -49,6 +50,10 @@ namespace Agents.LiveableAgents
         };
 
         private int DistanceTravelledSinceLastUpdate = 0;
+        
+        public void Murder() {
+            ShouldBeDead = true;
+        }
         
         public Dictionary<SensitiveConcepts, double> SensitiveConceptsValues {
             get => SensitiveConceptsValuesAtr;
@@ -120,7 +125,7 @@ namespace Agents.LiveableAgents
         public abstract void UpdateSensitivesDependentOnLocalCell();
 
         public bool IsDead() {
-            return Attributes[LiveableAttribute.Energy] <= 0 || Attributes[LiveableAttribute.Age] >= MaxAge;
+            return Attributes[LiveableAttribute.Energy] <= 0 || Attributes[LiveableAttribute.Age] >= MaxAge || ShouldBeDead;
         }
         
         public void UpdateEnergyAndResetDistanceTravelled() {
