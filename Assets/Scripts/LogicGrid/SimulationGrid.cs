@@ -26,6 +26,27 @@ namespace LogicGrid
         public static readonly PreyAgentsAdapter PreyAgentsAdapter = new PreyAgentsAdapter(PreyAgents);
         public static readonly PredatorAgentsAdapter PredatorAgentsAdapter = new PredatorAgentsAdapter(PredatorAgents);
         public static readonly MeatAgentsAdapter ObstacleAgentsAdapter = new MeatAgentsAdapter(MeatAgents);
+
+        public static int GetNumberOfPreys()
+        {
+            int counter = 0;
+            foreach (var agentList in PreyAgents.Values)
+            {
+                counter += agentList.Count;
+            }
+
+            return counter;
+        }        
+        public static int GetNumberOfPredators()
+        {
+            int counter = 0;
+            foreach (var agentList in PredatorAgents.Values)
+            {
+                counter += agentList.Count;
+            }
+
+            return counter;
+        }
         
         private static void MoveAgent<T>(T agent, Vector2Int destination, Dictionary<Vector2Int, HashSet<T>> agents)
                                             where T: Liveable {
