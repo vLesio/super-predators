@@ -19,19 +19,16 @@ namespace Agents.Actions.LiveableActions
         public override void Invoke(Liveable agent)
         {
             var nearestPredator = Finder.FindNearestEnemyForAgent(agent);
-            if (nearestPredator != null && SimulationGrid.DistanceFromAgentToAgent(agent, nearestPredator) <= DevSet.I.simulation.distanceVisionPrey)
+            if (nearestPredator != null && SimulationGrid.DistanceFromAgentToAgent(agent, nearestPredator) <= DevSet.I.simulation.distanceVisionPrey && SimulationGrid.DistanceFromAgentToAgent(agent, nearestPredator) > 0)
             {
                 Walker.TryToMoveTowardsDirections(agent,
                     SimulationGrid.FindOppositeDirectionToAgent(agent, nearestPredator));
-                // TODO: DONE: Choose opposite direction and move by speed
             }
             else
             {
                 Walker.TryToMoveTowardsDirections(agent, SimulationGrid.FindRandomTargetCell(agent));
-                // TODO: DONE: Choose random direction and move by speed
             }
             agent.CognitiveMap.MultiplyNamedInternalConcept(NamedInternalConcept.Fear, 0.5f);
-            // TODO: DONE: Divide cognitive map for activation fear by 2 
         }
     }
 }
