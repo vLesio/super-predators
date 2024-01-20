@@ -17,7 +17,7 @@ namespace Agents.Actions.LiveableActions
     }
     public abstract class LiveableAction
     {
-        public LiveableActionType ActionType { get; } = LiveableActionType.NotChosen;
+        public LiveableActionType ActionType = LiveableActionType.NotChosen;
         public abstract bool CheckConditions(Liveable agent);
         public abstract void Invoke(Liveable agent);
 
