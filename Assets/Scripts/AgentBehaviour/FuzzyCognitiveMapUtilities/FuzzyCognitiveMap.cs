@@ -261,12 +261,12 @@ namespace AgentBehaviour.FuzzyCognitiveMapUtilities {
             string lol = "";
             for (var i = 0; i < _conceptsActivation.Count; i++) {
                 if (i <= 13) {
-                    lol += $"{(SensitiveConcepts)i}: {_conceptsActivation[i]}\n";
+                    lol += $"{i+1}: {(SensitiveConcepts)i} -> {_conceptsActivation[i]}\n";
                 }else if (i <= 21) {
-                    lol += $"{(NamedInternalConcept)i}: {_conceptsActivation[i]}\n";
+                    lol += $"{i+1}: {(NamedInternalConcept)i} -> {_conceptsActivation[i]}\n";
                 }
                 else {
-                    lol += $"{(MotorConcepts)i}: {_conceptsActivation[i]}\n";
+                    lol += $"{i+1}: {(MotorConcepts)i} -> {_conceptsActivation[i]}\n";
                 }
                 
             }
