@@ -95,7 +95,10 @@ namespace Agents.Actions.LiveableActions
                     continue;
                 }
                 
-                if (potentialBreeder.CurrentAction.ActionType != LiveableActionType.Breed)
+                if (!(agent.SomeoneWantToBreedWithMe 
+                      || potentialBreeder.CurrentAction.ActionType == LiveableActionType.Breed 
+                      || CheckIfAgentsWantToBreedWithMe(agent, potentialBreeder
+                      )))
                 {
                     continue;
                 }
@@ -104,6 +107,14 @@ namespace Agents.Actions.LiveableActions
             }
 
             return null;
+        }
+
+        private bool CheckIfAgentsWantToBreedWithMe(Liveable hornyAgent, Liveable potentialBreeder)
+        {
+            potentialBreeder.SomeoneWantToBreedWithMe = true;
+            potentialBreeder.ChooseAction();
+            potentialBreeder.SomeoneWantToBreedWithMe = false;
+            return potentialBreeder.CurrentAction.ActionType == LiveableActionType.Breed;
         }
     }
 }
