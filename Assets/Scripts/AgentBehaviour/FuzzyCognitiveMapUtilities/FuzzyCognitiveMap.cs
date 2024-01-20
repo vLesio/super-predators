@@ -149,11 +149,11 @@ namespace AgentBehaviour.FuzzyCognitiveMapUtilities {
         }
 
         private static double _fuzzificationFunctionNonLocalClose(double x) {
-            return _generalActivationFunctionBType(80.0 - x, 0.0, 60.0);
+            return _generalActivationFunctionBType(20.0 - x, 0.0, 5.0);
         }
         
         private static double _fuzzificationFunctionNonLocalFar(double x) {
-            return _generalActivationFunctionBType(x, 20.0, 80.0);
+            return _generalActivationFunctionBType(x, 5.0, 20.0);
         }
         
         private static double _fuzzificationFunctionLocalLow(double x) {
@@ -163,7 +163,7 @@ namespace AgentBehaviour.FuzzyCognitiveMapUtilities {
         private static double _fuzzificationFunctionLocalHigh(double x) {
             return _generalActivationFunctionBType(x, 0.0, 2.0);
         }
-        
+
         private void _performFuzzification()
         {
             var sensitiveConcepts = _liveable.SensitiveConceptsValues.Keys;
