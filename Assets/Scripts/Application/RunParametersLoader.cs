@@ -53,7 +53,7 @@ namespace Application {
             _logger.Log($"Starting simulation with {_selectedParameter.name % Colorize.Magenta} settings.");
             loadingText.SetText($"Loading with {_selectedParameter.name} settings.");
             loadingScreen.SetActive(true);
-            SceneManager.LoadSceneAsync(DevSet.I.developer.simulationSceneName, LoadSceneMode.Single);
+            SceneManager.LoadScene(DevSet.I.developer.simulationSceneName, LoadSceneMode.Single);
         }
 
         private void SetSelectedParameter(SimulationSettings simulationSettings) {
