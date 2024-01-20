@@ -197,7 +197,7 @@ namespace LogicGrid
         private static Predator FindNearestEnemyForPrey(Prey prey) {
             var preyPosition = prey.CurrentPosition;
             
-            if (SimulationGrid.PredatorAgents[preyPosition].Count > 0) {
+            if (SimulationGrid.PredatorAgents.ContainsKey(preyPosition) && SimulationGrid.PredatorAgents[preyPosition].Count > 0) {
                 return SimulationGrid.PredatorAgents[preyPosition].First();
             }
             
