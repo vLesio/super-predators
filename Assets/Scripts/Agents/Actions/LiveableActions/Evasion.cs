@@ -21,7 +21,7 @@ namespace Agents.Actions.LiveableActions
             var nearestPredator = Finder.FindNearestEnemyForAgent(agent);
             if (nearestPredator != null && SimulationGrid.DistanceFromAgentToAgent(agent, nearestPredator) <= DevSet.I.simulation.distanceVisionPrey && SimulationGrid.DistanceFromAgentToAgent(agent, nearestPredator) > 0)
             {
-                Walker.TryToMoveTowardsDirections(agent,
+                Walker.TryToMoveTowardsDirections(agent, agent.CurrentPosition +
                     SimulationGrid.FindOppositeDirectionToAgent(agent, nearestPredator));
             }
             else
