@@ -123,6 +123,10 @@ namespace AgentBehaviour.FuzzyCognitiveMapUtilities {
             this._connectionMatrix = connectionMatrix;
             this._conceptsActivation = Vector<double>.Build.Dense(TotalConceptsCount);
         }
+        
+        private static double _generalActivationFunctionAType(double x, double k, double x0) {
+            return 1.0 / (1.0 + Math.Exp(-k * (x - x0)));
+        }
 
         private static double _generalActivationFunctionBType(double x, double s1, double s2) {
             if (x <= s1) {
@@ -140,7 +144,7 @@ namespace AgentBehaviour.FuzzyCognitiveMapUtilities {
             var settings = DevSet.I.simulation;
 
             return vector.Map(x =>
-                _generalActivationFunctionBType(x, settings.activationS1, settings.activationS2)
+                _generalActivationFunctionAType(x, 0.5, 0.5)
             );
         }
 
