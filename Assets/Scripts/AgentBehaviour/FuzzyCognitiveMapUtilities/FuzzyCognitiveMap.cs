@@ -149,7 +149,7 @@ namespace AgentBehaviour.FuzzyCognitiveMapUtilities {
             var settings = DevSet.I.simulation;
             
             return vector.Map(x =>
-                _generalActivationFunctionAType(x, 2.0, 1.0)
+                _generalActivationFunctionAType(x, 4.0, 2.0/3.0)
             );
         }
 
@@ -162,11 +162,11 @@ namespace AgentBehaviour.FuzzyCognitiveMapUtilities {
         }
         
         private static double _fuzzificationFunctionEnergyLow(double x) {
-            return _generalActivationFunctionBType(200.0 - x, 0.0, 100.0);
+            return _generalActivationFunctionBType(600.0 - x, 0.0, 300.0);
         }
         
         private static double _fuzzificationFunctionEnergyHigh(double x) {
-            return _generalActivationFunctionBType(x, 100.0, 200.0);
+            return _generalActivationFunctionBType(x, 300.0, 600.0);
         }
         
         private static double _fuzzificationFunctionLocalLow(double x) {
@@ -193,37 +193,9 @@ namespace AgentBehaviour.FuzzyCognitiveMapUtilities {
         }
 
         private void _calculateNextActivationVector() {
-            string lol = "[";
-            foreach (var d in this._conceptsActivation) {
-                lol += d + ", ";
-            }
-
-            lol += "]";
-            CDebug.LogWarning($"Before all {this._liveable}: {lol}");
-            var multiplication = this._connectionMatrix * this._conceptsActivation;
-            lol = "[";
-            foreach (var d in multiplication) {
-                lol += d + ", ";
-            }
-
-            lol += "]";
-            CDebug.LogWarning($"after multiplication {this._liveable}: {lol}");
+            var multiplication = this._connectionMatrix.Multiply(this._conceptsActivation);
             var afterAdd = multiplication + this._conceptsActivation;
-            lol = "[";
-            foreach (var d in afterAdd) {
-                lol += d + ", ";
-            }
-
-            lol += "]";
-            CDebug.LogWarning($"after adding {this._liveable}: {lol}");
             this._conceptsActivation = _activationFunction(afterAdd);
-            lol = "[";
-            foreach (var d in this._conceptsActivation) {
-                lol += d + ", ";
-            }
-
-            lol += "]";
-            CDebug.LogWarning($"after activasion {this._liveable}: {lol}");
         }
         
         public static FuzzyCognitiveMap operator*(FuzzyCognitiveMap cognitiveMap, double value) {
@@ -254,7 +226,10 @@ namespace AgentBehaviour.FuzzyCognitiveMapUtilities {
             for (var i = 0; i < iterationsCount; i++) {
                 this._performFuzzification();
                 this._calculateNextActivationVector();
+                
+                
             }
+            this._performFuzzification();
         }
 
         public List<LiveableAction> GetSortedActions() {

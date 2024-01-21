@@ -1,7 +1,9 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using AgentBehaviour.FuzzyCognitiveMapUtilities;
 using AgentBehaviour.GenomeUtilities;
 using Agents.LiveableAgents;
+using CoinPackage.Debugging;
 using JetBrains.Annotations;
 using LogicGrid;
 using MathNet.Numerics;
@@ -51,6 +53,11 @@ namespace Agents.Actions.LiveableActions
             
             agent.CognitiveMap.MultiplyNamedInternalConcept(NamedInternalConcept.SexualNeeds, 0f);
             breedMate.CognitiveMap.MultiplyNamedInternalConcept(NamedInternalConcept.SexualNeeds, 0f);
+            CDebug.LogWarning("Breeded succesfull! New Live is coming to town!");
+            if (breedMate.GetHashCode() == agent.GetHashCode())
+            {
+                CDebug.LogError("Breeded with myself!");
+            }
             breedMate.ActedThisTurn = true;
         }
 
@@ -70,6 +77,11 @@ namespace Agents.Actions.LiveableActions
             }
 
             if (mate.CurrentPosition != agent.CurrentPosition)
+            {
+                return null;
+            }
+
+            if (mate.Age < (Liveable.IsPrey(mate) ? DevSet.I.simulation.ageInterbreedPrey : DevSet.I.simulation.ageInterbreedPredator))
             {
                 return null;
             }

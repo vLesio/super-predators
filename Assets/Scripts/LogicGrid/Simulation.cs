@@ -57,6 +57,8 @@ namespace LogicGrid {
             
             allPreys.ForEach(prey => {
                 if (prey.IsDead()) {
+                    prey.ActedThisTurn = true;
+                    prey.AlreadyChosenAction = true;
                     return;
                 }
 
@@ -71,10 +73,6 @@ namespace LogicGrid {
                 }
                 
                 prey.Act();
-                
-                if (prey.IsDead()) {
-                    return;
-                }
                 
                 // TODO: check if this is correct
                 prey.UpdateEnergyAndResetDistanceTravelled();

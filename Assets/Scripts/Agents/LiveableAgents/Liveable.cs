@@ -131,8 +131,27 @@ namespace Agents.LiveableAgents
         public abstract void UpdateSensitivesDependentOnGrid();
         public abstract void UpdateSensitivesDependentOnLocalCell();
 
-        public bool IsDead() {
-            return Attributes[LiveableAttribute.Energy] <= 0 || Attributes[LiveableAttribute.Age] >= MaxAge || _shouldBeDead;
+        public bool IsDead()
+        {
+            if (Attributes[LiveableAttribute.Energy] <= 0)
+            {
+                CDebug.LogWarning("Dead from lack of energy!");
+                return true;
+            }
+
+            if (Attributes[LiveableAttribute.Age] >= MaxAge)
+            {
+                CDebug.LogWarning("Dead from old age!");
+                return true;
+            }
+
+            if (_shouldBeDead)
+            {
+                CDebug.LogWarning("Dead from murder!");
+                return true;
+            }
+
+            return false;
         }
         
         public void UpdateEnergyAndResetDistanceTravelled() {
