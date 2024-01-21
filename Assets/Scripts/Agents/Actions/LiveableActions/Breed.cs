@@ -37,6 +37,12 @@ namespace Agents.Actions.LiveableActions
             {
                 return;
             }
+            
+            if (!BreedingProcessor.WasBreedingSuccessful(agent.CognitiveMap, breedMate.CognitiveMap))
+            {
+                CDebug.LogWarning("Breeding unsuccessful :((");
+                return;
+            }
 
             var child = BreedingProcessor.Interbreed(agent, breedMate);
 
@@ -93,11 +99,6 @@ namespace Agents.Actions.LiveableActions
                     continue;
                 }
                 if (!CheckIfLivableHasEnergy(potentialBreeder))
-                {
-                    continue;
-                }
-                
-                if (!BreedingProcessor.WasBreedingSuccessful(agent.CognitiveMap, potentialBreeder.CognitiveMap))
                 {
                     continue;
                 }

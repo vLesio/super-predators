@@ -23,8 +23,8 @@ namespace AgentBehaviour.FuzzyCognitiveMapUtilities {
         MateFar = 7,
         EnergyLow = 8,
         EnergyHigh = 9,
-        QuantityOfLocalFoodLow = 10,
-        QuantityOfLocalFoodHigh = 11,
+        QuantityOfLocalFoodHigh = 10,
+        QuantityOfLocalFoodLow = 11,
         QuantityOfLocalMateHigh = 12,
         QuantityOfLocalMateLow = 13
     }
@@ -149,7 +149,7 @@ namespace AgentBehaviour.FuzzyCognitiveMapUtilities {
             var settings = DevSet.I.simulation;
             
             return vector.Map(x =>
-                _generalActivationFunctionAType(x, 4.0, 2.0/3.0)
+                _generalActivationFunctionAType(x, 1.5, 3.0/5.0)
             );
         }
 
@@ -162,11 +162,11 @@ namespace AgentBehaviour.FuzzyCognitiveMapUtilities {
         }
         
         private static double _fuzzificationFunctionEnergyLow(double x) {
-            return _generalActivationFunctionBType(600.0 - x, 0.0, 300.0);
+            return _generalActivationFunctionBType(400.0 - x, 0.0, 100.0);
         }
         
         private static double _fuzzificationFunctionEnergyHigh(double x) {
-            return _generalActivationFunctionBType(x, 300.0, 600.0);
+            return _generalActivationFunctionBType(x, 300.0, 400.0);
         }
         
         private static double _fuzzificationFunctionLocalLow(double x) {
@@ -189,7 +189,7 @@ namespace AgentBehaviour.FuzzyCognitiveMapUtilities {
                     $"{concept} -> {_liveable.SensitiveConceptsValues[concept]}. Fuzzified: {fuzzifiedValue}\n";
                 _conceptsActivation[(int) concept] = fuzzifiedValue;
             }
-            CDebug.Log($"Concepts for {_liveable}\n{sensConceptsStr}");
+            // CDebug.Log($"Concepts for {_liveable}\n{sensConceptsStr}");
         }
 
         private void _calculateNextActivationVector() {

@@ -245,6 +245,7 @@ namespace LogicGrid {
             foreach (var agentList in agents.Values) {
                 foreach (var agent in agentList) {
                     agent.UpdateEnergyAndResetDistanceTravelled();
+                    agent.UpdateAttributesDependentOnTime();
                 }
             }
         }
