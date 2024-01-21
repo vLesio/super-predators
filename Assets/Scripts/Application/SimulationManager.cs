@@ -12,9 +12,13 @@ namespace Application {
         [SerializeField] private bool isPaused = false;
         [SerializeField] private Button stepOverButton;
         [SerializeField] private Button playButton;
+        [SerializeField] private Slider speedSlider;
+        [SerializeField] private TextMeshProUGUI sliderValueText;
 
         private int _steps = 0;
+        private float _lastStep = 0f;
         private TextMeshProUGUI _playButtonText;
+        
 
         private readonly CLogger _simlogger = Loggers.LoggersList[Loggers.LoggerType.SIMULATION];
 
@@ -24,6 +28,7 @@ namespace Application {
             _playButtonText = playButton.GetComponentInChildren<TextMeshProUGUI>();
 
             stepOverButton.onClick.AddListener(Step);
+            speedSlider.onValueChanged.AddListener(value => sliderValueText.SetText($"TBS: {value.ToString("F")}"));
             playButton.onClick.AddListener(() => {
                 isPaused = !isPaused;
                 _playButtonText.text = isPaused ? "Play" : "Pause";
@@ -33,7 +38,7 @@ namespace Application {
         }
 
         private void Update() {
-            if (!isPaused) {
+            if (!isPaused && Time.time - _lastStep > speedSlider.value) {
                 Step();
             }
         }
@@ -49,6 +54,7 @@ namespace Application {
             Simulation.predatorActionsTaken.Clear();
             Simulation.preyActionsTaken.Clear();
             Simulation.Update();
+            _lastStep = Time.time;
             Simulation.LogTakenActions();
             _simlogger.Log($"Step {_steps++ % Colorize.Cyan}, took: {Time.deltaTime % Colorize.Cyan}." +
                            $"\tPredators -> {SimulationGrid.GetNumberOfPredators() % Colorize.Magenta} ({SimulationGrid.PredatorAgents.Count}), " +
