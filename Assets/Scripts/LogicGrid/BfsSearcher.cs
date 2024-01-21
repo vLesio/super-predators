@@ -60,7 +60,12 @@ namespace LogicGrid {
                         return;
                     }
                     
-                    distance.Add(neighbour, currentDistance + 1);
+                    var newDistance = currentDistance + 1;
+                    if (_entities.MaxSearchDistance != -1 && newDistance > _entities.MaxSearchDistance) {
+                        return;
+                    }
+                    
+                    distance.Add(neighbour, newDistance);
                     queue.Enqueue(neighbour);
                 });
             }
@@ -101,6 +106,7 @@ namespace LogicGrid {
     public class SearcherEntities {
         private readonly Liveable _agentToIgnore;
         private Vector2Int _seekerPosition;
+        private int _maxSearchDistance = -1;
         private readonly List<MapAdapter> _mapAdapters = new List<MapAdapter>();
         
         public Liveable AgentToIgnore {
@@ -109,6 +115,10 @@ namespace LogicGrid {
         
         public List<MapAdapter> MapAdapters {
             get => _mapAdapters;
+        }
+        
+        public int MaxSearchDistance {
+            get => _maxSearchDistance;
         }
 
         public Vector2Int SeekerPosition {
@@ -122,6 +132,10 @@ namespace LogicGrid {
         
         public void SetSeekerPosition(Vector2Int newSeekerPosition) {
             this._seekerPosition = newSeekerPosition;
+        }
+        
+        public void SetMaxSearchDistance(int newMaxSearchDistance) {
+            this._maxSearchDistance = newMaxSearchDistance;
         }
         
         public int AddTargetMap(MapAdapter targetMap) {

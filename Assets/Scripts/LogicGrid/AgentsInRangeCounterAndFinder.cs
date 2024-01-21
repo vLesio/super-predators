@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using AgentBehaviour.FuzzyCognitiveMapUtilities;
 using Agents.LiveableAgents;
@@ -90,8 +91,20 @@ namespace LogicGrid {
 
         public Dictionary<SensitiveConcepts, int> FindDistancesToClosestAgents(Liveable agentToIgnore, Vector2Int position) {
             var conceptToDistance = new Dictionary<SensitiveConcepts, int>();
+
+            var maxSearchDistance = -1;
+            switch(agentToIgnore) {
+                case Prey prey:
+                    maxSearchDistance = DevSet.I.simulation.distanceVisionPrey;
+                    break;
+                case Predator predator:
+                    maxSearchDistance = DevSet.I.simulation.distanceVisionPredator;
+                    break;
+            }
             
             var searcherEntities = new SearcherEntities(agentToIgnore, position);
+            searcherEntities.SetMaxSearchDistance(maxSearchDistance);
+            
             SensitiveConceptToRange.Keys.ToList().ForEach(concept => {
                 var mapAdapter = _attributeToMapAdapter[concept];
                 searcherEntities.MapAdapters.Add(mapAdapter);
@@ -102,6 +115,12 @@ namespace LogicGrid {
             
             SensitiveConceptToRange.Keys.ToList().ForEach(concept => {
                 var resultPosition = results.Targets[(int)concept];
+                
+                if (resultPosition.x == -1 && resultPosition.y == -1) {
+                    conceptToDistance.Add(concept, 2 * SimulationGrid.GridSize.x);
+                    return;
+                }
+                
                 var dxAbs = Math.Abs(resultPosition.x - position.x);
                 var dyAbs = Math.Abs(resultPosition.y - position.y);
                 
