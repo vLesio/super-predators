@@ -1,6 +1,7 @@
 ﻿using System;
 using CoinPackage.Debugging;
 using LogicGrid;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using Utils;
@@ -10,14 +11,24 @@ namespace Application {
     public class SimulationManager : Singleton<SimulationManager> {
         [SerializeField] private bool isPaused = false;
         [SerializeField] private Button stepOverButton;
+        [SerializeField] private Button playButton;
 
         private int _steps = 0;
+        private TextMeshProUGUI _playButtonText;
 
         private readonly CLogger _simlogger = Loggers.LoggersList[Loggers.LoggerType.SIMULATION];
 
         protected override void Awake() {
             base.Awake();
+
+            _playButtonText = playButton.GetComponentInChildren<TextMeshProUGUI>();
+
             stepOverButton.onClick.AddListener(Step);
+            playButton.onClick.AddListener(() => {
+                isPaused = !isPaused;
+                _playButtonText.text = isPaused ? "Play" : "Pause";
+                stepOverButton.interactable = isPaused;
+            });
             InitializeSimulation();
         }
 
