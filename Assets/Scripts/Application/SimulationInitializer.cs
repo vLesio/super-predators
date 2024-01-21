@@ -120,8 +120,10 @@ namespace Application {
         public void InitializeGrass() {
             for (var i = 0; i < DevSet.I.simulation.gridSize.x; i++) {
                 for (var j = 0; j < DevSet.I.simulation.gridSize.y; j++) {
-                    SimulationGrid.SetGrass(new Vector2Int(i, j),
-                        Random.Range(-DevSet.I.simulation.maxGrass, DevSet.I.simulation.maxGrass));
+                    if (Random.Range(0f, 1f) <= 0.07f) {
+                        SimulationGrid.SetGrass(new Vector2Int(i, j),
+                            Random.Range(1f, DevSet.I.simulation.maxGrass));
+                    }
                 }
             }
         }

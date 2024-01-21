@@ -24,6 +24,10 @@ namespace GridSystem {
             // grassPanel.color = _settings.groundColor;
         }
 
+        public void Initialize() {
+            grassPanel.color = _settings.groundColor;
+        }
+
         public void SetGrass(float amount) {
             if (amount <= 0f) {
                 grassPanel.color = _settings.groundColor;

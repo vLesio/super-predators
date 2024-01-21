@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Agents.Actions.LiveableActions;
@@ -6,9 +6,11 @@ using Agents.LiveableAgents;
 using Agents.ResourceAgents;
 using CoinPackage.Debugging;
 using Settings;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.PlayerLoop;
 using Utils;
+using Random = UnityEngine.Random;
 
 namespace LogicGrid {
     public static class Simulation {
@@ -19,6 +21,8 @@ namespace LogicGrid {
         public static Dictionary<LiveableAction, int> predatorActionsTaken = new ();
 
         public static readonly CLogger _simLogger = Loggers.LoggersList[Loggers.LoggerType.SIMULATION];
+        
+        private static readonly SimulationSettings _settings = DevSet.I.simulation;
 
         private static List<T> GetAllAgentsInIncreasingAgeOrder<T>(Dictionary<Vector2Int, HashSet<T>> agents)
                                                                     where T: Liveable {
@@ -185,11 +189,11 @@ namespace LogicGrid {
                                                             where T: ResourceAgent {
             var emptyPositions = new HashSet<Vector2Int>();
             
-            foreach (var meat in agents.Values) {
-                meat.UpdateQuantity();
+            foreach (var resource in agents.Values) {
+                resource.UpdateQuantity();
 
-                if (meat.IsEmpty()) {
-                    emptyPositions.Add(meat.CurrentPosition);
+                if (resource.IsEmpty()) {
+                    emptyPositions.Add(resource.CurrentPosition);
                 }
             }
             
@@ -218,11 +222,12 @@ namespace LogicGrid {
                     }
                     
                     placesToPlantGrass.Add(neighbourPosition);
+                    
                 });
             }
 
             foreach (var position in placesToPlantGrass) {
-                if (!SimulationGrid.GrassAgents.ContainsKey(position)) {
+                if (Random.Range(0f, 1f) < _settings.probaGrowGrass) {
                     SimulationGrid.SetGrass(position, DevSet.I.simulation.growGrass);
                 }
             }

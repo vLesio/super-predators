@@ -1,4 +1,6 @@
-﻿using Settings;
+using CoinPackage.Debugging;
+using GridSystem;
+using Settings;
 
 namespace Agents.ResourceAgents
 {
@@ -30,6 +32,7 @@ namespace Agents.ResourceAgents
 
             Quantity += DevSet.I.simulation.growGrass;
             Quantity = System.Math.Min(DevSet.I.simulation.maxGrass, Quantity);
+            CGrid.I.SetGrass(CurrentPosition, Quantity);
             return true;
         }
     }

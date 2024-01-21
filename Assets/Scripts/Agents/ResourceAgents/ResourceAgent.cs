@@ -18,5 +18,12 @@
         }
         
         public abstract bool UpdateQuantity();
+
+        public override string ToString() {
+            if (IsGrass(this)) {
+                return $"[Grass: {Quantity}]";
+            }
+            return $"[Meat: {Quantity}]";
+        }
     }
 }

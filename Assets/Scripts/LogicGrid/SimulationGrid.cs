@@ -1,9 +1,10 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using Agents;
 using Agents.LiveableAgents;
 using Agents.ResourceAgents;
+using CoinPackage.Debugging;
 using GridSystem;
 using Settings;
 using UnityEngine;
@@ -211,12 +212,10 @@ namespace LogicGrid
         
         public static void RemoveGrass(Vector2Int position) {
             GrassAgents.Remove(position);
-            CGrid.I.SetGrass(position, 0f);
         }
         
         public static void RemoveMeat(Vector2Int position) {
             MeatAgents.Remove(position);
-            CGrid.I.SetMeat(position, 0f);
         }
         
         public static void RemovePrey(Prey prey) {

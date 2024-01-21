@@ -39,7 +39,9 @@ namespace Application {
             Simulation.preyActionsTaken.Clear();
             Simulation.Update();
             Simulation.LogTakenActions();
-            _simlogger.Log($"Step {_steps++ % Colorize.Cyan}, took: {Time.deltaTime % Colorize.Cyan}. \tPredators {SimulationGrid.GetNumberOfPredators()} - {SimulationGrid.PredatorAgents.Count}, Prays: {SimulationGrid.GetNumberOfPreys()} - {SimulationGrid.PreyAgents.Count}");
+            _simlogger.Log($"Step {_steps++ % Colorize.Cyan}, took: {Time.deltaTime % Colorize.Cyan}." +
+                           $"\tPredators -> {SimulationGrid.GetNumberOfPredators() % Colorize.Magenta} ({SimulationGrid.PredatorAgents.Count}), " +
+                           $"Preys -> {SimulationGrid.GetNumberOfPreys() % Colorize.Magenta} ({SimulationGrid.PreyAgents.Count})");
         }
     }
 }

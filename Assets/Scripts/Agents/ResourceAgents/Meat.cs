@@ -1,4 +1,5 @@
 ﻿using System;
+using GridSystem;
 using Settings;
 
 namespace Agents.ResourceAgents
@@ -23,7 +24,7 @@ namespace Agents.ResourceAgents
 
             Quantity -= DevSet.I.simulation.decreaseMeat;
             Quantity = Math.Max(0, Quantity);
-            
+            CGrid.I.SetMeat(CurrentPosition, Quantity);
             return true;
         }
     }
