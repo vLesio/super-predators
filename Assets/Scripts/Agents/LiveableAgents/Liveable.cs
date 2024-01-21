@@ -155,6 +155,13 @@ namespace Agents.LiveableAgents
         }
         
         public void UpdateEnergyAndResetDistanceTravelled() {
+
+            if (Age <= 1)
+            {
+                this._distanceTravelledSinceLastUpdate = 0;
+                return;
+            }
+            
             var newEnergy = Math.Min(Attributes[LiveableAttribute.Energy] - CognitiveMap.TotalConceptsCount
                                                          - CognitiveMap.CountOfNonZeroConnections * 0.1
                                                          - Math.Pow(_distanceTravelledSinceLastUpdate, 1.4),
