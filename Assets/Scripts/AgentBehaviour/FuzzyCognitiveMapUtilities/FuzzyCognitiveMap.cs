@@ -85,8 +85,8 @@ namespace AgentBehaviour.FuzzyCognitiveMapUtilities {
                 { SensitiveConcepts.FoeFar, _fuzzificationFunctionNonLocalFar },
                 { SensitiveConcepts.PreyClose, _fuzzificationFunctionNonLocalClose },
                 { SensitiveConcepts.PreyFar, _fuzzificationFunctionNonLocalFar },
-                { SensitiveConcepts.FoodClose, _fuzzificationFunctionNonLocalClose },
-                { SensitiveConcepts.FoodFar, _fuzzificationFunctionNonLocalFar },
+                { SensitiveConcepts.FoodClose, _fuzzificationFunctionNonLocalClosePredatorFood },
+                { SensitiveConcepts.FoodFar, _fuzzificationFunctionNonLocalFarPredatorFood },
                 { SensitiveConcepts.MateClose, _fuzzificationFunctionNonLocalClose },
                 { SensitiveConcepts.MateFar, _fuzzificationFunctionNonLocalFar },
                 { SensitiveConcepts.EnergyLow, _fuzzificationFunctionEnergyLowPredator },
@@ -191,12 +191,20 @@ namespace AgentBehaviour.FuzzyCognitiveMapUtilities {
             return _generalActivationFunctionBType(x, 5.0, 20.0);
         }
         
+        private static double _fuzzificationFunctionNonLocalClosePredatorFood(double x) {
+            return _generalActivationFunctionBType(25.0 - x, 0.0, 15.0);
+        }
+        
+        private static double _fuzzificationFunctionNonLocalFarPredatorFood(double x) {
+            return _generalActivationFunctionBType(x, 10.0, 25.0);
+        }
+        
         private static double _fuzzificationFunctionEnergyLowPrey(double x) {
-            return _generalActivationFunctionBType(600.0 - x, 0.0, 100.0);
+            return _generalActivationFunctionBType(700.0 - x, 0.0, 200.0);
         }
         
         private static double _fuzzificationFunctionEnergyHighPrey(double x) {
-            return _generalActivationFunctionBType(x, 500.0, 600.0);
+            return _generalActivationFunctionBType(x, 600.0, 800.0);
         }
         
         private static double _fuzzificationFunctionEnergyLowPredator(double x) {
