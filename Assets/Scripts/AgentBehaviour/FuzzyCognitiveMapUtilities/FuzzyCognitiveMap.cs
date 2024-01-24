@@ -61,7 +61,7 @@ namespace AgentBehaviour.FuzzyCognitiveMapUtilities {
     public class FuzzyCognitiveMap {
         private static readonly double Epsilon = 1.0e-6;
 
-        private readonly Dictionary<SensitiveConcepts, Func<double, double>> SensitiveConceptToFuzzificationActivation =
+        private readonly Dictionary<SensitiveConcepts, Func<double, double>> _sensitiveConceptToFuzzificationActivationPrey =
             new Dictionary<SensitiveConcepts, Func<double, double>> {
                 { SensitiveConcepts.FoeClose, _fuzzificationFunctionNonLocalClose },
                 { SensitiveConcepts.FoeFar, _fuzzificationFunctionNonLocalFar },
@@ -71,13 +71,33 @@ namespace AgentBehaviour.FuzzyCognitiveMapUtilities {
                 { SensitiveConcepts.FoodFar, _fuzzificationFunctionNonLocalFar },
                 { SensitiveConcepts.MateClose, _fuzzificationFunctionNonLocalClose },
                 { SensitiveConcepts.MateFar, _fuzzificationFunctionNonLocalFar },
-                { SensitiveConcepts.EnergyLow, _fuzzificationFunctionEnergyLow },
-                { SensitiveConcepts.EnergyHigh, _fuzzificationFunctionEnergyHigh },
+                { SensitiveConcepts.EnergyLow, _fuzzificationFunctionEnergyLowPrey },
+                { SensitiveConcepts.EnergyHigh, _fuzzificationFunctionEnergyHighPrey },
                 { SensitiveConcepts.QuantityOfLocalFoodLow, _fuzzificationFunctionLocalLow },
                 { SensitiveConcepts.QuantityOfLocalFoodHigh, _fuzzificationFunctionLocalHigh },
                 { SensitiveConcepts.QuantityOfLocalMateHigh, _fuzzificationFunctionLocalHigh },
                 { SensitiveConcepts.QuantityOfLocalMateLow, _fuzzificationFunctionLocalLow }
             };
+        
+        private readonly Dictionary<SensitiveConcepts, Func<double, double>> _sensitiveConceptToFuzzificationActivationPredator =
+            new Dictionary<SensitiveConcepts, Func<double, double>> {
+                { SensitiveConcepts.FoeClose, _fuzzificationFunctionNonLocalClose },
+                { SensitiveConcepts.FoeFar, _fuzzificationFunctionNonLocalFar },
+                { SensitiveConcepts.PreyClose, _fuzzificationFunctionNonLocalClose },
+                { SensitiveConcepts.PreyFar, _fuzzificationFunctionNonLocalFar },
+                { SensitiveConcepts.FoodClose, _fuzzificationFunctionNonLocalClose },
+                { SensitiveConcepts.FoodFar, _fuzzificationFunctionNonLocalFar },
+                { SensitiveConcepts.MateClose, _fuzzificationFunctionNonLocalClose },
+                { SensitiveConcepts.MateFar, _fuzzificationFunctionNonLocalFar },
+                { SensitiveConcepts.EnergyLow, _fuzzificationFunctionEnergyLowPredator },
+                { SensitiveConcepts.EnergyHigh, _fuzzificationFunctionEnergyHighPredator },
+                { SensitiveConcepts.QuantityOfLocalFoodLow, _fuzzificationFunctionLocalLow },
+                { SensitiveConcepts.QuantityOfLocalFoodHigh, _fuzzificationFunctionLocalHigh },
+                { SensitiveConcepts.QuantityOfLocalMateHigh, _fuzzificationFunctionLocalHigh },
+                { SensitiveConcepts.QuantityOfLocalMateLow, _fuzzificationFunctionLocalLow }
+            };
+
+        private readonly Dictionary<SensitiveConcepts, Func<double, double>> _activeConceptsToFuzzificationActivation;
         
         private readonly int _sensitiveConceptsCount = Enum.GetNames(typeof(SensitiveConcepts)).Length;
         private readonly int _countOfNamedInternalConcepts = Enum.GetNames(typeof(NamedInternalConcept)).Length;
@@ -117,6 +137,12 @@ namespace AgentBehaviour.FuzzyCognitiveMapUtilities {
             
             this._connectionMatrix = ConnectionMatrix.Build.Dense(TotalConceptsCount, TotalConceptsCount);
             this._conceptsActivation = Vector<double>.Build.Dense(TotalConceptsCount);
+            
+            this._activeConceptsToFuzzificationActivation = liveable switch {
+                Predator => _sensitiveConceptToFuzzificationActivationPredator,
+                Prey => _sensitiveConceptToFuzzificationActivationPrey,
+                _ => throw new ArgumentOutOfRangeException(nameof(liveable))
+            };
         }
 
         private FuzzyCognitiveMap(ConnectionMatrix connectionMatrix, Liveable liveable) {
@@ -127,6 +153,12 @@ namespace AgentBehaviour.FuzzyCognitiveMapUtilities {
             
             this._connectionMatrix = connectionMatrix;
             this._conceptsActivation = Vector<double>.Build.Dense(TotalConceptsCount);
+            
+            this._activeConceptsToFuzzificationActivation = liveable switch {
+                Predator => _sensitiveConceptToFuzzificationActivationPredator,
+                Prey => _sensitiveConceptToFuzzificationActivationPrey,
+                _ => throw new ArgumentOutOfRangeException(nameof(liveable))
+            };
         }
         
         private static double _generalActivationFunctionAType(double x, double k, double x0) {
@@ -146,8 +178,6 @@ namespace AgentBehaviour.FuzzyCognitiveMapUtilities {
         }
         
         private static Vector<double> _activationFunction(Vector<double> vector) {
-            var settings = DevSet.I.simulation;
-            
             return vector.Map(x =>
                 _generalActivationFunctionAType(x, 1.5, 1.0/2.0)
             );
@@ -161,11 +191,19 @@ namespace AgentBehaviour.FuzzyCognitiveMapUtilities {
             return _generalActivationFunctionBType(x, 5.0, 20.0);
         }
         
-        private static double _fuzzificationFunctionEnergyLow(double x) {
+        private static double _fuzzificationFunctionEnergyLowPrey(double x) {
+            return _generalActivationFunctionBType(600.0 - x, 0.0, 100.0);
+        }
+        
+        private static double _fuzzificationFunctionEnergyHighPrey(double x) {
+            return _generalActivationFunctionBType(x, 500.0, 600.0);
+        }
+        
+        private static double _fuzzificationFunctionEnergyLowPredator(double x) {
             return _generalActivationFunctionBType(400.0 - x, 0.0, 100.0);
         }
         
-        private static double _fuzzificationFunctionEnergyHigh(double x) {
+        private static double _fuzzificationFunctionEnergyHighPredator(double x) {
             return _generalActivationFunctionBType(x, 300.0, 400.0);
         }
         
@@ -183,7 +221,7 @@ namespace AgentBehaviour.FuzzyCognitiveMapUtilities {
 
             string sensConceptsStr = $"";
             foreach (var concept in sensitiveConcepts) {
-                var fuzzificationFunction = SensitiveConceptToFuzzificationActivation[concept];
+                var fuzzificationFunction = _sensitiveConceptToFuzzificationActivationPrey[concept];
                 var fuzzifiedValue = fuzzificationFunction(_liveable.SensitiveConceptsValues[concept]);
                 sensConceptsStr +=
                     $"{concept} -> {_liveable.SensitiveConceptsValues[concept]}. Fuzzified: {fuzzifiedValue}\n";

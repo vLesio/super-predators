@@ -83,9 +83,9 @@ namespace Settings.brains
                 }, {
                     0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, -1.5f, 0f, 0.3f, -0.2f, -0.3f, 0.3f, 1f, -1f, 0f, 0f, 0f, 0f, 0f, 0f, 4f, 0f
                 }, {
-                    0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 1.7f, 0f, 0f, 0.2f, 1f, -1f, -1f, 1f, 0f, 0f, 0f, 0f, 0f, 0f, -5f, 0f
+                    0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 1.7f, 0f, 0f, 0.2f, 0.7f, -1f, -1f, 1f, 0f, 0f, 0f, 0f, 0f, 0f, -5f, 0f
                 }, {
-                    0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, -0.3f, 0f, 0f, 0f, 0.4f, 0.4f, 0.8f, -0.8f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 2f
+                    0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, -0.3f, 0f, 0f, 0f, -0.4f, 0.4f, 0.8f, -0.8f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 2f
                 }, {
                     0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0.3f, 0f, 0f, 0.5f, 0.3f, -0.3f, -8f, 0.8f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, -5f
                 }, {
@@ -93,7 +93,7 @@ namespace Settings.brains
                 }, {
                     0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f
                 }, {
-                    0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0.3f, 0f, 0f, 0f, 0f, 0f, 0f, 1.5f, 2.5f, -1.2f, 0.3f, -0.4f, 3.5f, -0.8f
+                    0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0.3f, 0f, -0.2f, 0f, 0f, 0f, 0f, 1.5f, 2.9f, -1.2f, 0.1f, -0.4f, 3.5f, -0.8f
                 }, {
                     0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0.2f, 0f, 0f, 0f, 0f, 0f, -0.8f, -0.8f, 1.5f, 0.3f, -0.5f, -0.6f, 3f
                 }, {
