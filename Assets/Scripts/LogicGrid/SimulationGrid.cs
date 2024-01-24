@@ -212,10 +212,12 @@ namespace LogicGrid
         
         public static void RemoveGrass(Vector2Int position) {
             GrassAgents.Remove(position);
+            CGrid.I.SetGrass(position, 0);
         }
         
         public static void RemoveMeat(Vector2Int position) {
             MeatAgents.Remove(position);
+            CGrid.I.SetMeat(position, 0);
         }
         
         public static void RemovePrey(Prey prey) {

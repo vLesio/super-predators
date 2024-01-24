@@ -21,11 +21,11 @@ MonoBehaviour:
   probaGrass: 0.07
   energyGrass: 250
   energyMeat: 500
-  sizeClusterPrey: 10
-  sizeClusterPredator: 3
+  sizeClusterPrey: 1
+  sizeClusterPredator: 0
   sizeCluster: 5
-  initNbPrey: 50
-  initNbPredator: 15
+  initNbPrey: 1
+  initNbPredator: 0
   maxEnergyPrey: 650
   maxEnergyPredator: 1000
   probaMut: 0.005

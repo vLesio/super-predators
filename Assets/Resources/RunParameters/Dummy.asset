@@ -12,21 +12,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 89cc02ee326912a408d2118ed3252c05, type: 3}
   m_Name: Dummy
   m_EditorClassIdentifier: 
-  gridSize: {x: 120, y: 120}
+  gridSize: {x: 50, y: 50}
   activationS1: 0.2
   activationS2: 1
   breedingThreshold: 10
   maxGrass: 10
   maxMeat: 8
-  probaGrass: 0.07
+  probaGrass: 0.3
   energyGrass: 250
   energyMeat: 500
   sizeClusterPrey: 10
   sizeClusterPredator: 3
   sizeCluster: 5
-  initNbPrey: 50
-  initNbPredator: 50
-  maxEnergyPrey: 1000
+  initNbPrey: 200
+  initNbPredator: 20
+  maxEnergyPrey: 650
   maxEnergyPredator: 1000
   probaMut: 0.005
   Mut: 0.15
@@ -42,9 +42,9 @@ MonoBehaviour:
   distanceVisionPrey: 40
   distanceVisionPredator: 50
   birthEnergyPreyMax: 60
-  birthEnergyPredatorMax: 75
+  birthEnergyPredatorMax: 500
   birthEnergyPrey: 30
-  birthEnergyPredator: 50
+  birthEnergyPredator: 250
   minEdge: 0.075
   highMut: 0.2
   growGrass: 0.8

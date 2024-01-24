@@ -14,6 +14,7 @@ namespace Application {
         [SerializeField] private Button playButton;
         [SerializeField] private Slider speedSlider;
         [SerializeField] private TextMeshProUGUI sliderValueText;
+        [SerializeField] private TextMeshProUGUI stepText;
 
         private int _steps = 0;
         private float _lastStep = 0f;
@@ -55,6 +56,7 @@ namespace Application {
             Simulation.preyActionsTaken.Clear();
             Simulation.Update();
             _lastStep = Time.time;
+            stepText.SetText($"Step: {_steps + 1}");
             Simulation.LogTakenActions();
             _simlogger.Log($"Step {_steps++ % Colorize.Cyan}, took: {Time.deltaTime % Colorize.Cyan}." +
                            $"\tPredators -> {SimulationGrid.GetNumberOfPredators() % Colorize.Magenta} ({SimulationGrid.PredatorAgents.Count}), " +

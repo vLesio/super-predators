@@ -156,15 +156,15 @@ namespace Agents.LiveableAgents
         
         public void UpdateEnergyAndResetDistanceTravelled() {
 
-            if (Age <= 1)
+            if (Age <= 3)
             {
                 this._distanceTravelledSinceLastUpdate = 0;
                 return;
             }
             
-            var newEnergy = Math.Min(Attributes[LiveableAttribute.Energy] - CognitiveMap.TotalConceptsCount
-                                                         - CognitiveMap.CountOfNonZeroConnections * 0.1
-                                                         - Math.Pow(_distanceTravelledSinceLastUpdate, 1.4),
+            var newEnergy = Math.Min(Attributes[LiveableAttribute.Energy] - (CognitiveMap.TotalConceptsCount
+                                                         + CognitiveMap.CountOfNonZeroConnections * 0.1
+                                                         + Math.Pow(_distanceTravelledSinceLastUpdate, 1.4))/2f,
                 IsPrey(this) ? DevSet.I.simulation.maxEnergyPrey : DevSet.I.simulation.maxEnergyPredator);
 
             this.Attributes[LiveableAttribute.Energy] = newEnergy;

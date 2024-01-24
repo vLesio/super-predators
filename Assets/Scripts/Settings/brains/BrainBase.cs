@@ -81,7 +81,7 @@ namespace Settings.brains
                 }, {
                     0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, -2f, 0f, -0.3f, 1.4f, 0.3f, -0.3f, 1f, -1f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f
                 }, {
-                    0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, -2.5f, 0f, 0.3f, -0.2f, -0.3f, 0.3f, 1f, -1f, 0f, 0f, 0f, 0f, 0f, 0f, 4f, 0f
+                    0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, -2.5f, 0f, 0.3f, -0.2f, -0.3f, 0.3f, 1f, -1f, 0f, 0f, 0f, 0f, 0f, 0f, 10f, 0f
                 }, {
                     0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 1.7f, 0f, 0f, 0.2f, 0.7f, -1f, -1f, 1f, 0f, 0f, 0f, 0f, 0f, 0f, -5f, 0f
                 }, {
