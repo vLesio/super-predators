@@ -54,7 +54,7 @@ namespace GridSystem {
             else {
                 meatImage.gameObject.SetActive(true);
             }
-            // SetLayoutSize(_liveables.Keys.Count);
+            SetLayoutSize();
         }
 
         public void AddLiveable(Liveable liveable) {
@@ -68,7 +68,7 @@ namespace GridSystem {
             else {
                 throw new Exception("Coś dziwnego się odjebało.");
             }
-            SetLayoutSize(_liveables.Keys.Count);
+            SetLayoutSize();
         }
 
         public void RemoveLiveable(Liveable liveable) {
@@ -79,12 +79,12 @@ namespace GridSystem {
             else {
                 throw new Exception("W komórce nie ma takiego obiektu!");
             }
-            // SetLayoutSize(_liveables.Keys.Count);
+            SetLayoutSize();
         }
 
-        public void SetLayoutSize(int liveables) {
-            var size = (float)(1 / Math.Ceiling(Math.Sqrt(liveables + (meatImage.gameObject.activeSelf ? 1 : 0))));
-            size = Math.Clamp(size, 1, 99999);
+        public void SetLayoutSize() {
+            var size = (float)(1 / Math.Ceiling(Math.Sqrt(_liveables.Keys.Count + (meatImage.gameObject.activeSelf ? 1 : 0))));
+            size = Math.Clamp(size, 0, 1);
             _gridGroup.cellSize = new Vector2(size, size);
         }
     } 
