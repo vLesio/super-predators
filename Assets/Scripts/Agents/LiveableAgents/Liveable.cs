@@ -161,11 +161,25 @@ namespace Agents.LiveableAgents
                 this._distanceTravelledSinceLastUpdate = 0;
                 return;
             }
+
+            var newEnergy = (double)0f;
+
+            switch (this) {
+                case Prey prey:
+                    newEnergy = Math.Min(Attributes[LiveableAttribute.Energy] - (CognitiveMap.TotalConceptsCount
+                            + CognitiveMap.CountOfNonZeroConnections * 0.1
+                            + Math.Pow(_distanceTravelledSinceLastUpdate, 1.4)/2f),
+                        IsPrey(this) ? DevSet.I.simulation.maxEnergyPrey : DevSet.I.simulation.maxEnergyPredator);
+                    break;
+                case Predator predator:
+                    newEnergy = Math.Min(Attributes[LiveableAttribute.Energy] - (CognitiveMap.TotalConceptsCount
+                            + CognitiveMap.CountOfNonZeroConnections * 0.1
+                            + Math.Pow(_distanceTravelledSinceLastUpdate, 1.4))/3f,
+                        IsPrey(this) ? DevSet.I.simulation.maxEnergyPrey : DevSet.I.simulation.maxEnergyPredator);
+                    break;
+            }
             
-            var newEnergy = Math.Min(Attributes[LiveableAttribute.Energy] - (CognitiveMap.TotalConceptsCount
-                                                         + CognitiveMap.CountOfNonZeroConnections * 0.1
-                                                         + Math.Pow(_distanceTravelledSinceLastUpdate, 1.4))/2f,
-                IsPrey(this) ? DevSet.I.simulation.maxEnergyPrey : DevSet.I.simulation.maxEnergyPredator);
+            
 
             this.Attributes[LiveableAttribute.Energy] = newEnergy;
             this.SensitiveConceptsValues[SensitiveConcepts.EnergyLow] = newEnergy;

@@ -208,11 +208,11 @@ namespace AgentBehaviour.FuzzyCognitiveMapUtilities {
         }
         
         private static double _fuzzificationFunctionEnergyLowPredator(double x) {
-            return _generalActivationFunctionBType(700.0 - x, 0.0, 200.0);
+            return _generalActivationFunctionBType(700.0 - x, 0.0, 100.0);
         }
         
         private static double _fuzzificationFunctionEnergyHighPredator(double x) {
-            return _generalActivationFunctionBType(x, 600.0, 800.0);
+            return _generalActivationFunctionBType(x, 700.0, 800.0);
         }
         
         private static double _fuzzificationFunctionLocalLow(double x) {
