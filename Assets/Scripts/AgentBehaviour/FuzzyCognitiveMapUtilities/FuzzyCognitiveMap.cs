@@ -149,7 +149,7 @@ namespace AgentBehaviour.FuzzyCognitiveMapUtilities {
             var settings = DevSet.I.simulation;
             
             return vector.Map(x =>
-                _generalActivationFunctionAType(x, 1.8, 3.0/5.0)
+                _generalActivationFunctionAType(x, 1.5, 1.0/2.0)
             );
         }
 
@@ -170,7 +170,7 @@ namespace AgentBehaviour.FuzzyCognitiveMapUtilities {
         }
         
         private static double _fuzzificationFunctionLocalLow(double x) {
-            return _generalActivationFunctionBType(2.0 - x, 0.0, 2.0);
+            return _generalActivationFunctionBType(1.0 - x, 0.0, 1.0);
         }
         
         private static double _fuzzificationFunctionLocalHigh(double x) {
