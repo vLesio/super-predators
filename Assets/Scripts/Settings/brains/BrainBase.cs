@@ -35,7 +35,7 @@ namespace Settings.brains
                 { 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, -1f, 1.5f, 0.2f, -0.2f, 1.5f, -1.5f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f },
                 { 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, -0.2f, 0f, -0.3f, 0.3f, 1.1f, -1.1f, 0f, 0f, 0f, 0f, 0f, 0f, 2.6f, 0f },
                 { 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0.2f, 0f, 0.8, -1f, -1.1f, 1.1f, 0f, 0f, 0f, 0f, 0f, 0f, -4f, 0f },
-                { 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, -0.4f, 0.4f, 0.5f, -0.5f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 1.5f },
+                { 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, -0.4f, 0.4f, 0.5f, -0.5f, 0f, 0f, 0f, -4.8f, 0f, 0f, 0f, 1.9f },
                 { 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0.5f, 0.3f, -0.3f, -0.8f, 0.8f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, -4f },
                 { 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f },
                 { 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0.5f, 0f, 0f, -0.4f, 0f, 0f, 0f, 3.5f, 0f, -0.8f, -1f, 0.3f, -1f, -1f, -1f },

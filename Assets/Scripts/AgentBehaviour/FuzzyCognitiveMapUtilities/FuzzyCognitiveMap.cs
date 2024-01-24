@@ -75,8 +75,8 @@ namespace AgentBehaviour.FuzzyCognitiveMapUtilities {
                 { SensitiveConcepts.EnergyHigh, _fuzzificationFunctionEnergyHighPrey },
                 { SensitiveConcepts.QuantityOfLocalFoodLow, _fuzzificationFunctionLocalLow },
                 { SensitiveConcepts.QuantityOfLocalFoodHigh, _fuzzificationFunctionLocalHigh },
-                { SensitiveConcepts.QuantityOfLocalMateHigh, _fuzzificationFunctionLocalHigh },
-                { SensitiveConcepts.QuantityOfLocalMateLow, _fuzzificationFunctionLocalLow }
+                { SensitiveConcepts.QuantityOfLocalMateHigh, _fuzzificationFunctionLocalMateHigh },
+                { SensitiveConcepts.QuantityOfLocalMateLow, _fuzzificationFunctionLocalMateLow }
             };
         
         private readonly Dictionary<SensitiveConcepts, Func<double, double>> _sensitiveConceptToFuzzificationActivationPredator =
@@ -93,8 +93,8 @@ namespace AgentBehaviour.FuzzyCognitiveMapUtilities {
                 { SensitiveConcepts.EnergyHigh, _fuzzificationFunctionEnergyHighPredator },
                 { SensitiveConcepts.QuantityOfLocalFoodLow, _fuzzificationFunctionLocalLow },
                 { SensitiveConcepts.QuantityOfLocalFoodHigh, _fuzzificationFunctionLocalHigh },
-                { SensitiveConcepts.QuantityOfLocalMateHigh, _fuzzificationFunctionLocalHigh },
-                { SensitiveConcepts.QuantityOfLocalMateLow, _fuzzificationFunctionLocalLow }
+                { SensitiveConcepts.QuantityOfLocalMateHigh, _fuzzificationFunctionLocalMateHigh },
+                { SensitiveConcepts.QuantityOfLocalMateLow, _fuzzificationFunctionLocalMateLow }
             };
 
         private readonly Dictionary<SensitiveConcepts, Func<double, double>> _activeConceptsToFuzzificationActivation;
@@ -221,6 +221,14 @@ namespace AgentBehaviour.FuzzyCognitiveMapUtilities {
         
         private static double _fuzzificationFunctionLocalHigh(double x) {
             return _generalActivationFunctionBType(x, 0.0, 2.0);
+        }
+        
+        private static double _fuzzificationFunctionLocalMateLow(double x) {
+            return _generalActivationFunctionBType(1.0 - x, 0.0, 1.0);
+        }
+        
+        private static double _fuzzificationFunctionLocalMateHigh(double x) {
+            return _generalActivationFunctionBType(x, 0.0, 1.0);
         }
 
         private void _performFuzzification()
