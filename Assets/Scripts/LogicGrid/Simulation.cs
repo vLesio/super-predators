@@ -188,11 +188,11 @@ namespace LogicGrid {
             var emptyPositions = new HashSet<Vector2Int>();
             
             foreach (var resource in agents.Values) {
-                resource.UpdateQuantity();
-
                 if (resource.IsEmpty()) {
                     emptyPositions.Add(resource.CurrentPosition);
                 }
+                
+                resource.UpdateQuantity();
             }
             
             foreach (var emptyPosition in emptyPositions) {
